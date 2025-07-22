@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Simple Kuucode launcher that works like OpenCode
+# This starts the server and TUI automatically
+
+set -e
+
+# Get the directory of this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PACKAGE_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Start the TypeScript server in the background
+echo "Starting Kuucode..."
+bun run "$PACKAGE_DIR/src/index.ts" "$@"

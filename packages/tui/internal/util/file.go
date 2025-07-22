@@ -8,8 +8,8 @@ import (
 
 	"github.com/charmbracelet/lipgloss/v2/compat"
 	"github.com/charmbracelet/x/ansi"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
 )
 
 var RootPath string

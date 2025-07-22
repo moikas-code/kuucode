@@ -1,20 +1,20 @@
 <p align="center">
-  <a href="https://opencode.ai">
+  <a href="https://kuucode.ai">
     <picture>
       <source srcset="packages/web/src/assets/logo-ornate-dark.svg" media="(prefers-color-scheme: dark)">
       <source srcset="packages/web/src/assets/logo-ornate-light.svg" media="(prefers-color-scheme: light)">
-      <img src="packages/web/src/assets/logo-ornate-light.svg" alt="opencode logo">
+      <img src="packages/web/src/assets/logo-ornate-light.svg" alt="kuucode logo">
     </picture>
   </a>
 </p>
 <p align="center">AI coding agent, built for the terminal.</p>
 <p align="center">
-  <a href="https://opencode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/opencode-ai"><img alt="npm" src="https://img.shields.io/npm/v/opencode-ai?style=flat-square" /></a>
-  <a href="https://github.com/sst/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/sst/opencode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://kuucode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
+  <a href="https://www.npmjs.com/package/kuucode-ai"><img alt="npm" src="https://img.shields.io/npm/v/kuucode-ai?style=flat-square" /></a>
+  <a href="https://github.com/moikas-code/kuucode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/moikas-code/kuucode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
-[![opencode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://opencode.ai)
+[![kuucode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://kuucode.ai)
 
 ---
 
@@ -22,12 +22,12 @@
 
 ```bash
 # YOLO
-curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://kuucode.ai/install | bash
 
 # Package managers
-npm i -g opencode-ai@latest        # or bun/pnpm/yarn
-brew install sst/tap/opencode      # macOS
-paru -S opencode-bin               # Arch Linux
+npm i -g kuucode-ai@latest        # or bun/pnpm/yarn
+brew install moikas-code/tap/kuucode      # macOS
+paru -S kuucode-bin               # Arch Linux
 ```
 
 > [!TIP]
@@ -37,24 +37,24 @@ paru -S opencode-bin               # Arch Linux
 
 The install script respects the following priority order for the installation path:
 
-1. `$OPENCODE_INSTALL_DIR` - Custom installation directory
+1. `$KUUCODE_INSTALL_DIR` - Custom installation directory
 2. `$XDG_BIN_DIR` - XDG Base Directory Specification compliant path
 3. `$HOME/bin` - Standard user binary directory (if exists or can be created)
-4. `$HOME/.opencode/bin` - Default fallback
+4. `$HOME/.kuucode/bin` - Default fallback
 
 ```bash
 # Examples
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
+KUUCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://kuucode.ai/install | bash
+XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://kuucode.ai/install | bash
 ```
 
 ### Documentation
 
-For more info on how to configure opencode [**head over to our docs**](https://opencode.ai/docs).
+For more info on how to configure kuucode [**head over to our docs**](https://kuucode.ai/docs).
 
 ### Contributing
 
-opencode is an opinionated tool so any fundamental feature needs to go through a
+kuucode is an opinionated tool so any fundamental feature needs to go through a
 design process with the core team.
 
 > [!IMPORTANT]
@@ -74,7 +74,7 @@ Take a look at the git history to see what kind of PRs we end up merging.
 > [!NOTE]
 > If you do not follow the above guidelines we might close your PR.
 
-To run opencode locally you need.
+To run kuucode locally you need.
 
 - Bun
 - Golang 1.24.x
@@ -83,12 +83,14 @@ And run.
 
 ```bash
 $ bun install
-$ bun run packages/opencode/src/index.ts
+$ bun run packages/kuucode/src/index.ts
 ```
 
 #### Development Notes
 
-**API Client**: After making changes to the TypeScript API endpoints in `packages/opencode/src/server/server.ts`, you will need the opencode team to generate a new stainless sdk for the clients.
+**API Client**: After making changes to the TypeScript API endpoints in `packages/kuucode/src/server/server.ts`, you can regenerate the SDKs locally using `./scripts/generate-sdks` or `bun run generate-sdks`.
+
+**SDK Generation**: This project uses OpenAPI Generator to create client SDKs for TypeScript, Go, and Python. See [`SDK_GENERATION.md`](SDK_GENERATION.md) for details.
 
 ### FAQ
 
@@ -97,9 +99,9 @@ $ bun run packages/opencode/src/index.ts
 It's very similar to Claude Code in terms of capability. Here are the key differences:
 
 - 100% open source
-- Not coupled to any provider. Although Anthropic is recommended, opencode can be used with OpenAI, Google or even local models. As models evolve the gaps between them will close and pricing will drop so being provider agnostic is important.
-- A focus on TUI. opencode is built by neovim users and the creators of [terminal.shop](https://terminal.shop); we are going to push the limits of what's possible in the terminal.
-- A client/server architecture. This for example can allow opencode to run on your computer, while you can drive it remotely from a mobile app. Meaning that the TUI frontend is just one of the possible clients.
+- Not coupled to any provider. Although Anthropic is recommended, kuucode can be used with OpenAI, Google or even local models. As models evolve the gaps between them will close and pricing will drop so being provider agnostic is important.
+- A focus on TUI. kuucode is built by neovim users and the creators of [terminal.shop](https://terminal.shop); we are going to push the limits of what's possible in the terminal.
+- A client/server architecture. This for example can allow kuucode to run on your computer, while you can drive it remotely from a mobile app. Meaning that the TUI frontend is just one of the possible clients.
 
 #### What's the other repo?
 
@@ -107,4 +109,4 @@ The other confusingly named repo has no relation to this one. You can [read the 
 
 ---
 
-**Join our community** [Discord](https://discord.gg/opencode) | [YouTube](https://www.youtube.com/c/sst-dev) | [X.com](https://x.com/SST_dev)
+**Join our community** [Discord](https://discord.gg/kuucode) | [YouTube](https://www.youtube.com/c/sst-dev) | [X.com](https://x.com/SST_dev)

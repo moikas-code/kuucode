@@ -1,0 +1,10 @@
+{
+  "packageName": "kuucode",
+  "packageVersion": "0.1.0",
+  "gitUserId": "moikas-code",
+  "gitRepoId": "kuucode-sdk-go",
+  "moduleName": "github.com/moikas-code/kuucode-sdk-go",
+  "generateInterfaces": true,
+  "structPrefix": true,
+  "enumClassPrefix": true
+}

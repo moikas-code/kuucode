@@ -1,8 +1,14 @@
 .DS_Store
 node_modules
-.opencode
+.kuucode
 .sst
 .env
 .idea
 .vscode
 openapi.json
+
+# Generated SDKs (except the Go SDK which is committed)
+/sdks/typescript/
+/sdks/python/
+/packages/tui/sdk-backup/
+/packages/tui/sdk-new/

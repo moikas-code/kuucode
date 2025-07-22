@@ -11,12 +11,12 @@ import (
 	"github.com/charmbracelet/lipgloss/v2/compat"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/muesli/reflow/truncate"
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/components/diff"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/components/diff"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -176,13 +176,13 @@ func renderContentBlock(
 
 func renderText(
 	app *app.App,
-	message opencode.MessageUnion,
+	message kuucode.MessageUnion,
 	text string,
 	author string,
 	showToolDetails bool,
 	width int,
 	extra string,
-	toolCalls ...opencode.ToolPart,
+	toolCalls ...kuucode.ToolPart,
 ) string {
 	t := theme.CurrentTheme()
 
@@ -190,10 +190,10 @@ func renderText(
 	backgroundColor := t.BackgroundPanel()
 	var content string
 	switch casted := message.(type) {
-	case opencode.AssistantMessage:
+	case kuucode.AssistantMessage:
 		ts = time.UnixMilli(int64(casted.Time.Created))
 		content = util.ToMarkdown(text, width, backgroundColor)
-	case opencode.UserMessage:
+	case kuucode.UserMessage:
 		ts = time.UnixMilli(int64(casted.Time.Created))
 		base := styles.NewStyle().Foreground(t.Text()).Background(backgroundColor)
 		text = ansi.WordwrapWc(text, width-6, " -")
@@ -228,7 +228,7 @@ func renderText(
 		for _, toolCall := range toolCalls {
 			title := renderToolTitle(toolCall, width)
 			style := styles.NewStyle()
-			if toolCall.State.Status == opencode.ToolPartStateStatusError {
+			if toolCall.State.Status == kuucode.ToolPartStateStatusError {
 				style = style.Foreground(t.Error())
 			}
 			title = style.Render(title)
@@ -244,7 +244,7 @@ func renderText(
 	content = strings.Join(sections, "\n")
 
 	switch message.(type) {
-	case opencode.UserMessage:
+	case kuucode.UserMessage:
 		return renderContentBlock(
 			app,
 			content,
@@ -252,7 +252,7 @@ func renderText(
 			WithTextColor(t.Text()),
 			WithBorderColorRight(t.Secondary()),
 		)
-	case opencode.AssistantMessage:
+	case kuucode.AssistantMessage:
 		return renderContentBlock(
 			app,
 			content,
@@ -265,7 +265,7 @@ func renderText(
 
 func renderToolDetails(
 	app *app.App,
-	toolCall opencode.ToolPart,
+	toolCall kuucode.ToolPart,
 	width int,
 ) string {
 	measure := util.Measure("chat.renderToolDetails")
@@ -275,7 +275,7 @@ func renderToolDetails(
 		return ""
 	}
 
-	if toolCall.State.Status == opencode.ToolPartStateStatusPending {
+	if toolCall.State.Status == kuucode.ToolPartStateStatusPending {
 		title := renderToolTitle(toolCall, width)
 		return renderContentBlock(app, title, width)
 	}
@@ -418,7 +418,7 @@ func renderToolDetails(
 				steps := []string{}
 				for _, item := range toolcalls {
 					data, _ := json.Marshal(item)
-					var toolCall opencode.ToolPart
+					var toolCall kuucode.ToolPart
 					_ = json.Unmarshal(data, &toolCall)
 					step := renderToolTitle(toolCall, width)
 					step = "∟ " + step
@@ -439,7 +439,7 @@ func renderToolDetails(
 	}
 
 	error := ""
-	if toolCall.State.Status == opencode.ToolPartStateStatusError {
+	if toolCall.State.Status == kuucode.ToolPartStateStatusError {
 		error = toolCall.State.Error
 	}
 
@@ -472,7 +472,7 @@ func renderToolName(name string) string {
 		return "Fetch"
 	default:
 		normalizedName := name
-		if after, ok := strings.CutPrefix(name, "opencode_"); ok {
+		if after, ok := strings.CutPrefix(name, "kuucode_"); ok {
 			normalizedName = after
 		}
 		return cases.Title(language.Und).String(normalizedName)
@@ -505,8 +505,8 @@ func getTodoPhase(metadata map[string]any) string {
 	}
 }
 
-func getTodoTitle(toolCall opencode.ToolPart) string {
-	if toolCall.State.Status == opencode.ToolPartStateStatusCompleted {
+func getTodoTitle(toolCall kuucode.ToolPart) string {
+	if toolCall.State.Status == kuucode.ToolPartStateStatusCompleted {
 		if metadata, ok := toolCall.State.Metadata.(map[string]any); ok {
 			return getTodoPhase(metadata)
 		}
@@ -515,10 +515,10 @@ func getTodoTitle(toolCall opencode.ToolPart) string {
 }
 
 func renderToolTitle(
-	toolCall opencode.ToolPart,
+	toolCall kuucode.ToolPart,
 	width int,
 ) string {
-	if toolCall.State.Status == opencode.ToolPartStateStatusPending {
+	if toolCall.State.Status == kuucode.ToolPartStateStatusPending {
 		title := renderToolAction(toolCall.Tool)
 		return styles.NewStyle().Width(width - 6).Render(title)
 	}

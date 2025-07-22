@@ -5,27 +5,27 @@ import (
 	"log/slog"
 	"sync"
 
-	opencode "github.com/sst/opencode-sdk-go"
+	kuucode "github.com/moikas-code/kuucode-sdk-go"
 )
 
 type APILogHandler struct {
-	client  *opencode.Client
+	client  *kuucode.Client
 	service string
 	level   slog.Level
 	attrs   []slog.Attr
 	groups  []string
 	mu      sync.Mutex
-	queue   chan opencode.AppLogParams
+	queue   chan kuucode.AppLogParams
 }
 
-func NewAPILogHandler(ctx context.Context, client *opencode.Client, service string, level slog.Level) *APILogHandler {
+func NewAPILogHandler(ctx context.Context, client *kuucode.Client, service string, level slog.Level) *APILogHandler {
 	result := &APILogHandler{
 		client:  client,
 		service: service,
 		level:   level,
 		attrs:   make([]slog.Attr, 0),
 		groups:  make([]string, 0),
-		queue:   make(chan opencode.AppLogParams, 100_000),
+		queue:   make(chan kuucode.AppLogParams, 100_000),
 	}
 	go func() {
 		for {
@@ -48,18 +48,18 @@ func (h *APILogHandler) Enabled(_ context.Context, level slog.Level) bool {
 }
 
 func (h *APILogHandler) Handle(ctx context.Context, r slog.Record) error {
-	var apiLevel opencode.AppLogParamsLevel
+	var apiLevel kuucode.AppLogParamsLevel
 	switch r.Level {
 	case slog.LevelDebug:
-		apiLevel = opencode.AppLogParamsLevelDebug
+		apiLevel = kuucode.AppLogParamsLevelDebug
 	case slog.LevelInfo:
-		apiLevel = opencode.AppLogParamsLevelInfo
+		apiLevel = kuucode.AppLogParamsLevelInfo
 	case slog.LevelWarn:
-		apiLevel = opencode.AppLogParamsLevelWarn
+		apiLevel = kuucode.AppLogParamsLevelWarn
 	case slog.LevelError:
-		apiLevel = opencode.AppLogParamsLevelError
+		apiLevel = kuucode.AppLogParamsLevelError
 	default:
-		apiLevel = opencode.AppLogParamsLevelInfo
+		apiLevel = kuucode.AppLogParamsLevelInfo
 	}
 
 	extra := make(map[string]any)
@@ -75,14 +75,14 @@ func (h *APILogHandler) Handle(ctx context.Context, r slog.Record) error {
 		return true
 	})
 
-	params := opencode.AppLogParams{
-		Service: opencode.F(h.service),
-		Level:   opencode.F(apiLevel),
-		Message: opencode.F(r.Message),
+	params := kuucode.AppLogParams{
+		Service: kuucode.F(h.service),
+		Level:   kuucode.F(apiLevel),
+		Message: kuucode.F(r.Message),
 	}
 
 	if len(extra) > 0 {
-		params.Extra = opencode.F(extra)
+		params.Extra = kuucode.F(extra)
 	}
 
 	h.queue <- params

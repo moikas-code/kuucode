@@ -5,7 +5,7 @@ export default {
     ? "https://opencode.ai"
     : `https://${stage}.opencode.ai`,
   socialCard: "https://social-cards.sst.dev",
-  github: "https://github.com/sst/opencode",
+  github: "https://github.com/moikas-code/kuucode",
   discord: "https://opencode.ai/discord",
   headerLinks: [
     { name: "Home", url: "/" },

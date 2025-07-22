@@ -9,15 +9,15 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/charmbracelet/x/ansi"
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/components/dialog"
-	"github.com/sst/opencode/internal/components/toast"
-	"github.com/sst/opencode/internal/layout"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
-	"github.com/sst/opencode/internal/viewport"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/components/dialog"
+	"github.com/moikas-code/kuucode/internal/components/toast"
+	"github.com/moikas-code/kuucode/internal/layout"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/moikas-code/kuucode/internal/viewport"
 )
 
 type MessagesComponent interface {
@@ -162,15 +162,15 @@ func (m *messagesComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.loading = true
 		return m, m.renderView()
 
-	case opencode.EventListResponseEventSessionUpdated:
+	case kuucode.EventListResponseEventSessionUpdated:
 		if msg.Properties.Info.ID == m.app.Session.ID {
 			m.header = m.renderHeader()
 		}
-	case opencode.EventListResponseEventMessageUpdated:
+	case kuucode.EventListResponseEventMessageUpdated:
 		if msg.Properties.Info.SessionID == m.app.Session.ID {
 			cmds = append(cmds, m.renderView())
 		}
-	case opencode.EventListResponseEventMessagePartUpdated:
+	case kuucode.EventListResponseEventMessagePartUpdated:
 		if msg.Properties.Part.SessionID == m.app.Session.ID {
 			cmds = append(cmds, m.renderView())
 		}
@@ -229,13 +229,13 @@ func (m *messagesComponent) renderView() tea.Cmd {
 		partCount := 0
 		lineCount := 0
 
-		orphanedToolCalls := make([]opencode.ToolPart, 0)
+		orphanedToolCalls := make([]kuucode.ToolPart, 0)
 
 		width := m.width // always use full width
 
 		lastAssistantMessage := "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 		for _, msg := range slices.Backward(m.app.Messages) {
-			if assistant, ok := msg.Info.(opencode.AssistantMessage); ok {
+			if assistant, ok := msg.Info.(kuucode.AssistantMessage); ok {
 				lastAssistantMessage = assistant.ID
 				break
 			}
@@ -245,18 +245,18 @@ func (m *messagesComponent) renderView() tea.Cmd {
 			var cached bool
 
 			switch casted := message.Info.(type) {
-			case opencode.UserMessage:
+			case kuucode.UserMessage:
 				for partIndex, part := range message.Parts {
 					switch part := part.(type) {
-					case opencode.TextPart:
+					case kuucode.TextPart:
 						if part.Synthetic {
 							continue
 						}
 						remainingParts := message.Parts[partIndex+1:]
-						fileParts := make([]opencode.FilePart, 0)
+						fileParts := make([]kuucode.FilePart, 0)
 						for _, part := range remainingParts {
 							switch part := part.(type) {
-							case opencode.FilePart:
+							case kuucode.FilePart:
 								fileParts = append(fileParts, part)
 							}
 						}
@@ -323,21 +323,21 @@ func (m *messagesComponent) renderView() tea.Cmd {
 					}
 				}
 
-			case opencode.AssistantMessage:
+			case kuucode.AssistantMessage:
 				hasTextPart := false
 				for partIndex, p := range message.Parts {
 					switch part := p.(type) {
-					case opencode.TextPart:
+					case kuucode.TextPart:
 						hasTextPart = true
 						finished := part.Time.End > 0
 						remainingParts := message.Parts[partIndex+1:]
-						toolCallParts := make([]opencode.ToolPart, 0)
+						toolCallParts := make([]kuucode.ToolPart, 0)
 
 						// sometimes tool calls happen without an assistant message
 						// these should be included in this assistant message as well
 						if len(orphanedToolCalls) > 0 {
 							toolCallParts = append(toolCallParts, orphanedToolCalls...)
-							orphanedToolCalls = make([]opencode.ToolPart, 0)
+							orphanedToolCalls = make([]kuucode.ToolPart, 0)
 						}
 
 						remaining := true
@@ -346,13 +346,13 @@ func (m *messagesComponent) renderView() tea.Cmd {
 								break
 							}
 							switch part := part.(type) {
-							case opencode.TextPart:
+							case kuucode.TextPart:
 								// we only want tool calls associated with the current text part.
 								// if we hit another text part, we're done.
 								remaining = false
-							case opencode.ToolPart:
+							case kuucode.ToolPart:
 								toolCallParts = append(toolCallParts, part)
-								if part.State.Status != opencode.ToolPartStateStatusCompleted && part.State.Status != opencode.ToolPartStateStatusError {
+								if part.State.Status != kuucode.ToolPartStateStatusCompleted && part.State.Status != kuucode.ToolPartStateStatusError {
 									// i don't think there's a case where a tool call isn't in result state
 									// and the message time is 0, but just in case
 									finished = false
@@ -405,7 +405,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 							lineCount += lipgloss.Height(content) + 1
 							blocks = append(blocks, content)
 						}
-					case opencode.ToolPart:
+					case kuucode.ToolPart:
 						if !m.showToolDetails {
 							if !hasTextPart {
 								orphanedToolCalls = append(orphanedToolCalls, part)
@@ -413,7 +413,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 							continue
 						}
 
-						if part.State.Status == opencode.ToolPartStateStatusCompleted || part.State.Status == opencode.ToolPartStateStatusError {
+						if part.State.Status == kuucode.ToolPartStateStatusCompleted || part.State.Status == kuucode.ToolPartStateStatusError {
 							key := m.cache.GenerateKey(casted.ID,
 								part.ID,
 								m.showToolDetails,
@@ -458,16 +458,16 @@ func (m *messagesComponent) renderView() tea.Cmd {
 			}
 
 			error := ""
-			if assistant, ok := message.Info.(opencode.AssistantMessage); ok {
+			if assistant, ok := message.Info.(kuucode.AssistantMessage); ok {
 				switch err := assistant.Error.AsUnion().(type) {
 				case nil:
-				case opencode.AssistantMessageErrorMessageOutputLengthError:
+				case kuucode.AssistantMessageErrorMessageOutputLengthError:
 					error = "Message output length exceeded"
-				case opencode.ProviderAuthError:
+				case kuucode.ProviderAuthError:
 					error = err.Data.Message
-				case opencode.MessageAbortedError:
+				case kuucode.MessageAbortedError:
 					error = "Request was aborted"
-				case opencode.UnknownError:
+				case kuucode.UnknownError:
 					error = err.Data.Message
 				}
 			}
@@ -566,7 +566,7 @@ func (m *messagesComponent) renderHeader() string {
 	contextWindow := m.app.Model.Limit.Context
 
 	for _, message := range m.app.Messages {
-		if assistant, ok := message.Info.(opencode.AssistantMessage); ok {
+		if assistant, ok := message.Info.(kuucode.AssistantMessage); ok {
 			cost += assistant.Cost
 			usage := assistant.Tokens
 			if usage.Output > 0 {
@@ -592,7 +592,7 @@ func (m *messagesComponent) renderHeader() string {
 		Background(t.Background()).
 		Render(formatTokensAndCost(tokens, contextWindow, cost, isSubscriptionModel))
 
-	shareEnabled := m.app.Config.Share != opencode.ConfigShareDisabled
+	shareEnabled := m.app.Config.Share != kuucode.ConfigShareDisabled
 	headerText := util.ToMarkdown(
 		"# "+m.app.Session.Title,
 		headerWidth-len(sessionInfo),
@@ -758,9 +758,9 @@ func (m *messagesComponent) CopyLastMessage() (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 	lastMessage := m.app.Messages[len(m.app.Messages)-1]
-	var lastTextPart *opencode.TextPart
+	var lastTextPart *kuucode.TextPart
 	for _, part := range lastMessage.Parts {
-		if p, ok := part.(opencode.TextPart); ok {
+		if p, ok := part.(kuucode.TextPart); ok {
 			lastTextPart = &p
 		}
 	}

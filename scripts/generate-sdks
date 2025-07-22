@@ -1,0 +1,127 @@
+#!/bin/bash
+
+set -e
+
+# Parse command line arguments
+DEV_MODE=false
+CLEAN=false
+for arg in "$@"; do
+    if [ "$arg" = "--dev" ]; then
+        DEV_MODE=true
+    elif [ "$arg" = "--clean" ]; then
+        CLEAN=true
+    fi
+done
+
+echo "🚀 Starting kuucode SDK generation..."
+
+# Clean previous builds if requested
+if [ "$CLEAN" = true ]; then
+    echo "🧹 Cleaning previous SDK builds..."
+    rm -rf ./sdks/typescript
+    rm -rf ./sdks/python
+    rm -rf ./packages/tui/sdk-new
+fi
+
+echo "📡 Starting kuucode server on port 4096..."
+bun run ./packages/kuucode/src/index.ts serve --port 4096 &
+SERVER_PID=$!
+
+echo "⏳ Waiting for server to start..."
+sleep 3
+
+echo "📥 Fetching OpenAPI spec from http://127.0.0.1:4096/doc..."
+curl -s http://127.0.0.1:4096/doc > openapi.json
+
+echo "🛑 Stopping server..."
+kill $SERVER_PID
+
+# Validate OpenAPI spec
+echo "✅ Validating OpenAPI specification..."
+if ! command -v jq &> /dev/null; then
+    echo "⚠️  jq not found, skipping validation"
+else
+    if jq empty openapi.json 2>/dev/null; then
+        echo "✅ OpenAPI spec is valid JSON"
+    else
+        echo "❌ Invalid OpenAPI spec generated"
+        exit 1
+    fi
+fi
+
+# Use local OpenAPI Generator
+OPENAPI_CLI="./node_modules/.bin/openapi-generator-cli"
+if [ ! -f "$OPENAPI_CLI" ]; then
+    echo "❌ OpenAPI Generator not found. Please run: bun add -D @openapitools/openapi-generator-cli"
+    exit 1
+fi
+
+echo "🔧 Generating SDKs..."
+
+# Generate TypeScript SDK
+echo "📝 Generating TypeScript SDK..."
+mkdir -p ./sdks/typescript
+$OPENAPI_CLI generate \
+    -i openapi.json \
+    -g typescript-fetch \
+    -o ./sdks/typescript \
+    -c ./config/typescript-config.json \
+    --skip-validate-spec
+
+# Generate Go SDK
+echo "🐹 Generating Go SDK..."
+mkdir -p ./packages/tui/sdk-new
+$OPENAPI_CLI generate \
+    -i openapi.json \
+    -g go \
+    -o ./packages/tui/sdk-new \
+    -c ./config/go-config.json \
+    --skip-validate-spec
+
+# Generate Python SDK
+echo "🐍 Generating Python SDK..."
+mkdir -p ./sdks/python
+$OPENAPI_CLI generate \
+    -i openapi.json \
+    -g python \
+    -o ./sdks/python \
+    -c ./config/python-config.json \
+    --skip-validate-spec
+
+# Replace the old Go SDK with the new one
+echo "🔄 Updating Go SDK..."
+if [ -d "./packages/tui/sdk" ]; then
+    rm -rf ./packages/tui/sdk-backup
+    mv ./packages/tui/sdk ./packages/tui/sdk-backup
+fi
+mv ./packages/tui/sdk-new ./packages/tui/sdk
+
+# Clean up generated .git directories
+echo "🧹 Cleaning up..."
+find ./sdks -name ".git" -type d -exec rm -rf {} + 2>/dev/null || true
+find ./packages/tui/sdk -name ".git" -type d -exec rm -rf {} + 2>/dev/null || true
+
+# Update Go module
+echo "🔧 Updating Go module..."
+cd ./packages/tui/sdk
+if [ -f "go.mod" ]; then
+    go mod tidy
+fi
+cd ../../..
+
+echo "✅ SDK generation complete!"
+echo ""
+echo "📁 Generated SDKs:"
+echo "   TypeScript: ./sdks/typescript"
+echo "   Go:         ./packages/tui/sdk"
+echo "   Python:     ./sdks/python"
+echo ""
+
+if [ "$DEV_MODE" = false ]; then
+    echo "💡 Tip: Use --dev flag to skip production builds"
+    echo "💡 Tip: Use --clean flag to clean previous builds"
+else
+    echo "🔧 Development mode: Skipping production builds"
+fi
+
+echo "🎉 Done!"

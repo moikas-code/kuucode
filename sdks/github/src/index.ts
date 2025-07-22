@@ -43,8 +43,8 @@ let state:
 
 async function run() {
   try {
-    const match = body.match(/^hey\s*opencode,?\s*(.*)$/)
-    if (!match?.[1]) throw new Error("Command must start with `hey opencode`")
+    const match = body.match(/^hey\s*kuucode,?\s*(.*)$/)
+    if (!match?.[1]) throw new Error("Command must start with `hey kuucode`")
     const userPrompt = match[1]
 
     const oidcToken = await generateGitHubToken()
@@ -57,7 +57,7 @@ async function run() {
     await configureGit(appToken)
     await assertPermissions()
 
-    const comment = await createComment("opencode started...")
+    const comment = await createComment("kuucode started...")
     commentId = comment.data.id
 
     // Set state
@@ -82,23 +82,23 @@ async function run() {
     // Prompt
     const share = process.env.INPUT_SHARE === "true" || !repoData.data.private
     const promptData = state.type === "issue" ? buildPromptDataForIssue(state.issue) : buildPromptDataForPR(state.pr)
-    const responseRet = await runOpencode(`${userPrompt}\n\n${promptData}`, {
+    const responseRet = await runKuucode(`${userPrompt}\n\n${promptData}`, {
       share,
     })
 
     const response = responseRet.stdout
-    shareUrl = responseRet.stderr.match(/https:\/\/opencode\.ai\/s\/\w+/)?.[0]
+    shareUrl = responseRet.stderr.match(/https:\/\/kuucode\.ai\/s\/\w+/)?.[0]
 
     // Comment and push changes
     if (await branchIsDirty()) {
       const summary =
-        (await runOpencode(`Summarize the following in less than 40 characters:\n\n${response}`, { share: false }))
+        (await runKuucode(`Summarize the following in less than 40 characters:\n\n${response}`, { share: false }))
           ?.stdout || `Fix issue: ${payload.issue.title}`
 
       if (state.type === "issue") {
         const branch = await pushToNewBranch(summary)
         const pr = await createPR(repoData.data.default_branch, branch, summary, `${response}\n\nCloses #${issueId}`)
-        await updateComment(`opencode created pull request #${pr}`)
+        await updateComment(`kuucode created pull request #${pr}`)
       } else if (state.type === "local-pr") {
         await pushToCurrentBranch(summary)
         await updateComment(response)
@@ -122,7 +122,7 @@ async function run() {
       msg = e.message
     }
     if (commentId) await updateComment(msg)
-    core.setFailed(`opencode failed with error: ${msg}`)
+    core.setFailed(`kuucode failed with error: ${msg}`)
     // Also output the clean error message for the action to capture
     //core.setOutput("prepare_error", e.message);
     process.exit(1)
@@ -135,7 +135,7 @@ if (import.meta.main) {
 
 async function generateGitHubToken() {
   try {
-    return await core.getIDToken("opencode-github-action")
+    return await core.getIDToken("kuucode-github-action")
   } catch (error) {
     console.error("Failed to get OIDC token:", error)
     throw new Error("Could not fetch an OIDC token. Make sure to add `id-token: write` to your workflow permissions.")
@@ -143,7 +143,7 @@ async function generateGitHubToken() {
 }
 
 async function exchangeForAppToken(oidcToken: string) {
-  const response = await fetch("https://api.opencode.ai/exchange_github_app_token", {
+  const response = await fetch("https://api.kuucode.ai/exchange_github_app_token", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${oidcToken}`,
@@ -169,8 +169,8 @@ async function configureGit(appToken: string) {
 
   await $`git config --local --unset-all ${config}`
   await $`git config --local ${config} "AUTHORIZATION: basic ${newCredentials}"`
-  await $`git config --global user.name "opencode-agent[bot]"`
-  await $`git config --global user.email "opencode-agent[bot]@users.noreply.github.com"`
+  await $`git config --global user.name "kuucode-agent[bot]"`
+  await $`git config --global user.email "kuucode-agent[bot]@users.noreply.github.com"`
 }
 
 async function checkoutLocalBranch(pr: GitHubPullRequest) {
@@ -256,7 +256,7 @@ function generateBranchName() {
     .replace(/\.\d{3}Z/, "")
     .split("T")
     .join("_")
-  return `opencode/${type}${issueId}-${timestamp}`
+  return `kuucode/${type}${issueId}-${timestamp}`
 }
 
 async function pushToCurrentBranch(summary: string) {
@@ -305,17 +305,17 @@ async function createPR(base: string, branch: string, title: string, body: strin
   return pr.data.number
 }
 
-async function runOpencode(
+async function runKuucode(
   prompt: string,
   opts?: {
     share?: boolean
   },
 ) {
-  console.log("Running opencode...")
+  console.log("Running kuucode...")
 
   const promptPath = path.join(os.tmpdir(), "PROMPT")
   await Bun.write(promptPath, prompt)
-  const ret = await $`cat ${promptPath} | opencode run -m ${process.env.INPUT_MODEL} ${opts?.share ? "--share" : ""}`
+  const ret = await $`cat ${promptPath} | kuucode run -m ${process.env.INPUT_MODEL} ${opts?.share ? "--share" : ""}`
   return {
     stdout: ret.stdout.toString().trim(),
     stderr: ret.stderr.toString().trim(),

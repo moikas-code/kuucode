@@ -7,8 +7,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/charmbracelet/lipgloss/v2/compat"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
 )
 
 type IdeComponent interface {
@@ -48,7 +48,7 @@ func (c *ideComponent) View() string {
 		shortcut    string
 		description string
 	}{
-		{"Cmd+Esc", "open opencode in VS Code"},
+		{"Cmd+Esc", "open kuucode in VS Code"},
 		{"Cmd+Opt+K", "insert file from VS Code"},
 	}
 

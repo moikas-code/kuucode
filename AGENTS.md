@@ -11,5 +11,5 @@
 
 ## Workflow
 
-- you can regenerate the golang sdk by calling ./scripts/stainless.ts
-- we use bun for everything
+- you can regenerate the SDKs (Go, TypeScript, Python) by calling ./scripts/generate-sdks
+- we use bun and the moidvk mcp for everything

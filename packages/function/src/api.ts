@@ -236,7 +236,7 @@ export default {
      * Used by the GitHub action to get GitHub installation access token given the OIDC token
      */
     if (request.method === "POST" && method === "exchange_github_app_token") {
-      const EXPECTED_AUDIENCE = "opencode-github-action"
+      const EXPECTED_AUDIENCE = "kuucode-github-action"
       const GITHUB_ISSUER = "https://token.actions.githubusercontent.com"
       const JWKS_URL = `${GITHUB_ISSUER}/.well-known/jwks`
 
@@ -289,7 +289,7 @@ export default {
     }
 
     /**
-     * Used by the opencode CLI to check if the GitHub app is installed
+     * Used by the kuucode CLI to check if the GitHub app is installed
      */
     if (request.method === "GET" && method === "get_github_app_installation") {
       const owner = url.searchParams.get("owner")

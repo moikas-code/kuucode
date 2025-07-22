@@ -11,35 +11,35 @@ import (
 	"log/slog"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/clipboard"
-	"github.com/sst/opencode/internal/commands"
-	"github.com/sst/opencode/internal/components/toast"
-	"github.com/sst/opencode/internal/id"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/clipboard"
+	"github.com/moikas-code/kuucode/internal/commands"
+	"github.com/moikas-code/kuucode/internal/components/toast"
+	"github.com/moikas-code/kuucode/internal/id"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 type Message struct {
-	Info  opencode.MessageUnion
-	Parts []opencode.PartUnion
+	Info  kuucode.MessageUnion
+	Parts []kuucode.PartUnion
 }
 
 type App struct {
-	Info             opencode.App
-	Modes            []opencode.Mode
-	Providers        []opencode.Provider
+	Info             kuucode.App
+	Modes            []kuucode.Mode
+	Providers        []kuucode.Provider
 	Version          string
 	StatePath        string
-	Config           *opencode.Config
-	Client           *opencode.Client
+	Config           *kuucode.Config
+	Client           *kuucode.Client
 	State            *State
 	ModeIndex        int
-	Mode             *opencode.Mode
-	Provider         *opencode.Provider
-	Model            *opencode.Model
-	Session          *opencode.Session
+	Mode             *kuucode.Mode
+	Provider         *kuucode.Provider
+	Model            *kuucode.Model
+	Session          *kuucode.Session
 	Messages         []Message
 	Commands         commands.CommandRegistry
 	InitialModel     *string
@@ -50,13 +50,13 @@ type App struct {
 }
 
 type SessionCreatedMsg = struct {
-	Session *opencode.Session
+	Session *kuucode.Session
 }
-type SessionSelectedMsg = *opencode.Session
+type SessionSelectedMsg = *kuucode.Session
 type SessionLoadedMsg struct{}
 type ModelSelectedMsg struct {
-	Provider opencode.Provider
-	Model    opencode.Model
+	Provider kuucode.Provider
+	Model    kuucode.Model
 }
 type SessionClearedMsg struct{}
 type CompactSessionMsg struct{}
@@ -71,9 +71,9 @@ type FileRenderedMsg struct {
 func New(
 	ctx context.Context,
 	version string,
-	appInfo opencode.App,
-	modes []opencode.Mode,
-	httpClient *opencode.Client,
+	appInfo kuucode.App,
+	modes []kuucode.Mode,
+	httpClient *kuucode.Client,
 	initialModel *string,
 	initialPrompt *string,
 	initialMode *string,
@@ -105,13 +105,13 @@ func New(
 		appState.Theme = configInfo.Theme
 	}
 
-	themeEnv := os.Getenv("OPENCODE_THEME")
+	themeEnv := os.Getenv("KUUCODE_THEME")
 	if themeEnv != "" {
 		appState.Theme = themeEnv
 	}
 
 	var modeIndex int
-	var mode *opencode.Mode
+	var mode *kuucode.Mode
 	modeName := "build"
 	if appState.Mode != "" {
 		modeName = appState.Mode
@@ -164,7 +164,7 @@ func New(
 		Client:        httpClient,
 		ModeIndex:     modeIndex,
 		Mode:          mode,
-		Session:       &opencode.Session{},
+		Session:       &kuucode.Session{},
 		Messages:      []Message{},
 		Commands:      commands.LoadFromConfig(configInfo),
 		InitialModel:  initialModel,
@@ -261,10 +261,10 @@ func (a *App) InitializeProvider() tea.Cmd {
 		return nil
 	}
 	providers := providersResponse.Providers
-	var defaultProvider *opencode.Provider
-	var defaultModel *opencode.Model
+	var defaultProvider *kuucode.Provider
+	var defaultModel *kuucode.Model
 
-	var anthropic *opencode.Provider
+	var anthropic *kuucode.Provider
 	for _, provider := range providers {
 		if provider.ID == "anthropic" {
 			anthropic = &provider
@@ -297,8 +297,8 @@ func (a *App) InitializeProvider() tea.Cmd {
 		a.State.Model = model.ModelID
 	}
 
-	var currentProvider *opencode.Provider
-	var currentModel *opencode.Model
+	var currentProvider *kuucode.Provider
+	var currentModel *kuucode.Model
 	for _, provider := range providers {
 		if provider.ID == a.State.Provider {
 			currentProvider = &provider
@@ -315,8 +315,8 @@ func (a *App) InitializeProvider() tea.Cmd {
 		currentModel = defaultModel
 	}
 
-	var initialProvider *opencode.Provider
-	var initialModel *opencode.Model
+	var initialProvider *kuucode.Provider
+	var initialModel *kuucode.Model
 	if a.InitialModel != nil && *a.InitialModel != "" {
 		splits := strings.Split(*a.InitialModel, "/")
 		for _, provider := range providers {
@@ -349,9 +349,9 @@ func (a *App) InitializeProvider() tea.Cmd {
 }
 
 func getDefaultModel(
-	response *opencode.AppProvidersResponse,
-	provider opencode.Provider,
-) *opencode.Model {
+	response *kuucode.AppProvidersResponse,
+	provider kuucode.Provider,
+) *kuucode.Model {
 	if match, ok := response.Default[provider.ID]; ok {
 		model := provider.Models[match]
 		return &model
@@ -368,7 +368,7 @@ func (a *App) IsBusy() bool {
 		return false
 	}
 	lastMessage := a.Messages[len(a.Messages)-1]
-	if casted, ok := lastMessage.Info.(opencode.AssistantMessage); ok {
+	if casted, ok := lastMessage.Info.(kuucode.AssistantMessage); ok {
 		return casted.Time.Completed == 0
 	}
 	return true
@@ -397,10 +397,10 @@ func (a *App) InitializeProject(ctx context.Context) tea.Cmd {
 	cmds = append(cmds, util.CmdHandler(SessionCreatedMsg{Session: session}))
 
 	go func() {
-		_, err := a.Client.Session.Init(ctx, a.Session.ID, opencode.SessionInitParams{
-			MessageID:  opencode.F(id.Ascending(id.Message)),
-			ProviderID: opencode.F(a.Provider.ID),
-			ModelID:    opencode.F(a.Model.ID),
+		_, err := a.Client.Session.Init(ctx, a.Session.ID, kuucode.SessionInitParams{
+			MessageID:  kuucode.F(id.Ascending(id.Message)),
+			ProviderID: kuucode.F(a.Provider.ID),
+			ModelID:    kuucode.F(a.Model.ID),
 		})
 		if err != nil {
 			slog.Error("Failed to initialize project", "error", err)
@@ -427,9 +427,9 @@ func (a *App) CompactSession(ctx context.Context) tea.Cmd {
 		_, err := a.Client.Session.Summarize(
 			compactCtx,
 			a.Session.ID,
-			opencode.SessionSummarizeParams{
-				ProviderID: opencode.F(a.Provider.ID),
-				ModelID:    opencode.F(a.Model.ID),
+			kuucode.SessionSummarizeParams{
+				ProviderID: kuucode.F(a.Provider.ID),
+				ModelID:    kuucode.F(a.Model.ID),
 			},
 		)
 		if err != nil {
@@ -450,7 +450,7 @@ func (a *App) MarkProjectInitialized(ctx context.Context) error {
 	return nil
 }
 
-func (a *App) CreateSession(ctx context.Context) (*opencode.Session, error) {
+func (a *App) CreateSession(ctx context.Context) (*kuucode.Session, error) {
 	session, err := a.Client.Session.New(ctx)
 	if err != nil {
 		return nil, err
@@ -475,12 +475,12 @@ func (a *App) SendPrompt(ctx context.Context, prompt Prompt) (*App, tea.Cmd) {
 	a.Messages = append(a.Messages, message)
 
 	cmds = append(cmds, func() tea.Msg {
-		_, err := a.Client.Session.Chat(ctx, a.Session.ID, opencode.SessionChatParams{
-			ProviderID: opencode.F(a.Provider.ID),
-			ModelID:    opencode.F(a.Model.ID),
-			Mode:       opencode.F(a.Mode.Name),
-			MessageID:  opencode.F(messageID),
-			Parts:      opencode.F(message.ToSessionChatParams()),
+		_, err := a.Client.Session.Chat(ctx, a.Session.ID, kuucode.SessionChatParams{
+			ProviderID: kuucode.F(a.Provider.ID),
+			ModelID:    kuucode.F(a.Model.ID),
+			Mode:       kuucode.F(a.Mode.Name),
+			MessageID:  kuucode.F(messageID),
+			Parts:      kuucode.F(message.ToSessionChatParams()),
 		})
 		if err != nil {
 			errormsg := fmt.Sprintf("failed to send message: %v", err)
@@ -510,13 +510,13 @@ func (a *App) Cancel(ctx context.Context, sessionID string) error {
 	return nil
 }
 
-func (a *App) ListSessions(ctx context.Context) ([]opencode.Session, error) {
+func (a *App) ListSessions(ctx context.Context) ([]kuucode.Session, error) {
 	response, err := a.Client.Session.List(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if response == nil {
-		return []opencode.Session{}, nil
+		return []kuucode.Session{}, nil
 	}
 	sessions := *response
 	sort.Slice(sessions, func(i, j int) bool {
@@ -546,7 +546,7 @@ func (a *App) ListMessages(ctx context.Context, sessionId string) ([]Message, er
 	for _, message := range *response {
 		msg := Message{
 			Info:  message.Info.AsUnion(),
-			Parts: []opencode.PartUnion{},
+			Parts: []kuucode.PartUnion{},
 		}
 		for _, part := range message.Parts {
 			msg.Parts = append(msg.Parts, part.AsUnion())
@@ -556,13 +556,13 @@ func (a *App) ListMessages(ctx context.Context, sessionId string) ([]Message, er
 	return messages, nil
 }
 
-func (a *App) ListProviders(ctx context.Context) ([]opencode.Provider, error) {
+func (a *App) ListProviders(ctx context.Context) ([]kuucode.Provider, error) {
 	response, err := a.Client.App.Providers(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if response == nil {
-		return []opencode.Provider{}, nil
+		return []kuucode.Provider{}, nil
 	}
 
 	providers := *response

@@ -1,13 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "opencode",
+  "name": "kuucode",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.2.14",
+  "bin": {
+    "kuucode": "./packages/kuucode/bin/kuucode"
+  },
   "scripts": {
-    "dev": "bun run packages/opencode/src/index.ts",
+    "dev": "bun run packages/kuucode/src/index.ts",
     "typecheck": "bun run --filter='*' typecheck",
-    "stainless": "./scripts/stainless",
+    "generate-sdks": "./scripts/generate-sdks",
     "postinstall": "./scripts/hooks"
   },
   "workspaces": {
@@ -22,12 +25,13 @@
     }
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "2.21.3",
     "prettier": "3.5.3",
     "sst": "3.17.8"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sst/opencode"
+    "url": "https://github.com/moikas-code/kuucode"
   },
   "license": "MIT",
   "prettier": {

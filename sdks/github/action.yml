@@ -1,5 +1,5 @@
-name: "opencode GitHub Action"
-description: "Run opencode in GitHub Actions workflows"
+name: "kuucode GitHub Action"
+description: "Run kuucode in GitHub Actions workflows"
 branding:
   icon: "code"
   color: "orange"
@@ -10,13 +10,13 @@ inputs:
     required: false
 
   share:
-    description: "Share the opencode session (defaults to true for public repos)"
+    description: "Share the kuucode session (defaults to true for public repos)"
     required: false
 
 outputs:
   share_url:
-    description: "URL to share the opencode execution"
-    value: ${{ steps.run_opencode.outputs.share_url }}
+    description: "URL to share the kuucode execution"
+    value: ${{ steps.run_kuucode.outputs.share_url }}
 
 runs:
   using: "composite"
@@ -37,13 +37,13 @@ runs:
         cd ${GITHUB_ACTION_PATH}
         bun install
 
-    - name: Install opencode
+    - name: Install kuucode
       shell: bash
-      run: curl -fsSL https://opencode.ai/install | bash
+      run: curl -fsSL https://kuucode.ai/install | bash
 
-    - name: Run opencode
+    - name: Run kuucode
       shell: bash
-      id: run_opencode
+      id: run_kuucode
       run: |
         bun run ${GITHUB_ACTION_PATH}/src/index.ts
       env:

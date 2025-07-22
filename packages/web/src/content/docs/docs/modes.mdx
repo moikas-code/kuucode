@@ -3,10 +3,10 @@ title: Modes
 description: Different modes for different use cases.
 ---
 
-Modes in opencode allow you to customize the behavior, tools, and prompts for different use cases.
+Modes in kuucode allow you to customize the behavior, tools, and prompts for different use cases.
 
 It comes with two built-in modes: **build** and **plan**. You can customize
-these or configure your own through the opencode config.
+these or configure your own through the kuucode config.
 
 :::tip
 Use the plan mode to analyze code and review suggestions without making any code
@@ -19,7 +19,7 @@ You can switch between modes during a session or configure them in your config f
 
 ## Built-in
 
-opencode comes with two built-in modes.
+kuucode comes with two built-in modes.
 
 ---
 
@@ -50,11 +50,11 @@ You can switch between modes during a session using the _Tab_ key. Or your confi
 
 ## Configure
 
-You can customize the built-in modes or create your own in the opencode [config](/docs/config).
+You can customize the built-in modes or create your own in the kuucode [config](/docs/config).
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "mode": {
     "build": {
       "model": "anthropic/claude-sonnet-4-20250514",
@@ -85,7 +85,7 @@ Let's look at these options in detail.
 
 Use the `model` config to override the default model for this mode. Useful for using different models optimized for different tasks. For example, a faster model for planning, a more capable model for implementation.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
   "mode": {
     "plan": {
@@ -101,7 +101,7 @@ Use the `model` config to override the default model for this mode. Useful for u
 
 Specify a custom system prompt file for this mode with the `prompt` config. The prompt file should contain instructions specific to the mode's purpose.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
   "mode": {
     "review": {
@@ -112,7 +112,7 @@ Specify a custom system prompt file for this mode with the `prompt` config. The 
 ```
 
 This path is relative to where the config file is located. So this works for
-both the global opencode config and the project specific config.
+both the global kuucode config and the project specific config.
 
 ---
 
@@ -165,9 +165,9 @@ Here are all the tools can be controlled through the mode config.
 
 You can create your own custom modes by adding them to the `mode` configuration. For example, a documentation mode that focuses on reading and analysis.
 
-```json title="opencode.json" {4-14}
+```json title="kuucode.json" {4-14}
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "mode": {
     "docs": {
       "prompt": "{file:./prompts/documentation.txt}",

@@ -14,16 +14,16 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/google/uuid"
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/attachment"
-	"github.com/sst/opencode/internal/clipboard"
-	"github.com/sst/opencode/internal/commands"
-	"github.com/sst/opencode/internal/components/dialog"
-	"github.com/sst/opencode/internal/components/textarea"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/attachment"
+	"github.com/moikas-code/kuucode/internal/clipboard"
+	"github.com/moikas-code/kuucode/internal/commands"
+	"github.com/moikas-code/kuucode/internal/components/dialog"
+	"github.com/moikas-code/kuucode/internal/components/textarea"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 type EditorComponent interface {
@@ -217,7 +217,7 @@ func (m *editorComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cursorCol := m.textarea.CursorColumn()
 			m.textarea.ReplaceRange(atIndex, cursorCol, "")
 
-			symbol := msg.Item.RawData.(opencode.Symbol)
+			symbol := msg.Item.RawData.(kuucode.Symbol)
 			parts := strings.Split(symbol.Name, ".")
 			lastPart := parts[len(parts)-1]
 			attachment := &attachment.Attachment{

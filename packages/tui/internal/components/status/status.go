@@ -7,10 +7,10 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/charmbracelet/lipgloss/v2/compat"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/commands"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/commands"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
 )
 
 type StatusComponent interface {
@@ -39,20 +39,23 @@ func (m statusComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m statusComponent) logo() string {
 	t := theme.CurrentTheme()
-	base := styles.NewStyle().Foreground(t.TextMuted()).Background(t.BackgroundElement()).Render
-	emphasis := styles.NewStyle().
-		Foreground(t.Text()).
+	lightPurple := styles.NewStyle().
+		Foreground(compat.AdaptiveColor{
+			Dark:  lipgloss.Color("#B19CD9"),
+			Light: lipgloss.Color("#8B5A9F"),
+		}).
 		Background(t.BackgroundElement()).
 		Bold(true).
 		Render
+	version := styles.NewStyle().Foreground(t.TextMuted()).Background(t.BackgroundElement()).Render
 
-	open := base("open")
-	code := emphasis("code ")
-	version := base(m.app.Version)
+	kuu := lightPurple("kuu")
+	code := lightPurple("code ")
+	versionText := version(m.app.Version)
 	return styles.NewStyle().
 		Background(t.BackgroundElement()).
 		Padding(0, 1).
-		Render(open + code + version)
+		Render(kuu + code + versionText)
 }
 
 func (m statusComponent) View() string {

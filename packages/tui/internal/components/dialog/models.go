@@ -9,14 +9,14 @@ import (
 	"github.com/charmbracelet/bubbles/v2/key"
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/lithammer/fuzzysearch/fuzzy"
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/components/list"
-	"github.com/sst/opencode/internal/components/modal"
-	"github.com/sst/opencode/internal/layout"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/components/list"
+	"github.com/moikas-code/kuucode/internal/components/modal"
+	"github.com/moikas-code/kuucode/internal/layout"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 const (
@@ -42,8 +42,8 @@ type modelDialog struct {
 }
 
 type ModelWithProvider struct {
-	Model    opencode.Model
-	Provider opencode.Provider
+	Model    kuucode.Model
+	Provider kuucode.Provider
 }
 
 // modelItem is a custom list item for model selections

@@ -4,13 +4,13 @@ import (
 	"log/slog"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/sst/opencode/internal/completions"
-	"github.com/sst/opencode/internal/components/list"
-	"github.com/sst/opencode/internal/components/modal"
-	"github.com/sst/opencode/internal/layout"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode/internal/completions"
+	"github.com/moikas-code/kuucode/internal/components/list"
+	"github.com/moikas-code/kuucode/internal/components/modal"
+	"github.com/moikas-code/kuucode/internal/layout"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 const (

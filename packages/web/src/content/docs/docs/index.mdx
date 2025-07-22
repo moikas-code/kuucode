@@ -1,11 +1,11 @@
 ---
 title: Intro
-description: Get started with opencode.
+description: Get started with kuucode.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-[**opencode**](/) is an AI coding agent built for the terminal. It features:
+[**kuucode**](/) is an AI coding agent built for the terminal. It features:
 
 - A responsive, native, themeable terminal UI.
 - Automatically loads the right LSPs, so the LLMs make fewer mistakes.
@@ -14,7 +14,7 @@ import { Tabs, TabItem } from "@astrojs/starlight/components"
 - Log in with Anthropic to use your Claude Pro or Claude Max account.
 - Supports 75+ LLM providers through [Models.dev](https://models.dev), including local models.
 
-![opencode TUI with the opencode theme](../../../assets/lander/screenshot.png)
+![kuucode TUI with the kuucode theme](../../../assets/lander/screenshot.png)
 
 ---
 
@@ -23,58 +23,58 @@ import { Tabs, TabItem } from "@astrojs/starlight/components"
 <Tabs>
   <TabItem label="npm">
     ```bash
-    npm install -g opencode-ai
+    npm install -g kuucode-ai
     ```
   </TabItem>
   <TabItem label="Bun">
     ```bash
-    bun install -g opencode-ai
+    bun install -g kuucode-ai
     ```
   </TabItem>
   <TabItem label="pnpm">
     ```bash
-    pnpm install -g opencode-ai
+    pnpm install -g kuucode-ai
     ```
   </TabItem>
   <TabItem label="Yarn">
     ```bash
-    yarn global add opencode-ai
+    yarn global add kuucode-ai
     ```
   </TabItem>
 </Tabs>
 
-You can also install the opencode binary through the following.
+You can also install the kuucode binary through the following.
 
 ##### Using the install script
 
 ```bash
-curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://kuucode.ai/install | bash
 ```
 
 ##### Using Homebrew on macOS
 
 ```bash
-brew install sst/tap/opencode
+brew install moikas-code/tap/kuucode
 ```
 
 ##### Using Paru on Arch Linux
 
 ```bash
-paru -S opencode-bin
+paru -S kuucode-bin
 ```
 
 ##### Windows
 
-Right now the automatic installation methods do not work properly on Windows. However you can grab the binary from the [Releases](https://github.com/sst/opencode/releases).
+Right now the automatic installation methods do not work properly on Windows. However you can grab the binary from the [Releases](https://github.com/moikas-code/kuucode/releases).
 
 ---
 
 ## Providers
 
-We recommend signing up for Claude Pro or Max, running `opencode auth login` and selecting Anthropic. It's the most cost-effective way to use opencode.
+We recommend signing up for Claude Pro or Max, running `kuucode auth login` and selecting Anthropic. It's the most cost-effective way to use kuucode.
 
 ```bash
-$ opencode auth login
+$ kuucode auth login
 
 ┌  Add credential
 │
@@ -90,7 +90,7 @@ $ opencode auth login
 └
 ```
 
-opencode is powered by the provider list at [Models.dev](https://models.dev), so you can use `opencode auth login` to configure API keys for any provider you'd like to use. This is stored in `~/.local/share/opencode/auth.json`.
+kuucode is powered by the provider list at [Models.dev](https://models.dev), so you can use `kuucode auth login` to configure API keys for any provider you'd like to use. This is stored in `~/.local/share/kuucode/auth.json`.
 
 The Models.dev dataset is also used to detect common environment variables like `OPENAI_API_KEY` to autoload that provider.
 

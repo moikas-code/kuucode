@@ -8,15 +8,15 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/muesli/reflow/truncate"
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/components/list"
-	"github.com/sst/opencode/internal/components/modal"
-	"github.com/sst/opencode/internal/components/toast"
-	"github.com/sst/opencode/internal/layout"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/components/list"
+	"github.com/moikas-code/kuucode/internal/components/modal"
+	"github.com/moikas-code/kuucode/internal/components/toast"
+	"github.com/moikas-code/kuucode/internal/layout"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 // SessionDialog interface for the session switching dialog
@@ -106,7 +106,7 @@ type sessionDialog struct {
 	width              int
 	height             int
 	modal              *modal.Modal
-	sessions           []opencode.Session
+	sessions           []kuucode.Session
 	list               list.List[sessionItem]
 	app                *app.App
 	deleteConfirmation int // -1 means no confirmation, >= 0 means confirming deletion of session at this index
@@ -138,7 +138,7 @@ func (s *sessionDialog) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				)
 			}
 		case "n":
-			s.app.Session = &opencode.Session{}
+			s.app.Session = &kuucode.Session{}
 			s.app.Messages = []app.Message{}
 			return s, tea.Sequence(
 				util.CmdHandler(modal.CloseModalMsg{}),
@@ -239,7 +239,7 @@ func (s *sessionDialog) Close() tea.Cmd {
 func NewSessionDialog(app *app.App) SessionDialog {
 	sessions, _ := app.ListSessions(context.Background())
 
-	var filteredSessions []opencode.Session
+	var filteredSessions []kuucode.Session
 	var items []sessionItem
 	for _, sess := range sessions {
 		if sess.ParentID != "" {

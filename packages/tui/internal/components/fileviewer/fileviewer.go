@@ -6,15 +6,15 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea/v2"
 
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/commands"
-	"github.com/sst/opencode/internal/components/dialog"
-	"github.com/sst/opencode/internal/components/diff"
-	"github.com/sst/opencode/internal/layout"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
-	"github.com/sst/opencode/internal/viewport"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/commands"
+	"github.com/moikas-code/kuucode/internal/components/dialog"
+	"github.com/moikas-code/kuucode/internal/components/diff"
+	"github.com/moikas-code/kuucode/internal/layout"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/moikas-code/kuucode/internal/viewport"
 )
 
 type DiffStyle int

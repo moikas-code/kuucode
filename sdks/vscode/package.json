@@ -1,12 +1,12 @@
 {
-  "name": "opencode",
-  "displayName": "opencode",
-  "description": "opencode for VS Code",
-  "version": "0.0.0",
-  "publisher": "sst-dev",
+  "name": "kuucode",
+  "displayName": "kuucode",
+  "description": "kuucode for VS Code",
+  "version": "0.1.0",
+  "publisher": "moikas-code",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sst/opencode"
+    "url": "https://github.com/moikas-code/kuucode"
   },
   "license": "MIT",
   "icon": "images/icon.png",
@@ -25,22 +25,22 @@
   "contributes": {
     "commands": [
       {
-        "command": "opencode.openTerminal",
-        "title": "Open Terminal with Opencode",
+        "command": "kuucode.openTerminal",
+        "title": "Open Terminal with Kuucode",
         "icon": {
           "light": "images/button-dark.svg",
           "dark": "images/button-light.svg"
         }
       },
       {
-        "command": "opencode.addFilepathToTerminal",
+        "command": "kuucode.addFilepathToTerminal",
         "title": "Add Filepath to Terminal"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "command": "opencode.openTerminal",
+          "command": "kuucode.openTerminal",
           "when": "editorTextFocus",
           "group": "navigation"
         }
@@ -48,14 +48,14 @@
     },
     "keybindings": [
       {
-        "command": "opencode.openTerminal",
-        "title": "Run opencode",
+        "command": "kuucode.openTerminal",
+        "title": "Run kuucode",
         "key": "cmd+escape",
         "mac": "cmd+escape"
       },
       {
-        "command": "opencode.addFilepathToTerminal",
-        "title": "opencode: Insert At-Mentioned",
+        "command": "kuucode.addFilepathToTerminal",
+        "title": "kuucode: Insert At-Mentioned",
         "key": "cmd+alt+k",
         "mac": "cmd+alt+k"
       }

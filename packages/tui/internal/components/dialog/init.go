@@ -5,9 +5,9 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 // InitDialogCmp is a component that asks the user if they want to initialize the project.
@@ -110,7 +110,7 @@ func (m InitDialogCmp) View() string {
 		Foreground(t.Text()).
 		Width(maxWidth).
 		Padding(0, 1).
-		Render("Initialization generates a new AGENTS.md file that contains information about your codebase, this file serves as memory for each project, you can freely add to it to help the agents be better at their job.")
+		Render("Initialization generates a new .agentrc file that contains information about your codebase, this file serves as memory for each project, you can freely add to it to help the agents be better at their job.")
 
 	question := baseStyle.
 		Foreground(t.Text()).

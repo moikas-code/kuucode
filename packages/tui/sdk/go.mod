@@ -1,13 +1,14 @@
-module github.com/sst/opencode-sdk-go
+module github.com/moikas-code/kuucode-sdk-go
 
-go 1.21
+go 1.18
 
 require (
-	github.com/tidwall/gjson v1.14.4
-	github.com/tidwall/sjson v1.2.5
+	github.com/stretchr/testify v1.10.0
+	gopkg.in/validator.v2 v2.0.1
 )
 
 require (
-	github.com/tidwall/match v1.1.1 // indirect
-	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

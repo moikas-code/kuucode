@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/sst/opencode-sdk-go"
+	"github.com/moikas-code/kuucode-sdk-go"
 )
 
 type ExecuteCommandMsg Command
@@ -167,7 +167,7 @@ func parseBindings(bindings ...string) []Keybinding {
 	return parsedBindings
 }
 
-func LoadFromConfig(config *opencode.Config) CommandRegistry {
+func LoadFromConfig(config *kuucode.Config) CommandRegistry {
 	defaults := []Command{
 		{
 			Name:        AppHelpCommand,
@@ -273,7 +273,7 @@ func LoadFromConfig(config *opencode.Config) CommandRegistry {
 		},
 		{
 			Name:        ProjectInitCommand,
-			Description: "create/update AGENTS.md",
+			Description: "create/update .agentrc",
 			Keybindings: parseBindings("<leader>i"),
 			Trigger:     []string{"init"},
 		},
@@ -365,7 +365,7 @@ func LoadFromConfig(config *opencode.Config) CommandRegistry {
 	json.Unmarshal(marshalled, &keybinds)
 	for _, command := range defaults {
 		// Remove share/unshare commands if sharing is disabled
-		if config.Share == opencode.ConfigShareDisabled && (command.Name == SessionShareCommand || command.Name == SessionUnshareCommand) {
+		if config.Share == kuucode.ConfigShareDisabled && (command.Name == SessionShareCommand || command.Name == SessionUnshareCommand) {
 			continue
 		}
 		if keybind, ok := keybinds[string(command.Name)]; ok && keybind != "" {

@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
 )
 
 type filesContextGroup struct {
@@ -75,7 +75,7 @@ func (cg *filesContextGroup) GetChildEntries(
 
 	files, err := cg.app.Client.Find.Files(
 		context.Background(),
-		opencode.FindFilesParams{Query: opencode.F(query)},
+		kuucode.FindFilesParams{Query: kuucode.F(query)},
 	)
 	if err != nil {
 		slog.Error("Failed to get completion items", "error", err)

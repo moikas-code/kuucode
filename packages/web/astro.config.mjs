@@ -9,7 +9,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import { spawnSync } from "child_process"
 
-const github = "https://github.com/sst/opencode"
+const github = "https://github.com/moikas-code/kuucode"
 
 // https://astro.build/config
 export default defineConfig({

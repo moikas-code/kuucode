@@ -1,34 +1,34 @@
 ---
 title: Config
-description: Using the opencode JSON config.
+description: Using the kuucode JSON config.
 ---
 
-You can configure opencode using a JSON config file.
+You can configure kuucode using a JSON config file.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "theme": "opencode",
+  "$schema": "https://kuucode.ai/config.json",
+  "theme": "kuucode",
   "model": "anthropic/claude-sonnet-4-20250514",
   "autoupdate": true
 }
 ```
 
-This can be used to configure opencode globally or for a specific project.
+This can be used to configure kuucode globally or for a specific project.
 
 ---
 
 ### Global
 
-Place your global opencode config in `~/.config/opencode/opencode.json`. You'll want to use the global config for things like themes, providers, or keybinds.
+Place your global kuucode config in `~/.config/kuucode/kuucode.json`. You'll want to use the global config for things like themes, providers, or keybinds.
 
 ---
 
 ### Per project
 
-You can also add a `opencode.json` in your project. This is useful for configuring providers or modes specific to your project.
+You can also add a `kuucode.json` in your project. This is useful for configuring providers or modes specific to your project.
 
-When opencode starts up, it looks for a config file in the current directory or traverse up to the nearest Git directory.
+When kuucode starts up, it looks for a config file in the current directory or traverse up to the nearest Git directory.
 
 This is also safe to be checked into Git and uses the same schema as the global one.
 
@@ -36,7 +36,7 @@ This is also safe to be checked into Git and uses the same schema as the global 
 
 ## Schema
 
-The config file has a schema that's defined in [**`opencode.ai/config.json`**](https://opencode.ai/config.json).
+The config file has a schema that's defined in [**`kuucode.ai/config.json`**](https://kuucode.ai/config.json).
 
 Your editor should be able to validate and autocomplete based on the schema.
 
@@ -44,11 +44,11 @@ Your editor should be able to validate and autocomplete based on the schema.
 
 ### Modes
 
-opencode comes with two built-in modes: _build_, the default with all tools enabled. And _plan_, restricted mode with file modification tools disabled. You can override these built-in modes or define your own custom modes with the `mode` option.
+kuucode comes with two built-in modes: _build_, the default with all tools enabled. And _plan_, restricted mode with file modification tools disabled. You can override these built-in modes or define your own custom modes with the `mode` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "mode": {
     "build": { },
     "plan": { },
@@ -63,11 +63,11 @@ opencode comes with two built-in modes: _build_, the default with all tools enab
 
 ### Models
 
-You can configure the providers and models you want to use in your opencode config through the `provider` and `model` options.
+You can configure the providers and models you want to use in your kuucode config through the `provider` and `model` options.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "provider": {},
   "model": ""
 }
@@ -79,11 +79,11 @@ You can also configure [local models](/docs/models#local). [Learn more](/docs/mo
 
 ### Themes
 
-You can configure the theme you want to use in your opencode config through the `theme` option.
+You can configure the theme you want to use in your kuucode config through the `theme` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "theme": ""
 }
 ```
@@ -96,14 +96,14 @@ You can configure the theme you want to use in your opencode config through the 
 
 Logs are written to:
 
-- **macOS/Linux**: `~/.local/share/opencode/log/`
-- **Windows**: `%APPDATA%\opencode\log\`
+- **macOS/Linux**: `~/.local/share/kuucode/log/`
+- **Windows**: `%APPDATA%\kuucode\log\`
 
 You can configure the minimum log level through the `log_level` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "log_level": "INFO"
 }
 ```
@@ -117,7 +117,7 @@ With the following options:
 | `WARN`  | Warnings and errors only                 |
 | `ERROR` | Errors only                              |
 
-The **default** log level is `INFO`. If you are running opencode locally in development mode it's set to `DEBUG`.
+The **default** log level is `INFO`. If you are running kuucode locally in development mode it's set to `DEBUG`.
 
 ---
 
@@ -125,9 +125,9 @@ The **default** log level is `INFO`. If you are running opencode locally in deve
 
 You can configure the [share](/docs/share) feature through the `share` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "share": "manual"
 }
 ```
@@ -146,9 +146,9 @@ By default, sharing is set to manual mode where you need to explicitly share con
 
 You can customize your keybinds through the `keybinds` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "keybinds": {}
 }
 ```
@@ -159,11 +159,11 @@ You can customize your keybinds through the `keybinds` option.
 
 ### Autoupdate
 
-opencode will automatically download any new updates when it starts up. You can disable this with the `autoupdate` option.
+kuucode will automatically download any new updates when it starts up. You can disable this with the `autoupdate` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "autoupdate": false
 }
 ```
@@ -174,9 +174,9 @@ opencode will automatically download any new updates when it starts up. You can 
 
 You can configure MCP servers you want to use through the `mcp` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "mcp": {}
 }
 ```
@@ -189,9 +189,9 @@ You can configure MCP servers you want to use through the `mcp` option.
 
 You can configure the instructions for the model you're using through the `instructions` option.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -205,9 +205,9 @@ about rules here](/docs/rules).
 
 You can disable providers that are loaded automatically through the `disabled_providers` option. This is useful when you want to prevent certain providers from being loaded even if their credentials are available.
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -215,7 +215,7 @@ You can disable providers that are loaded automatically through the `disabled_pr
 The `disabled_providers` option accepts an array of provider IDs. When a provider is disabled:
 
 - It won't be loaded even if environment variables are set
-- It won't be loaded even if API keys are configured through `opencode auth login`
+- It won't be loaded even if API keys are configured through `kuucode auth login`
 - The provider's models won't appear in the model selection list
 
 ---
@@ -230,9 +230,9 @@ You can use variable substitution in your config files to reference environment 
 
 Use `{env:VARIABLE_NAME}` to substitute environment variables:
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "model": "{env:OPENCODE_MODEL}",
   "provider": {
     "anthropic": {
@@ -252,9 +252,9 @@ If the environment variable is not set, it will be replaced with an empty string
 
 Use `{file:path/to/file}` to substitute the contents of a file:
 
-```json title="opencode.json"
+```json title="kuucode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://kuucode.ai/config.json",
   "instructions": ["{file:./custom-instructions.md}"],
   "provider": {
     "openai": {

@@ -1,40 +1,40 @@
 ---
 title: CLI
-description: The opencode CLI options and commands.
+description: The kuucode CLI options and commands.
 ---
 
-Running the opencode CLI starts it for the current directory.
+Running the kuucode CLI starts it for the current directory.
 
 ```bash
-opencode
+kuucode
 ```
 
 Or you can start it for a specific working directory.
 
 ```bash
-opencode /path/to/project
+kuucode /path/to/project
 ```
 
 ---
 
 ## Commands
 
-The opencode CLI also has the following commands.
+The kuucode CLI also has the following commands.
 
 ---
 
 ### run
 
-Run opencode in non-interactive mode by passing a prompt directly.
+Run kuucode in non-interactive mode by passing a prompt directly.
 
 ```bash
-opencode run [message..]
+kuucode run [message..]
 ```
 
 This is useful for scripting, automation, or when you want a quick answer without launching the full TUI. For example.
 
-```bash "opencode run"
-opencode run Explain the use of context in Go
+```bash "kuucode run"
+kuucode run Explain the use of context in Go
 ```
 
 #### Flags
@@ -53,20 +53,20 @@ opencode run Explain the use of context in Go
 Command to manage credentials and login for providers.
 
 ```bash
-opencode auth [command]
+kuucode auth [command]
 ```
 
 ---
 
 #### login
 
-Logs you into a provider and saves them in the credentials file in `~/.local/share/opencode/auth.json`.
+Logs you into a provider and saves them in the credentials file in `~/.local/share/kuucode/auth.json`.
 
 ```bash
-opencode auth login
+kuucode auth login
 ```
 
-When opencode starts up it loads the providers from the credentials file. And if there are any keys defined in your environments or a `.env` file in your project.
+When kuucode starts up it loads the providers from the credentials file. And if there are any keys defined in your environments or a `.env` file in your project.
 
 ---
 
@@ -75,13 +75,13 @@ When opencode starts up it loads the providers from the credentials file. And if
 Lists all the authenticated providers as stored in the credentials file.
 
 ```bash
-opencode auth list
+kuucode auth list
 ```
 
 Or the short version.
 
 ```bash
-opencode auth ls
+kuucode auth ls
 ```
 
 ---
@@ -91,36 +91,36 @@ opencode auth ls
 Logs you out of a provider by clearing it from the credentials file.
 
 ```bash
-opencode auth logout
+kuucode auth logout
 ```
 
 ---
 
 ### upgrade
 
-Updates opencode to the latest version or a specific version.
+Updates kuucode to the latest version or a specific version.
 
 ```bash
-opencode upgrade [target]
+kuucode upgrade [target]
 ```
 
 To upgrade to the latest version.
 
 ```bash
-opencode upgrade
+kuucode upgrade
 ```
 
 To upgrade to a specific version.
 
 ```bash
-opencode upgrade v0.1.48
+kuucode upgrade v0.1.48
 ```
 
 ---
 
 ## Flags
 
-The opencode CLI takes the following flags.
+The kuucode CLI takes the following flags.
 
 | Flag           | Short | Description          |
 | -------------- | ----- | -------------------- |

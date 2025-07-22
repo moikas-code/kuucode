@@ -15,23 +15,23 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 
-	"github.com/sst/opencode-sdk-go"
-	"github.com/sst/opencode/internal/api"
-	"github.com/sst/opencode/internal/app"
-	"github.com/sst/opencode/internal/commands"
-	"github.com/sst/opencode/internal/completions"
-	"github.com/sst/opencode/internal/components/chat"
-	cmdcomp "github.com/sst/opencode/internal/components/commands"
-	"github.com/sst/opencode/internal/components/dialog"
-	"github.com/sst/opencode/internal/components/fileviewer"
-	"github.com/sst/opencode/internal/components/ide"
-	"github.com/sst/opencode/internal/components/modal"
-	"github.com/sst/opencode/internal/components/status"
-	"github.com/sst/opencode/internal/components/toast"
-	"github.com/sst/opencode/internal/layout"
-	"github.com/sst/opencode/internal/styles"
-	"github.com/sst/opencode/internal/theme"
-	"github.com/sst/opencode/internal/util"
+	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/api"
+	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/commands"
+	"github.com/moikas-code/kuucode/internal/completions"
+	"github.com/moikas-code/kuucode/internal/components/chat"
+	cmdcomp "github.com/moikas-code/kuucode/internal/components/commands"
+	"github.com/moikas-code/kuucode/internal/components/dialog"
+	"github.com/moikas-code/kuucode/internal/components/fileviewer"
+	"github.com/moikas-code/kuucode/internal/components/ide"
+	"github.com/moikas-code/kuucode/internal/components/modal"
+	"github.com/moikas-code/kuucode/internal/components/status"
+	"github.com/moikas-code/kuucode/internal/components/toast"
+	"github.com/moikas-code/kuucode/internal/layout"
+	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuucode/internal/util"
 )
 
 // InterruptDebounceTimeoutMsg is sent when the interrupt key debounce timeout expires
@@ -83,7 +83,7 @@ type Model struct {
 func (a Model) Init() tea.Cmd {
 	var cmds []tea.Cmd
 	// https://github.com/charmbracelet/bubbletea/issues/1440
-	// https://github.com/sst/opencode/issues/127
+	// https://github.com/moikas-code/kuucode/issues/127
 	if !util.IsWsl() {
 		cmds = append(cmds, tea.RequestBackgroundColor)
 	}
@@ -345,51 +345,51 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = append(cmds, cmd)
 	case dialog.CompletionDialogCloseMsg:
 		a.showCompletionDialog = false
-	case opencode.EventListResponseEventInstallationUpdated:
+	case kuucode.EventListResponseEventInstallationUpdated:
 		return a, toast.NewSuccessToast(
-			"opencode updated to "+msg.Properties.Version+", restart to apply.",
+			"kuucode updated to "+msg.Properties.Version+", restart to apply.",
 			toast.WithTitle("New version installed"),
 		)
-	case opencode.EventListResponseEventIdeInstalled:
+	case kuucode.EventListResponseEventIdeInstalled:
 		return a, toast.NewSuccessToast(
-			"Installed the opencode extension in "+msg.Properties.Ide,
+			"Installed the kuucode extension in "+msg.Properties.Ide,
 			toast.WithTitle(msg.Properties.Ide+" extension installed"),
 		)
-	case opencode.EventListResponseEventSessionDeleted:
+	case kuucode.EventListResponseEventSessionDeleted:
 		if a.app.Session != nil && msg.Properties.Info.ID == a.app.Session.ID {
-			a.app.Session = &opencode.Session{}
+			a.app.Session = &kuucode.Session{}
 			a.app.Messages = []app.Message{}
 		}
 		return a, toast.NewSuccessToast("Session deleted successfully")
-	case opencode.EventListResponseEventSessionUpdated:
+	case kuucode.EventListResponseEventSessionUpdated:
 		if msg.Properties.Info.ID == a.app.Session.ID {
 			a.app.Session = &msg.Properties.Info
 		}
-	case opencode.EventListResponseEventMessagePartUpdated:
+	case kuucode.EventListResponseEventMessagePartUpdated:
 		slog.Info("message part updated", "message", msg.Properties.Part.MessageID, "part", msg.Properties.Part.ID)
 		if msg.Properties.Part.SessionID == a.app.Session.ID {
 			messageIndex := slices.IndexFunc(a.app.Messages, func(m app.Message) bool {
 				switch casted := m.Info.(type) {
-				case opencode.UserMessage:
+				case kuucode.UserMessage:
 					return casted.ID == msg.Properties.Part.MessageID
-				case opencode.AssistantMessage:
+				case kuucode.AssistantMessage:
 					return casted.ID == msg.Properties.Part.MessageID
 				}
 				return false
 			})
 			if messageIndex > -1 {
 				message := a.app.Messages[messageIndex]
-				partIndex := slices.IndexFunc(message.Parts, func(p opencode.PartUnion) bool {
+				partIndex := slices.IndexFunc(message.Parts, func(p kuucode.PartUnion) bool {
 					switch casted := p.(type) {
-					case opencode.TextPart:
+					case kuucode.TextPart:
 						return casted.ID == msg.Properties.Part.ID
-					case opencode.FilePart:
+					case kuucode.FilePart:
 						return casted.ID == msg.Properties.Part.ID
-					case opencode.ToolPart:
+					case kuucode.ToolPart:
 						return casted.ID == msg.Properties.Part.ID
-					case opencode.StepStartPart:
+					case kuucode.StepStartPart:
 						return casted.ID == msg.Properties.Part.ID
-					case opencode.StepFinishPart:
+					case kuucode.StepFinishPart:
 						return casted.ID == msg.Properties.Part.ID
 					}
 					return false
@@ -403,13 +403,13 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				a.app.Messages[messageIndex] = message
 			}
 		}
-	case opencode.EventListResponseEventMessageUpdated:
+	case kuucode.EventListResponseEventMessageUpdated:
 		if msg.Properties.Info.SessionID == a.app.Session.ID {
 			matchIndex := slices.IndexFunc(a.app.Messages, func(m app.Message) bool {
 				switch casted := m.Info.(type) {
-				case opencode.UserMessage:
+				case kuucode.UserMessage:
 					return casted.ID == msg.Properties.Info.ID
-				case opencode.AssistantMessage:
+				case kuucode.AssistantMessage:
 					return casted.ID == msg.Properties.Info.ID
 				}
 				return false
@@ -426,21 +426,21 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if matchIndex == -1 {
 				a.app.Messages = append(a.app.Messages, app.Message{
 					Info:  msg.Properties.Info.AsUnion(),
-					Parts: []opencode.PartUnion{},
+					Parts: []kuucode.PartUnion{},
 				})
 			}
 		}
-	case opencode.EventListResponseEventSessionError:
+	case kuucode.EventListResponseEventSessionError:
 		switch err := msg.Properties.Error.AsUnion().(type) {
 		case nil:
-		case opencode.ProviderAuthError:
+		case kuucode.ProviderAuthError:
 			slog.Error("Failed to authenticate with provider", "error", err.Data.Message)
 			return a, toast.NewErrorToast("Provider error: " + err.Data.Message)
-		case opencode.UnknownError:
+		case kuucode.UnknownError:
 			slog.Error("Server error", "name", err.Name, "message", err.Data.Message)
 			return a, toast.NewErrorToast(err.Data.Message, toast.WithTitle(string(err.Name)))
 		}
-	case opencode.EventListResponseEventFileWatcherUpdated:
+	case kuucode.EventListResponseEventFileWatcherUpdated:
 		if a.fileViewer.HasFile() {
 			if a.fileViewer.Filename() == msg.Properties.File {
 				return a.openFile(msg.Properties.File)
@@ -512,8 +512,8 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			a.modal = helpDialog
 		case "/tui/prompt":
 			var body struct {
-				Text  string          `json:"text"`
-				Parts []opencode.Part `json:"parts"`
+				Text  string         `json:"text"`
+				Parts []kuucode.Part `json:"parts"`
 			}
 			json.Unmarshal((msg.Body), &body)
 			a.editor.SetValue(body.Text)
@@ -595,8 +595,8 @@ func (a Model) openFile(filepath string) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	response, err := a.app.Client.File.Read(
 		context.Background(),
-		opencode.FileReadParams{
-			Path: opencode.F(filepath),
+		kuucode.FileReadParams{
+			Path: kuucode.F(filepath),
 		},
 	)
 	if err != nil {
@@ -620,10 +620,10 @@ func (a Model) home() string {
 	base := baseStyle.Render
 	muted := styles.NewStyle().Foreground(t.TextMuted()).Background(t.Background()).Render
 
-	open := `
-█▀▀█ █▀▀█ █▀▀ █▀▀▄ 
-█░░█ █░░█ █▀▀ █░░█ 
-▀▀▀▀ █▀▀▀ ▀▀▀ ▀  ▀ `
+	kuu := `
+█ █ █ █ █ █
+█▀▄ █ █ █ █
+▀ ▀ ▀▀▀ ▀▀▀ `
 	code := `
 █▀▀ █▀▀█ █▀▀▄ █▀▀
 █░░ █░░█ █░░█ █▀▀
@@ -631,7 +631,7 @@ func (a Model) home() string {
 
 	logo := lipgloss.JoinHorizontal(
 		lipgloss.Top,
-		muted(open),
+		muted(kuu),
 		base(code),
 	)
 	// cwd := app.Info.Path.Cwd
@@ -654,7 +654,7 @@ func (a Model) home() string {
 
 	// Use limit of 4 for vscode, 6 for others
 	limit := 6
-	if os.Getenv("OPENCODE_CALLER") == "vscode" {
+	if os.Getenv("KUUCODE_CALLER") == "vscode" {
 		limit = 4
 	}
 
@@ -672,7 +672,7 @@ func (a Model) home() string {
 
 	// Add VSCode shortcuts if in VSCode environment
 	var ideShortcuts string
-	if os.Getenv("OPENCODE_CALLER") == "vscode" {
+	if os.Getenv("KUUCODE_CALLER") == "vscode" {
 		ideView := ide.New()
 		ideView.SetBackgroundColor(t.Background())
 		ideShortcuts = lipgloss.PlaceHorizontal(
@@ -690,7 +690,7 @@ func (a Model) home() string {
 	lines = append(lines, "")
 	lines = append(lines, "")
 	lines = append(lines, cmds)
-	if os.Getenv("OPENCODE_CALLER") == "vscode" {
+	if os.Getenv("KUUCODE_CALLER") == "vscode" {
 		lines = append(lines, "")
 		lines = append(lines, ideShortcuts)
 	}
@@ -864,7 +864,7 @@ func (a Model) executeCommand(command commands.Command) (tea.Model, tea.Cmd) {
 		if a.app.Session.ID == "" {
 			return a, nil
 		}
-		a.app.Session = &opencode.Session{}
+		a.app.Session = &kuucode.Session{}
 		a.app.Messages = []app.Message{}
 		cmds = append(cmds, util.CmdHandler(app.SessionClearedMsg{}))
 	case commands.SessionListCommand:
@@ -1112,10 +1112,10 @@ func formatConversationToMarkdown(messages []app.Message) string {
 		var timestamp time.Time
 
 		switch info := msg.Info.(type) {
-		case opencode.UserMessage:
+		case kuucode.UserMessage:
 			role = "User"
 			timestamp = time.UnixMilli(int64(info.Time.Created))
-		case opencode.AssistantMessage:
+		case kuucode.AssistantMessage:
 			role = "Assistant"
 			timestamp = time.UnixMilli(int64(info.Time.Created))
 		default:
@@ -1128,11 +1128,11 @@ func formatConversationToMarkdown(messages []app.Message) string {
 
 		for _, part := range msg.Parts {
 			switch p := part.(type) {
-			case opencode.TextPart:
+			case kuucode.TextPart:
 				builder.WriteString(p.Text + "\n\n")
-			case opencode.FilePart:
+			case kuucode.FilePart:
 				builder.WriteString(fmt.Sprintf("[File: %s]\n\n", p.Filename))
-			case opencode.ToolPart:
+			case kuucode.ToolPart:
 				builder.WriteString(fmt.Sprintf("[Tool: %s]\n\n", p.Tool))
 			}
 		}
