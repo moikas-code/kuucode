@@ -14,7 +14,7 @@ export namespace Config {
   const log = Log.create({ service: "config" })
 
   export const state = App.state("config", async (app) => {
-    let result = await global()
+    let result: any = await global()
     for (const file of ["kuucode.jsonc", "kuucode.json"]) {
       const found = await Filesystem.findUp(file, app.path.cwd, app.path.root)
       for (const resolved of found.toReversed()) {
@@ -147,6 +147,11 @@ export namespace Config {
         .optional()
         .describe("@deprecated Use 'share' field instead. Share newly created sessions automatically"),
       autoupdate: z.boolean().optional().describe("Automatically update to the latest version"),
+      vscode_extension: z
+        .boolean()
+        .optional()
+        .default(false)
+        .describe("Enable automatic VSCode extension installation and detection"),
       disabled_providers: z.array(z.string()).optional().describe("Disable providers that are loaded automatically"),
       model: z.string().describe("Model to use in the format of provider/model, eg anthropic/claude-2").optional(),
       small_model: z
@@ -214,7 +219,7 @@ export namespace Config {
   export type Info = z.output<typeof Info>
 
   export const global = lazy(async () => {
-    let result = pipe(
+    let result: any = pipe(
       {},
       mergeDeep(await load(path.join(Global.Path.config, "config.json"))),
       mergeDeep(await load(path.join(Global.Path.config, "opencode.json"))),

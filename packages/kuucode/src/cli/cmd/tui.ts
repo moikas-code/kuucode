@@ -129,6 +129,8 @@ export const TuiCommand = cmd({
             .catch(() => {})
         })()
         ;(async () => {
+          const config = await Config.get()
+          if (!config.vscode_extension) return
           if (Ide.alreadyInstalled()) return
           const ide = await Ide.ide()
           if (ide === "unknown") return
