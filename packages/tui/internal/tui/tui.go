@@ -654,14 +654,16 @@ func (a Model) home() string {
 
 	// Use limit of 4 for vscode, 6 for others
 	limit := 6
-	if os.Getenv("KUUCODE_CALLER") == "vscode" {
+	if util.IsVSCode() {
 		limit = 4
 	}
 
+	showVscode := util.IsVSCode()
 	commandsView := cmdcomp.New(
 		a.app,
 		cmdcomp.WithBackground(t.Background()),
 		cmdcomp.WithLimit(limit),
+		cmdcomp.WithVscode(showVscode),
 	)
 	cmds := lipgloss.PlaceHorizontal(
 		effectiveWidth,
@@ -670,19 +672,6 @@ func (a Model) home() string {
 		styles.WhitespaceStyle(t.Background()),
 	)
 
-	// Add VSCode shortcuts if in VSCode environment
-	var ideShortcuts string
-	if os.Getenv("KUUCODE_CALLER") == "vscode" {
-		ideView := ide.New()
-		ideView.SetBackgroundColor(t.Background())
-		ideShortcuts = lipgloss.PlaceHorizontal(
-			effectiveWidth,
-			lipgloss.Center,
-			ideView.View(),
-			styles.WhitespaceStyle(t.Background()),
-		)
-	}
-
 	lines := []string{}
 	lines = append(lines, "")
 	lines = append(lines, "")
@@ -690,10 +679,6 @@ func (a Model) home() string {
 	lines = append(lines, "")
 	lines = append(lines, "")
 	lines = append(lines, cmds)
-	if os.Getenv("KUUCODE_CALLER") == "vscode" {
-		lines = append(lines, "")
-		lines = append(lines, ideShortcuts)
-	}
 	lines = append(lines, "")
 	lines = append(lines, "")
 

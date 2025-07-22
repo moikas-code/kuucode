@@ -365,7 +365,7 @@ func LoadFromConfig(config *kuucode.Config) CommandRegistry {
 	json.Unmarshal(marshalled, &keybinds)
 	for _, command := range defaults {
 		// Remove share/unshare commands if sharing is disabled
-		if config.Share == kuucode.ConfigShareDisabled && (command.Name == SessionShareCommand || command.Name == SessionUnshareCommand) {
+		if config.Share != nil && *config.Share == "disabled" && (command.Name == SessionShareCommand || command.Name == SessionUnshareCommand) {
 			continue
 		}
 		if keybind, ok := keybinds[string(command.Name)]; ok && keybind != "" {
