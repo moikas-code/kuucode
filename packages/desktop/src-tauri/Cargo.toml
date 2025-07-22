@@ -1,0 +1,26 @@
+[package]
+name = "kuucode-desktop"
+version = "0.1.0"
+description = "Kuucode Desktop Application"
+authors = ["kuucode team"]
+license = "MIT"
+repository = "https://github.com/moikas-code/kuucode"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "1.6", features = [] }
+
+[dependencies]
+tauri = { version = "1.6", features = ["api-all", "shell-open", "fs-all", "dialog-all", "window-all"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[[bin]]
+name = "kuucode-desktop"
+path = "src/main.rs"
