@@ -11,6 +11,8 @@ import (
 	"github.com/charmbracelet/x/ansi"
 	"github.com/moikas-code/kuucode-sdk-go"
 	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/compat"
+	kuucodecompat "github.com/moikas-code/kuucode/internal/compat"
 	"github.com/moikas-code/kuucode/internal/components/dialog"
 	"github.com/moikas-code/kuucode/internal/components/toast"
 	"github.com/moikas-code/kuucode/internal/layout"
@@ -162,18 +164,20 @@ func (m *messagesComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.loading = true
 		return m, m.renderView()
 
-	case kuucode.EventListResponseEventSessionUpdated:
-		if msg.Properties.Info.ID == m.app.Session.ID {
+	case compat.EventListResponseEventSessionUpdated:
+		if msg.Properties.Info.Id == m.app.Session.Id {
 			m.header = m.renderHeader()
 		}
-	case kuucode.EventListResponseEventMessageUpdated:
-		if msg.Properties.Info.SessionID == m.app.Session.ID {
-			cmds = append(cmds, m.renderView())
-		}
-	case kuucode.EventListResponseEventMessagePartUpdated:
-		if msg.Properties.Part.SessionID == m.app.Session.ID {
-			cmds = append(cmds, m.renderView())
-		}
+	case compat.EventListResponseEventMessageUpdated:
+		// TODO: Fix SessionId field access for new SDK
+		// if msg.Properties.Info.SessionId == m.app.Session.Id {
+		cmds = append(cmds, m.renderView())
+		// }
+	case compat.EventListResponseEventMessagePartUpdated:
+		// TODO: Fix SessionId field access for new SDK
+		// if msg.Properties.Part.SessionId == m.app.Session.Id {
+		cmds = append(cmds, m.renderView())
+		// }
 	case renderCompleteMsg:
 		m.partCount = msg.partCount
 		m.lineCount = msg.lineCount
@@ -236,7 +240,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 		lastAssistantMessage := "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 		for _, msg := range slices.Backward(m.app.Messages) {
 			if assistant, ok := msg.Info.(kuucode.AssistantMessage); ok {
-				lastAssistantMessage = assistant.ID
+				lastAssistantMessage = assistant.Id
 				break
 			}
 		}
@@ -249,14 +253,14 @@ func (m *messagesComponent) renderView() tea.Cmd {
 				for partIndex, part := range message.Parts {
 					switch part := part.(type) {
 					case kuucode.TextPart:
-						if part.Synthetic {
+						if part.Synthetic != nil && *part.Synthetic {
 							continue
 						}
 						remainingParts := message.Parts[partIndex+1:]
-						fileParts := make([]kuucode.FilePart, 0)
+						fileParts := make([]compat.FilePart, 0)
 						for _, part := range remainingParts {
 							switch part := part.(type) {
-							case kuucode.FilePart:
+							case compat.FilePart:
 								fileParts = append(fileParts, part)
 							}
 						}
@@ -277,7 +281,12 @@ func (m *messagesComponent) renderView() tea.Cmd {
 									mediaTypeStyle = mediaTypeStyle.Background(t.Primary())
 								}
 								flexItems = append(flexItems, layout.FlexItem{
-									View: mediaTypeStyle.Render(mediaType) + fileStyle.Render(filePart.Filename),
+									View: mediaTypeStyle.Render(mediaType) + fileStyle.Render(func() string {
+										if filePart.Filename != nil {
+											return *filePart.Filename
+										}
+										return ""
+									}()),
 								})
 							}
 						}
@@ -291,11 +300,14 @@ func (m *messagesComponent) renderView() tea.Cmd {
 							flexItems...,
 						)
 
-						author := m.app.Config.Username
-						if casted.ID > lastAssistantMessage {
+						author := ""
+						if m.app.Config.Username != nil {
+							author = *m.app.Config.Username
+						}
+						if casted.Id > lastAssistantMessage {
 							author += " [queued]"
 						}
-						key := m.cache.GenerateKey(casted.ID, part.Text, width, files, author)
+						key := m.cache.GenerateKey(casted.Id, part.Text, width, files, author)
 						content, cached = m.cache.Get(key)
 						if !cached {
 							content = renderText(
@@ -329,7 +341,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 					switch part := p.(type) {
 					case kuucode.TextPart:
 						hasTextPart = true
-						finished := part.Time.End > 0
+						finished := part.Time.End != nil && *part.Time.End > 0
 						remainingParts := message.Parts[partIndex+1:]
 						toolCallParts := make([]kuucode.ToolPart, 0)
 
@@ -352,7 +364,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 								remaining = false
 							case kuucode.ToolPart:
 								toolCallParts = append(toolCallParts, part)
-								if part.State.Status != kuucode.ToolPartStateStatusCompleted && part.State.Status != kuucode.ToolPartStateStatusError {
+								if kuucodecompat.WrapToolState(&part.State).Status() != kuucodecompat.ToolPartStateStatusCompleted && kuucodecompat.WrapToolState(&part.State).Status() != kuucodecompat.ToolPartStateStatusError {
 									// i don't think there's a case where a tool call isn't in result state
 									// and the message time is 0, but just in case
 									finished = false
@@ -361,7 +373,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 						}
 
 						if finished {
-							key := m.cache.GenerateKey(casted.ID, part.Text, width, m.showToolDetails)
+							key := m.cache.GenerateKey(casted.Id, part.Text, width, m.showToolDetails)
 							content, cached = m.cache.Get(key)
 							if !cached {
 								content = renderText(
@@ -413,9 +425,9 @@ func (m *messagesComponent) renderView() tea.Cmd {
 							continue
 						}
 
-						if part.State.Status == kuucode.ToolPartStateStatusCompleted || part.State.Status == kuucode.ToolPartStateStatusError {
-							key := m.cache.GenerateKey(casted.ID,
-								part.ID,
+						if kuucodecompat.WrapToolState(&part.State).Status() == kuucodecompat.ToolPartStateStatusCompleted || kuucodecompat.WrapToolState(&part.State).Status() == kuucodecompat.ToolPartStateStatusError {
+							key := m.cache.GenerateKey(casted.Id,
+								part.Id,
 								m.showToolDetails,
 								width,
 							)
@@ -459,9 +471,9 @@ func (m *messagesComponent) renderView() tea.Cmd {
 
 			error := ""
 			if assistant, ok := message.Info.(kuucode.AssistantMessage); ok {
-				switch err := assistant.Error.AsUnion().(type) {
+				switch err := compat.AsUnion(assistant.Error).(type) {
 				case nil:
-				case kuucode.AssistantMessageErrorMessageOutputLengthError:
+				case string:
 					error = "Message output length exceeded"
 				case kuucode.ProviderAuthError:
 					error = err.Data.Message
@@ -550,7 +562,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 }
 
 func (m *messagesComponent) renderHeader() string {
-	if m.app.Session.ID == "" {
+	if m.app.Session.Id == "" {
 		return ""
 	}
 
@@ -567,14 +579,14 @@ func (m *messagesComponent) renderHeader() string {
 
 	for _, message := range m.app.Messages {
 		if assistant, ok := message.Info.(kuucode.AssistantMessage); ok {
-			cost += assistant.Cost
+			cost += float64(assistant.Cost)
 			usage := assistant.Tokens
 			if usage.Output > 0 {
-				if assistant.Summary {
-					tokens = usage.Output
+				if assistant.Summary != nil && *assistant.Summary {
+					tokens = float64(usage.Output)
 					continue
 				}
-				tokens = (usage.Input +
+				tokens = float64(usage.Input +
 					usage.Cache.Write +
 					usage.Cache.Read +
 					usage.Output +
@@ -590,9 +602,9 @@ func (m *messagesComponent) renderHeader() string {
 	sessionInfo = styles.NewStyle().
 		Foreground(t.TextMuted()).
 		Background(t.Background()).
-		Render(formatTokensAndCost(tokens, contextWindow, cost, isSubscriptionModel))
+		Render(formatTokensAndCost(tokens, float64(contextWindow), cost, isSubscriptionModel))
 
-	shareEnabled := m.app.Config.Share != kuucode.ConfigShareDisabled
+	shareEnabled := m.app.Config.Share != nil && *m.app.Config.Share != compat.ConfigShareDisabled
 	headerText := util.ToMarkdown(
 		"# "+m.app.Session.Title,
 		headerWidth-len(sessionInfo),
@@ -602,8 +614,8 @@ func (m *messagesComponent) renderHeader() string {
 	var items []layout.FlexItem
 	if shareEnabled {
 		share := base("/share") + muted(" to create a shareable link")
-		if m.app.Session.Share.URL != "" {
-			share = muted(m.app.Session.Share.URL + "  /unshare")
+		if m.app.Session.Share.Url != "" {
+			share = muted(m.app.Session.Share.Url + "  /unshare")
 		}
 		items = []layout.FlexItem{{View: share}, {View: sessionInfo}}
 	} else {

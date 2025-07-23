@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/moikas-code/kuucode-sdk-go"
 	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/compat"
 	"github.com/moikas-code/kuucode/internal/styles"
 	"github.com/moikas-code/kuucode/internal/theme"
 )
@@ -65,9 +65,9 @@ func (cg *symbolsContextGroup) GetChildEntries(
 		return items, nil
 	}
 
-	symbols, err := cg.app.Client.Find.Symbols(
+	symbols, err := cg.app.Client.Find().Symbols(
 		context.Background(),
-		kuucode.FindSymbolsParams{Query: kuucode.F(query)},
+		compat.FindSymbolsParams{Query: query},
 	)
 	if err != nil {
 		slog.Error("Failed to get symbol completion items", "error", err)

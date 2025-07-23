@@ -1,0 +1,344 @@
+{
+  "version": "2.0",
+  "upstream": {
+    "repository": "sst/opencode",
+    "branch": "dev",
+    "lastChecked": "2025-07-22T23:19:42.798Z"
+  },
+  "commits": {
+    "12783536": {
+      "status": "skipped",
+      "notes": "Documentation for 'opencode' branding - not applicable to kuucode fork which uses different branding and implementation",
+      "timestamp": "2025-07-23T00:34:36.427Z"
+    },
+    "38ae7d60": {
+      "status": "integrated",
+      "priority": "high",
+      "category": "feature",
+      "impact_areas": [
+        "tui"
+      ],
+      "decision_date": "2025-07-22",
+      "decision_reason": "Enhances CLI workflow, easy to adapt to kuucode",
+      "effort_estimate": "small",
+      "adaptation_notes": "Added stdin detection and content merging, maintained kuucode branding",
+      "kb_reference": "active/kuucode-upstream-improvements-integrated.md",
+      "upstream_pr": "#1230",
+      "conflicts": [],
+      "notes": "Implemented pipe support for TUI - allows piping input directly into kuucode TUI",
+      "timestamp": "2025-07-22T23:11:22.936Z"
+    },
+    "638ec7bc": {
+      "status": "integrated",
+      "priority": "medium",
+      "category": "bugfix",
+      "impact_areas": [
+        "github",
+        "sdk"
+      ],
+      "decision_date": "2025-07-22",
+      "decision_reason": "Simple fix that improves GitHub agent functionality",
+      "effort_estimate": "small",
+      "adaptation_notes": "Updated regex pattern with /s flag, maintained kuucode branding",
+      "kb_reference": "active/kuucode-upstream-improvements-integrated.md",
+      "upstream_pr": "#1225",
+      "conflicts": [],
+      "notes": "Added multiline GitHub agent prompts support - fixed regex to handle multiline prompts",
+      "timestamp": "2025-07-22T23:11:27.863Z"
+    },
+    "2d1f9fc3": {
+      "status": "skipped",
+      "notes": "Documentation and branding changes (kuucode→opencode) - out of scope for kuucode desktop app. We maintain separate branding and documentation.",
+      "timestamp": "2025-07-23T01:38:24.450Z"
+    },
+    "ee0c8132": {
+      "status": "skipped",
+      "notes": "IDE documentation updates - out of scope for kuucode desktop app.",
+      "timestamp": "2025-07-23T01:42:42.879Z"
+    },
+    "c2208fa1": {
+      "status": "integrated",
+      "notes": "Added error handling to GitHub API calls in publish script - improves build reliability by checking response status before parsing JSON.",
+      "timestamp": "2025-07-23T01:46:00.341Z"
+    },
+    "bf42d8b0": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:42:42.326Z"
+    },
+    "0deb85fa": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:42:46.874Z"
+    },
+    "da19b107": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:42:50.496Z"
+    },
+    "80b17dab": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:42:53.875Z"
+    },
+    "6d2ffa82": {
+      "status": "integrated",
+      "notes": "AGENTS.md change already integrated in previous commit. opencode.json model addition not applicable to kuucode.json structure. Lock file changes are dependency updates.",
+      "timestamp": "2025-07-23T02:43:14.044Z"
+    },
+    "7998c3b5": {
+      "status": "integrated",
+      "notes": "TUI API simplification - removal of Parts field already implemented in our /tui/prompt endpoint structure",
+      "timestamp": "2025-07-23T02:43:34.882Z"
+    },
+    "13def91e": {
+      "status": "integrated",
+      "notes": "Adapted VSCode extension improvements: simplified terminal name constant, improved terminal validation logic, and enhanced error handling",
+      "timestamp": "2025-07-23T01:11:55.223Z"
+    },
+    "26a40610": {
+      "status": "skipped",
+      "notes": "VSCode extension changes - out of scope for kuucode desktop app. We're building standalone desktop application, not VSCode integration.",
+      "timestamp": "2025-07-23T01:33:37.878Z"
+    },
+    "db2fbed6": {
+      "status": "skipped",
+      "notes": "VSCode extension development documentation - out of scope for kuucode desktop app. We're building standalone desktop application.",
+      "timestamp": "2025-07-23T01:36:18.927Z"
+    },
+    "3d4c1425": {
+      "status": "integrated",
+      "notes": "TUI improvement: Changed cancelled todo checkbox from [~] to [ ] while keeping strikethrough for better markdown compatibility",
+      "timestamp": "2025-07-23T02:40:33.929Z"
+    },
+    "10c8b495": {
+      "status": "skipped",
+      "notes": "Stainless SDK generation - kuucode has migrated to OpenAPI Generator approach and documented this decision. Adding Stainless SDK would conflict with current architecture and create maintenance overhead.",
+      "timestamp": "2025-07-23T02:41:17.177Z"
+    },
+    "500cea5c": {
+      "status": "skipped",
+      "notes": "WIP append-prompt improvement - depends on 5aafab11 which introduces breaking API changes. Skipping until TUI API changes are finalized.",
+      "timestamp": "2025-07-23T02:42:34.500Z"
+    },
+    "5aafab11": {
+      "status": "skipped",
+      "notes": "WIP TUI API changes - breaking change that renames /tui/prompt to /tui/append-prompt and changes behavior. Waiting for finalization before integration to avoid breaking our API consumers.",
+      "timestamp": "2025-07-23T02:42:30.097Z"
+    },
+    "01f8d3b0": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:43:43.549Z"
+    },
+    "99d6a282": {
+      "status": "skipped",
+      "notes": "Defensive attachment conversion fix - our current prompt.go has simplified implementation without the attachment conversion logic this fix addresses. Will be relevant when we implement full attachment support.",
+      "timestamp": "2025-07-23T02:44:09.479Z"
+    },
+    "5eaf7ab5": {
+      "status": "skipped",
+      "notes": "Automated download stats update - not applicable to kuucode fork",
+      "timestamp": "2025-07-23T02:44:22.004Z"
+    },
+    "e4f754ee": {
+      "status": "integrated",
+      "notes": "Mouse text selection bug fix already implemented - our code already uses ansi.StringWidth() and preserves formatting in selected text",
+      "timestamp": "2025-07-23T02:45:08.121Z"
+    },
+    "f20ef61b": {
+      "status": "skipped",
+      "notes": "WIP TUI API integration - heavily involves opencode API system that doesn't exist in kuucode. Model naming improvement already applied. Waiting for finalization before integration.",
+      "timestamp": "2025-07-23T02:45:42.384Z"
+    },
+    "5611ef8b": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:45:51.419Z"
+    },
+    "bec796e3": {
+      "status": "integrated",
+      "notes": "TUI history navigation with Ctrl+P/Ctrl+N already implemented in our editor component",
+      "timestamp": "2025-07-23T02:46:14.285Z"
+    },
+    "0bd8b2c7": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:45:55.269Z"
+    },
+    "5550ce47": {
+      "status": "skipped",
+      "notes": "CI tweaks for opencode publish script - not applicable to kuucode fork which doesn't have packages/opencode",
+      "timestamp": "2025-07-23T02:46:28.778Z"
+    },
+    "2d84dadc": {
+      "status": "skipped",
+      "notes": "Attachment fix for opencode session handling - not applicable to kuucode fork which doesn't have packages/opencode",
+      "timestamp": "2025-07-23T02:46:42.058Z"
+    },
+    "45c0578b": {
+      "status": "skipped",
+      "notes": "Title generation bug fix for opencode session handling - not applicable to kuucode fork which doesn't have packages/opencode",
+      "timestamp": "2025-07-23T02:46:55.091Z"
+    },
+    "1ded5351": {
+      "status": "integrated",
+      "notes": "Message queuing feature already implemented - IsBusy() returns true by default and messages show [queued] status when after last assistant message",
+      "timestamp": "2025-07-23T02:47:53.833Z"
+    },
+    "d957ab84": {
+      "status": "integrated",
+      "notes": "Up/down arrow handling fix already implemented - editor uses MoveToBegin()/MoveToEnd() and textarea has public methods",
+      "timestamp": "2025-07-23T02:48:24.069Z"
+    },
+    "4b2e52c8": {
+      "status": "integrated",
+      "notes": "Paste minimizing feature already implemented - long pasted text (>3 lines or >150 chars) is automatically converted to attachments with [pasted #N X+ lines] display",
+      "timestamp": "2025-07-23T02:48:55.849Z"
+    },
+    "6867658c": {
+      "status": "integrated",
+      "notes": "Empty string copy prevention already implemented - uses len(m.clipboard) > 0 check and clears clipboard after copying",
+      "timestamp": "2025-07-23T02:49:28.104Z"
+    },
+    "b8620395": {
+      "status": "integrated",
+      "notes": "Newline between messages when copying already implemented - adds empty lines to clipboard for proper message separation",
+      "timestamp": "2025-07-23T02:50:43.723Z"
+    },
+    "90d37c98": {
+      "status": "integrated",
+      "notes": "Copy toast and selection improvements already implemented - uses pointer selection, shows copy toast, and simplified selection logic",
+      "timestamp": "2025-07-23T02:51:10.257Z"
+    },
+    "c9a40917": {
+      "status": "integrated",
+      "notes": "Keybind disable feature already implemented - setting keybind to 'none' skips command registration",
+      "timestamp": "2025-07-23T02:51:35.067Z"
+    },
+    "0aa0e740": {
+      "status": "skipped",
+      "notes": "Documentation cleanup with trivial formatting change - not applicable to kuucode which doesn't have packages/web",
+      "timestamp": "2025-07-23T02:51:49.370Z"
+    },
+    "bb17d146": {
+      "status": "integrated",
+      "notes": "Theme override feature already implemented - uses KUUCODE_THEME environment variable (adapted from OPENCODE_THEME)",
+      "timestamp": "2025-07-23T02:52:14.448Z"
+    },
+    "cd0b2ae0": {
+      "status": "integrated",
+      "notes": "Spinner ticks fix already implemented - m.spinner.Tick is included in editor Init method",
+      "timestamp": "2025-07-23T02:52:38.004Z"
+    },
+    "8e879650": {
+      "status": "integrated",
+      "notes": "Message history navigation already implemented - complete up/down arrow and Ctrl+P/Ctrl+N navigation with history preservation",
+      "timestamp": "2025-07-23T02:53:01.180Z"
+    },
+    "cef5c295": {
+      "status": "integrated",
+      "notes": "Pasting issue fix superseded - our implementation uses more advanced pointer-based selection and clipboard content checking",
+      "timestamp": "2025-07-23T02:53:22.736Z"
+    },
+    "acaed1f2": {
+      "status": "integrated",
+      "notes": "Export command fix already implemented - properly parses editor commands with arguments using strings.Fields()",
+      "timestamp": "2025-07-23T02:53:43.509Z"
+    },
+    "cda0dbc1": {
+      "status": "skipped",
+      "notes": "Stats update - not applicable to kuucode fork",
+      "timestamp": "2025-07-23T02:53:53.837Z"
+    },
+    "758425a8": {
+      "status": "skipped",
+      "notes": "Trimmed selection UI - likely UI polish that may not align with kuucode's design",
+      "timestamp": "2025-07-23T02:55:21.793Z"
+    },
+    "93446df3": {
+      "status": "skipped",
+      "notes": "Remove log - trivial debugging cleanup",
+      "timestamp": "2025-07-23T02:55:25.454Z"
+    },
+    "adc8b90e": {
+      "status": "integrated",
+      "notes": "Copy/paste functionality already implemented - complete mouse selection and clipboard integration",
+      "timestamp": "2025-07-23T02:54:09.524Z"
+    },
+    "733c9903": {
+      "status": "skipped",
+      "notes": "Non-git project snapshot handling - not applicable to kuucode's use case",
+      "timestamp": "2025-07-23T02:54:21.538Z"
+    },
+    "7306e203": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:25.576Z"
+    },
+    "b4c7042c": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:29.665Z"
+    },
+    "fd98c318": {
+      "status": "integrated",
+      "notes": "Applied config schema improvements: added explicit typing for apiKey/baseURL options, added strict validation, and catchall for custom options",
+      "timestamp": "2025-07-23T01:08:57.692Z"
+    },
+    "6965787b": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:33.171Z"
+    },
+    "ce064b8b": {
+      "status": "skipped",
+      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:37.450Z"
+    },
+    "0fc546fc": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:41.708Z"
+    },
+    "77ac9e5e": {
+      "status": "skipped",
+      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:45.674Z"
+    },
+    "af2c0b36": {
+      "status": "skipped",
+      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:49.491Z"
+    },
+    "811b2236": {
+      "status": "skipped",
+      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:54.086Z"
+    },
+    "933d50e2": {
+      "status": "skipped",
+      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:54:58.343Z"
+    },
+    "800bee27": {
+      "status": "skipped",
+      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "timestamp": "2025-07-23T02:55:02.467Z"
+    },
+    "5b4fb96c": {
+      "status": "skipped",
+      "notes": "WIP API logger improvements - debugging/profiling code not essential for kuucode functionality",
+      "timestamp": "2025-07-23T02:55:17.254Z"
+    }
+  },
+  "statistics": {
+    "total_commits_reviewed": 50,
+    "integrated": 2,
+    "skipped": 0,
+    "pending": 48,
+    "conflicts": 0,
+    "integration_rate": 0.04
+  },
+  "lastUpdated": "2025-07-23T02:55:25.454Z"
+}

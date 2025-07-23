@@ -19,12 +19,12 @@ import (
 	"github.com/moikas-code/kuucode/internal/api"
 	"github.com/moikas-code/kuucode/internal/app"
 	"github.com/moikas-code/kuucode/internal/commands"
+	"github.com/moikas-code/kuucode/internal/compat"
 	"github.com/moikas-code/kuucode/internal/completions"
 	"github.com/moikas-code/kuucode/internal/components/chat"
 	cmdcomp "github.com/moikas-code/kuucode/internal/components/commands"
 	"github.com/moikas-code/kuucode/internal/components/dialog"
 	"github.com/moikas-code/kuucode/internal/components/fileviewer"
-	"github.com/moikas-code/kuucode/internal/components/ide"
 	"github.com/moikas-code/kuucode/internal/components/modal"
 	"github.com/moikas-code/kuucode/internal/components/status"
 	"github.com/moikas-code/kuucode/internal/components/toast"
@@ -97,7 +97,7 @@ func (a Model) Init() tea.Cmd {
 
 	// Check if we should show the init dialog
 	cmds = append(cmds, func() tea.Msg {
-		shouldShow := a.app.Info.Git && a.app.Info.Time.Initialized > 0
+		shouldShow := a.app.Info.Git && a.app.Info.Time.Initialized != nil && *a.app.Info.Time.Initialized > 0
 		return dialog.ShowInitDialogMsg{Show: shouldShow}
 	})
 
@@ -345,72 +345,72 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = append(cmds, cmd)
 	case dialog.CompletionDialogCloseMsg:
 		a.showCompletionDialog = false
-	case kuucode.EventListResponseEventInstallationUpdated:
+	case compat.EventListResponseEventInstallationUpdated:
 		return a, toast.NewSuccessToast(
 			"kuucode updated to "+msg.Properties.Version+", restart to apply.",
 			toast.WithTitle("New version installed"),
 		)
-	case kuucode.EventListResponseEventIdeInstalled:
+	case compat.EventListResponseEventIdeInstalled:
 		return a, toast.NewSuccessToast(
 			"Installed the kuucode extension in "+msg.Properties.Ide,
 			toast.WithTitle(msg.Properties.Ide+" extension installed"),
 		)
-	case kuucode.EventListResponseEventSessionDeleted:
-		if a.app.Session != nil && msg.Properties.Info.ID == a.app.Session.ID {
+	case compat.EventListResponseEventSessionDeleted:
+		if a.app.Session != nil && msg.Properties.Info.Id == a.app.Session.Id {
 			a.app.Session = &kuucode.Session{}
 			a.app.Messages = []app.Message{}
 		}
 		return a, toast.NewSuccessToast("Session deleted successfully")
-	case kuucode.EventListResponseEventSessionUpdated:
-		if msg.Properties.Info.ID == a.app.Session.ID {
+	case compat.EventListResponseEventSessionUpdated:
+		if msg.Properties.Info.Id == a.app.Session.Id {
 			a.app.Session = &msg.Properties.Info
 		}
-	case kuucode.EventListResponseEventMessagePartUpdated:
-		slog.Info("message part updated", "message", msg.Properties.Part.MessageID, "part", msg.Properties.Part.ID)
-		if msg.Properties.Part.SessionID == a.app.Session.ID {
+	case compat.EventListResponseEventMessagePartUpdated:
+		slog.Info("message part updated", "message", compat.GetPartMessageID(msg.Properties.Part), "part", compat.GetPartId(msg.Properties.Part))
+		if compat.GetPartSessionID(msg.Properties.Part) == a.app.Session.Id {
 			messageIndex := slices.IndexFunc(a.app.Messages, func(m app.Message) bool {
 				switch casted := m.Info.(type) {
 				case kuucode.UserMessage:
-					return casted.ID == msg.Properties.Part.MessageID
+					return casted.Id == compat.GetPartMessageID(msg.Properties.Part)
 				case kuucode.AssistantMessage:
-					return casted.ID == msg.Properties.Part.MessageID
+					return casted.Id == compat.GetPartMessageID(msg.Properties.Part)
 				}
 				return false
 			})
 			if messageIndex > -1 {
 				message := a.app.Messages[messageIndex]
-				partIndex := slices.IndexFunc(message.Parts, func(p kuucode.PartUnion) bool {
+				partIndex := slices.IndexFunc(message.Parts, func(p compat.PartUnion) bool {
 					switch casted := p.(type) {
 					case kuucode.TextPart:
-						return casted.ID == msg.Properties.Part.ID
-					case kuucode.FilePart:
-						return casted.ID == msg.Properties.Part.ID
+						return casted.Id == compat.GetPartId(msg.Properties.Part)
+					case compat.FilePart:
+						return casted.Id == compat.GetPartId(msg.Properties.Part)
 					case kuucode.ToolPart:
-						return casted.ID == msg.Properties.Part.ID
+						return casted.Id == compat.GetPartId(msg.Properties.Part)
 					case kuucode.StepStartPart:
-						return casted.ID == msg.Properties.Part.ID
+						return casted.Id == compat.GetPartId(msg.Properties.Part)
 					case kuucode.StepFinishPart:
-						return casted.ID == msg.Properties.Part.ID
+						return casted.Id == compat.GetPartId(msg.Properties.Part)
 					}
 					return false
 				})
 				if partIndex > -1 {
-					message.Parts[partIndex] = msg.Properties.Part.AsUnion()
+					message.Parts[partIndex] = compat.PartAsUnion(msg.Properties.Part)
 				}
 				if partIndex == -1 {
-					message.Parts = append(message.Parts, msg.Properties.Part.AsUnion())
+					message.Parts = append(message.Parts, compat.PartAsUnion(msg.Properties.Part))
 				}
 				a.app.Messages[messageIndex] = message
 			}
 		}
-	case kuucode.EventListResponseEventMessageUpdated:
-		if msg.Properties.Info.SessionID == a.app.Session.ID {
+	case compat.EventListResponseEventMessageUpdated:
+		if compat.GetMessageSessionID(msg.Properties.Info) == a.app.Session.Id {
 			matchIndex := slices.IndexFunc(a.app.Messages, func(m app.Message) bool {
 				switch casted := m.Info.(type) {
 				case kuucode.UserMessage:
-					return casted.ID == msg.Properties.Info.ID
+					return casted.Id == compat.GetMessageId(msg.Properties.Info)
 				case kuucode.AssistantMessage:
-					return casted.ID == msg.Properties.Info.ID
+					return casted.Id == compat.GetMessageId(msg.Properties.Info)
 				}
 				return false
 			})
@@ -418,20 +418,20 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if matchIndex > -1 {
 				match := a.app.Messages[matchIndex]
 				a.app.Messages[matchIndex] = app.Message{
-					Info:  msg.Properties.Info.AsUnion(),
+					Info:  compat.MessageAsUnion(msg.Properties.Info),
 					Parts: match.Parts,
 				}
 			}
 
 			if matchIndex == -1 {
 				a.app.Messages = append(a.app.Messages, app.Message{
-					Info:  msg.Properties.Info.AsUnion(),
-					Parts: []kuucode.PartUnion{},
+					Info:  compat.MessageAsUnion(msg.Properties.Info),
+					Parts: []compat.PartUnion{},
 				})
 			}
 		}
-	case kuucode.EventListResponseEventSessionError:
-		switch err := msg.Properties.Error.AsUnion().(type) {
+	case compat.EventListResponseEventSessionError:
+		switch err := interface{}(msg.Properties.Error).(type) {
 		case nil:
 		case kuucode.ProviderAuthError:
 			slog.Error("Failed to authenticate with provider", "error", err.Data.Message)
@@ -440,7 +440,7 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			slog.Error("Server error", "name", err.Name, "message", err.Data.Message)
 			return a, toast.NewErrorToast(err.Data.Message, toast.WithTitle(string(err.Name)))
 		}
-	case kuucode.EventListResponseEventFileWatcherUpdated:
+	case compat.EventListResponseEventFileWatcherUpdated:
 		if a.fileViewer.HasFile() {
 			if a.fileViewer.Filename() == msg.Properties.File {
 				return a.openFile(msg.Properties.File)
@@ -460,7 +460,7 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			},
 		}
 	case app.SessionSelectedMsg:
-		messages, err := a.app.ListMessages(context.Background(), msg.ID)
+		messages, err := a.app.ListMessages(context.Background(), msg.Id)
 		if err != nil {
 			slog.Error("Failed to list messages", "error", err.Error())
 			return a, toast.NewErrorToast("Failed to open session")
@@ -475,10 +475,10 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		a.app.Provider = &msg.Provider
 		a.app.Model = &msg.Model
 		a.app.State.ModeModel[a.app.Mode.Name] = app.ModeModel{
-			ProviderID: msg.Provider.ID,
-			ModelID:    msg.Model.ID,
+			ProviderID: msg.Provider.Id,
+			ModelID:    msg.Model.Id,
 		}
-		a.app.State.UpdateModelUsage(msg.Provider.ID, msg.Model.ID)
+		a.app.State.UpdateModelUsage(msg.Provider.Id, msg.Model.Id)
 		cmds = append(cmds, a.app.SaveState())
 	case dialog.ThemeSelectedMsg:
 		a.app.State.Theme = msg.ThemeName
@@ -512,8 +512,7 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			a.modal = helpDialog
 		case "/tui/prompt":
 			var body struct {
-				Text  string         `json:"text"`
-				Parts []kuucode.Part `json:"parts"`
+				Text string `json:"text"`
 			}
 			json.Unmarshal((msg.Body), &body)
 			a.editor.SetValue(body.Text)
@@ -561,7 +560,7 @@ func (a Model) View() string {
 
 	var mainLayout string
 
-	if a.app.Session.ID == "" {
+	if a.app.Session.Id == "" {
 		mainLayout = a.home()
 	} else {
 		mainLayout = a.chat()
@@ -595,8 +594,8 @@ func (a Model) openFile(filepath string) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	response, err := a.app.Client.File.Read(
 		context.Background(),
-		kuucode.FileReadParams{
-			Path: kuucode.F(filepath),
+		compat.FileReadParams{
+			Path: filepath,
 		},
 	)
 	if err != nil {
@@ -618,22 +617,13 @@ func (a Model) home() string {
 	effectiveWidth := a.width - 4
 	baseStyle := styles.NewStyle().Background(t.Background())
 	base := baseStyle.Render
-	muted := styles.NewStyle().Foreground(t.TextMuted()).Background(t.Background()).Render
 
-	kuu := `
-█ █ █ █ █ █
-█▀▄ █ █ █ █
-▀ ▀ ▀▀▀ ▀▀▀ `
-	code := `
-█▀▀ █▀▀█ █▀▀▄ █▀▀
-█░░ █░░█ █░░█ █▀▀
-▀▀▀ ▀▀▀▀ ▀▀▀  ▀▀▀`
+	kuucode := `
+█ █ █ █ █ █ █▀▀ █▀▀█ █▀▀▄ █▀▀
+█▀▄ █░█ █░█ █░░ █░░█ █░░█ █▀▀
+▀ ▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀▀ ▀▀▀  ▀▀▀`
 
-	logo := lipgloss.JoinHorizontal(
-		lipgloss.Top,
-		muted(kuu),
-		base(code),
-	)
+	logo := base(kuucode)
 	// cwd := app.Info.Path.Cwd
 	// config := app.Info.Path.Config
 
@@ -658,12 +648,10 @@ func (a Model) home() string {
 		limit = 4
 	}
 
-	showVscode := util.IsVSCode()
 	commandsView := cmdcomp.New(
 		a.app,
 		cmdcomp.WithBackground(t.Background()),
 		cmdcomp.WithLimit(limit),
-		cmdcomp.WithVscode(showVscode),
 	)
 	cmds := lipgloss.PlaceHorizontal(
 		effectiveWidth,
@@ -846,7 +834,7 @@ func (a Model) executeCommand(command commands.Command) (tea.Model, tea.Cmd) {
 		})
 		cmds = append(cmds, cmd)
 	case commands.SessionNewCommand:
-		if a.app.Session.ID == "" {
+		if a.app.Session.Id == "" {
 			return a, nil
 		}
 		a.app.Session = &kuucode.Session{}
@@ -856,42 +844,42 @@ func (a Model) executeCommand(command commands.Command) (tea.Model, tea.Cmd) {
 		sessionDialog := dialog.NewSessionDialog(a.app)
 		a.modal = sessionDialog
 	case commands.SessionShareCommand:
-		if a.app.Session.ID == "" {
+		if a.app.Session.Id == "" {
 			return a, nil
 		}
-		response, err := a.app.Client.Session.Share(context.Background(), a.app.Session.ID)
+		response, err := a.app.Client.Session.Share(context.Background(), a.app.Session.Id)
 		if err != nil {
 			slog.Error("Failed to share session", "error", err)
 			return a, toast.NewErrorToast("Failed to share session")
 		}
-		shareUrl := response.Share.URL
+		shareUrl := response.Url
 		cmds = append(cmds, app.SetClipboard(shareUrl))
 		cmds = append(cmds, toast.NewSuccessToast("Share URL copied to clipboard!"))
 	case commands.SessionUnshareCommand:
-		if a.app.Session.ID == "" {
+		if a.app.Session.Id == "" {
 			return a, nil
 		}
-		_, err := a.app.Client.Session.Unshare(context.Background(), a.app.Session.ID)
+		err := a.app.Client.Session.Unshare(context.Background(), a.app.Session.Id)
 		if err != nil {
 			slog.Error("Failed to unshare session", "error", err)
 			return a, toast.NewErrorToast("Failed to unshare session")
 		}
-		a.app.Session.Share.URL = ""
+		a.app.Session.Share.Url = ""
 		cmds = append(cmds, toast.NewSuccessToast("Session unshared successfully"))
 	case commands.SessionInterruptCommand:
-		if a.app.Session.ID == "" {
+		if a.app.Session.Id == "" {
 			return a, nil
 		}
-		a.app.Cancel(context.Background(), a.app.Session.ID)
+		a.app.Cancel(context.Background(), a.app.Session.Id)
 		return a, nil
 	case commands.SessionCompactCommand:
-		if a.app.Session.ID == "" {
+		if a.app.Session.Id == "" {
 			return a, nil
 		}
 		// TODO: block until compaction is complete
 		a.app.CompactSession(context.Background())
 	case commands.SessionExportCommand:
-		if a.app.Session.ID == "" {
+		if a.app.Session.Id == "" {
 			return a, toast.NewErrorToast("No active session to export.")
 		}
 
@@ -1115,7 +1103,7 @@ func formatConversationToMarkdown(messages []app.Message) string {
 			switch p := part.(type) {
 			case kuucode.TextPart:
 				builder.WriteString(p.Text + "\n\n")
-			case kuucode.FilePart:
+			case compat.FilePart:
 				builder.WriteString(fmt.Sprintf("[File: %s]\n\n", p.Filename))
 			case kuucode.ToolPart:
 				builder.WriteString(fmt.Sprintf("[Tool: %s]\n\n", p.Tool))

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://kuucode.ai/config.json",
+  "mcp": {
+    "weather": {
+      "type": "local",
+      "command": ["kuucode", "x", "@h1deya/mcp-server-weather"]
+    },
+    "moidvk": {
+      "type": "local",
+      "command": ["moidvk", "serve"]
+  },
+  "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
+  },
+  "kb-mcp": {
+      "type": "local",
+      "command": ["kb", "serve", "--local"]
+   }
+  }
+}

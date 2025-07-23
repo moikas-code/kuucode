@@ -1,7 +1,7 @@
 /*
 kuucode
 
-opencode api
+kuucode api
 
 API version: 0.0.3
 */
@@ -11,8 +11,8 @@ API version: 0.0.3
 package kuucode
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -21,7 +21,7 @@ var _ MappedNullable = &AssistantMessageTime{}
 
 // AssistantMessageTime struct for AssistantMessageTime
 type AssistantMessageTime struct {
-	Created float32 `json:"created"`
+	Created   float32  `json:"created"`
 	Completed *float32 `json:"completed,omitempty"`
 }
 
@@ -102,7 +102,7 @@ func (o *AssistantMessageTime) SetCompleted(v float32) {
 }
 
 func (o AssistantMessageTime) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -131,10 +131,10 @@ func (o *AssistantMessageTime) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -190,5 +190,3 @@ func (v *NullableAssistantMessageTime) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

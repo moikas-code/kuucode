@@ -43,7 +43,7 @@ let state:
 
 async function run() {
   try {
-    const match = body.match(/^hey\s*kuucode,?\s*(.*)$/)
+    const match = body.match(/^hey\s*kuucode,?\s*(.*)$/s)
     if (!match?.[1]) throw new Error("Command must start with `hey kuucode`")
     const userPrompt = match[1]
 

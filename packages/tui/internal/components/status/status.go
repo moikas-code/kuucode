@@ -68,6 +68,21 @@ func (m statusComponent) View() string {
 		Padding(0, 1).
 		Render(m.cwd)
 
+	// Add session ID display
+	var sessionInfo string
+	if m.app.Session != nil && m.app.Session.Id != "" {
+		sessionID := m.app.Session.Id
+		// Show last 8 characters for brevity
+		if len(sessionID) > 8 {
+			sessionID = sessionID[len(sessionID)-8:]
+		}
+		sessionInfo = styles.NewStyle().
+			Foreground(t.TextMuted()).
+			Background(t.BackgroundElement()).
+			Padding(0, 1).
+			Render("session:" + sessionID)
+	}
+
 	var modeBackground compat.AdaptiveColor
 	var modeForeground compat.AdaptiveColor
 	switch m.app.ModeIndex {
@@ -123,13 +138,18 @@ func (m statusComponent) View() string {
 		Render(key+" ") +
 		mode
 
+	sessionWidth := 0
+	if sessionInfo != "" {
+		sessionWidth = lipgloss.Width(sessionInfo)
+	}
+
 	space := max(
 		0,
-		m.width-lipgloss.Width(logo)-lipgloss.Width(cwd)-lipgloss.Width(mode),
+		m.width-lipgloss.Width(logo)-lipgloss.Width(cwd)-sessionWidth-lipgloss.Width(mode),
 	)
 	spacer := styles.NewStyle().Background(t.BackgroundPanel()).Width(space).Render("")
 
-	status := logo + cwd + spacer + mode
+	status := logo + cwd + sessionInfo + spacer + mode
 
 	blank := styles.NewStyle().Background(t.Background()).Width(m.width).Render("")
 	return blank + "\n" + status

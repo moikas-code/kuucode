@@ -1,7 +1,7 @@
 /*
 kuucode
 
-opencode api
+kuucode api
 
 API version: 0.0.3
 */
@@ -11,8 +11,8 @@ API version: 0.0.3
 package kuucode
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -21,7 +21,7 @@ var _ MappedNullable = &AssistantMessageTokensCache{}
 
 // AssistantMessageTokensCache struct for AssistantMessageTokensCache
 type AssistantMessageTokensCache struct {
-	Read float32 `json:"read"`
+	Read  float32 `json:"read"`
 	Write float32 `json:"write"`
 }
 
@@ -95,7 +95,7 @@ func (o *AssistantMessageTokensCache) SetWrite(v float32) {
 }
 
 func (o AssistantMessageTokensCache) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -123,10 +123,10 @@ func (o *AssistantMessageTokensCache) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -182,5 +182,3 @@ func (v *NullableAssistantMessageTokensCache) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

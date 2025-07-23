@@ -52,7 +52,7 @@ export namespace Share {
   }
 
   export const URL =
-    process.env["OPENCODE_API"] ??
+    process.env["KUUCODE_API"] ??
     (Installation.isSnapshot() || Installation.isDev() ? "https://api.dev.kuucode.ai" : "https://api.kuucode.ai")
 
   export async function create(sessionID: string) {

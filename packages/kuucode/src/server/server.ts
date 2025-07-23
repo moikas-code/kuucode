@@ -75,7 +75,7 @@ export namespace Server {
             info: {
               title: "kuucode",
               version: "0.0.3",
-              description: "opencode api",
+              description: "kuucode api",
             },
             openapi: "3.0.0",
           },
@@ -757,7 +757,7 @@ export namespace Server {
         info: {
           title: "kuucode",
           version: "1.0.0",
-          description: "opencode api",
+          description: "kuucode api",
         },
         openapi: "3.0.0",
       },

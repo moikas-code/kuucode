@@ -10,13 +10,14 @@ import (
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/charmbracelet/lipgloss/v2/compat"
 	"github.com/charmbracelet/x/ansi"
-	"github.com/muesli/reflow/truncate"
 	"github.com/moikas-code/kuucode-sdk-go"
 	"github.com/moikas-code/kuucode/internal/app"
+	kuucodecompat "github.com/moikas-code/kuucode/internal/compat"
 	"github.com/moikas-code/kuucode/internal/components/diff"
 	"github.com/moikas-code/kuucode/internal/styles"
 	"github.com/moikas-code/kuucode/internal/theme"
 	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/muesli/reflow/truncate"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -176,7 +177,7 @@ func renderContentBlock(
 
 func renderText(
 	app *app.App,
-	message kuucode.MessageUnion,
+	message kuucodecompat.MessageUnion,
 	text string,
 	author string,
 	showToolDetails bool,
@@ -228,7 +229,7 @@ func renderText(
 		for _, toolCall := range toolCalls {
 			title := renderToolTitle(toolCall, width)
 			style := styles.NewStyle()
-			if toolCall.State.Status == kuucode.ToolPartStateStatusError {
+			if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusError {
 				style = style.Foreground(t.Error())
 			}
 			title = style.Render(title)
@@ -275,19 +276,21 @@ func renderToolDetails(
 		return ""
 	}
 
-	if toolCall.State.Status == kuucode.ToolPartStateStatusPending {
+	if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusPending {
 		title := renderToolTitle(toolCall, width)
 		return renderContentBlock(app, title, width)
 	}
 
 	var result *string
-	if toolCall.State.Output != "" {
-		result = &toolCall.State.Output
+	if output := kuucodecompat.WrapToolState(&toolCall.State).Output(); output != nil {
+		if outputStr, ok := output.(string); ok && outputStr != "" {
+			result = &outputStr
+		}
 	}
 
 	toolInputMap := make(map[string]any)
-	if toolCall.State.Input != nil {
-		value := toolCall.State.Input
+	if kuucodecompat.WrapToolState(&toolCall.State).Input() != nil {
+		value := kuucodecompat.WrapToolState(&toolCall.State).Input()
 		if m, ok := value.(map[string]any); ok {
 			toolInputMap = m
 			keys := make([]string, 0, len(toolInputMap))
@@ -304,8 +307,8 @@ func renderToolDetails(
 	borderColor := t.BackgroundPanel()
 	defaultStyle := styles.NewStyle().Background(backgroundColor).Width(width - 6).Render
 
-	if toolCall.State.Metadata != nil {
-		metadata := toolCall.State.Metadata.(map[string]any)
+	if kuucodecompat.WrapToolState(&toolCall.State).Metadata() != nil {
+		metadata := kuucodecompat.WrapToolState(&toolCall.State).Metadata().(map[string]any)
 		switch toolCall.Tool {
 		case "read":
 			var preview any
@@ -401,7 +404,7 @@ func renderToolDetails(
 						body += fmt.Sprintf("- [x] %s\n", content)
 					case "cancelled":
 						// strike through cancelled todo
-						body += fmt.Sprintf("- [~] ~~%s~~\n", content)
+						body += fmt.Sprintf("- [ ] ~~%s~~\n", content)
 					case "in_progress":
 						// highlight in progress todo
 						body += fmt.Sprintf("- [ ] `%s`\n", content)
@@ -439,8 +442,12 @@ func renderToolDetails(
 	}
 
 	error := ""
-	if toolCall.State.Status == kuucode.ToolPartStateStatusError {
-		error = toolCall.State.Error
+	if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusError {
+		if errorVal := kuucodecompat.WrapToolState(&toolCall.State).Error(); errorVal != nil {
+			if errorStr, ok := errorVal.(string); ok {
+				error = errorStr
+			}
+		}
 	}
 
 	if error != "" {
@@ -506,8 +513,8 @@ func getTodoPhase(metadata map[string]any) string {
 }
 
 func getTodoTitle(toolCall kuucode.ToolPart) string {
-	if toolCall.State.Status == kuucode.ToolPartStateStatusCompleted {
-		if metadata, ok := toolCall.State.Metadata.(map[string]any); ok {
+	if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusCompleted {
+		if metadata, ok := kuucodecompat.WrapToolState(&toolCall.State).Metadata().(map[string]any); ok {
 			return getTodoPhase(metadata)
 		}
 	}
@@ -518,15 +525,15 @@ func renderToolTitle(
 	toolCall kuucode.ToolPart,
 	width int,
 ) string {
-	if toolCall.State.Status == kuucode.ToolPartStateStatusPending {
+	if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusPending {
 		title := renderToolAction(toolCall.Tool)
 		return styles.NewStyle().Width(width - 6).Render(title)
 	}
 
 	toolArgs := ""
 	toolArgsMap := make(map[string]any)
-	if toolCall.State.Input != nil {
-		value := toolCall.State.Input
+	if kuucodecompat.WrapToolState(&toolCall.State).Input() != nil {
+		value := kuucodecompat.WrapToolState(&toolCall.State).Input()
 		if m, ok := value.(map[string]any); ok {
 			toolArgsMap = m
 

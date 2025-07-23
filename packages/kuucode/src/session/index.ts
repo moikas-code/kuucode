@@ -40,11 +40,13 @@ import { MessageV2 } from "./message-v2"
 import { Mode } from "./mode"
 import { LSP } from "../lsp"
 import { ReadTool } from "../tool/read"
+import { wrapToolsWithFallback } from "../tool/fallback"
 
 export namespace Session {
   const log = Log.create({ service: "session" })
 
   const OUTPUT_TOKEN_MAX = 32_000
+  const HARD_CONTEXT_LIMIT = 180_000 // Conservative but reasonable limit
 
   export const Info = z
     .object({
@@ -158,7 +160,7 @@ export namespace Session {
     state().sessions.set(result.id, result)
     await Storage.writeJSON("session/info/" + result.id, result)
     const cfg = await Config.get()
-    if (!result.parentID && (Flag.OPENCODE_AUTO_SHARE || cfg.share === "auto"))
+    if (!result.parentID && (Flag.KUUCODE_AUTO_SHARE || cfg.share === "auto"))
       share(result.id)
         .then((share) => {
           update(result.id, (draft) => {
@@ -366,6 +368,7 @@ export namespace Session {
 
   export async function chat(
     input: z.infer<typeof ChatInput>,
+    retryCount = 0,
   ): Promise<{ info: MessageV2.Assistant; parts: MessageV2.Part[] }> {
     const l = log.clone().tag("session", input.sessionID)
     l.info("chatting")
@@ -557,18 +560,46 @@ export namespace Session {
     const previous = msgs.filter((x) => x.info.role === "assistant").at(-1)?.info as MessageV2.Assistant
     const outputLimit = Math.min(model.info.limit.output, OUTPUT_TOKEN_MAX) || OUTPUT_TOKEN_MAX
 
-    // auto summarize if too long
+    // auto summarize if too long - much more aggressive approach
     if (previous && previous.tokens) {
       const tokens =
         previous.tokens.input + previous.tokens.cache.read + previous.tokens.cache.write + previous.tokens.output
-      if (model.info.limit.context && tokens > Math.max((model.info.limit.context - outputLimit) * 0.9, 0)) {
+      const contextLimit = model.info.limit.context || HARD_CONTEXT_LIMIT
+      const effectiveLimit = Math.min(contextLimit, HARD_CONTEXT_LIMIT)
+      // Smart threshold: leave room for response + safety margin
+      // 180k limit - 32k response - 20k safety = 128k threshold (71%)
+      const threshold = Math.max((effectiveLimit - outputLimit) * 0.71, 0)
+
+      if (tokens > threshold) {
+        log.warn("Proactive summarization triggered", {
+          tokens,
+          threshold,
+          effectiveLimit,
+          sessionID: input.sessionID,
+        })
         await summarize({
           sessionID: input.sessionID,
           providerID: input.providerID,
           modelID: input.modelID,
         })
-        return chat(input)
+        return chat(input, retryCount)
       }
+    }
+
+    // Additional safety check: if we have too many messages, summarize regardless
+    const messageCount = msgs.length
+    if (messageCount > 100) {
+      // Reasonable message count limit
+      log.warn("Message count limit reached, forcing summarization", {
+        messageCount,
+        sessionID: input.sessionID,
+      })
+      await summarize({
+        sessionID: input.sessionID,
+        providerID: input.providerID,
+        modelID: input.modelID,
+      })
+      return chat(input, retryCount)
     }
 
     using abort = lock(input.sessionID)
@@ -781,7 +812,7 @@ export namespace Session {
         ...MessageV2.toModelMessage(msgs),
       ],
       temperature: model.info.temperature ? 0 : undefined,
-      tools: model.info.tool_call === false ? undefined : tools,
+      tools: model.info.tool_call === false ? undefined : wrapToolsWithFallback(tools),
       model: wrapLanguageModel({
         model: model.language,
         middleware: [
@@ -797,12 +828,101 @@ export namespace Session {
         ],
       }),
     })
-    const result = await processor.process(stream)
+
+    let result
+    try {
+      result = await processor.process(stream)
+    } catch (error: any) {
+      // Enhanced error handling with comprehensive regex patterns
+      const errorMessage = error?.message || ""
+      const errorType = error?.type || ""
+
+      // Comprehensive token limit error detection
+      const isTokenLimitError =
+        errorMessage.includes("prompt is too long") ||
+        errorMessage.includes("tokens >") ||
+        errorMessage.includes("maximum") ||
+        errorMessage.includes("context limit") ||
+        errorMessage.includes("exceed") ||
+        error?.name === "AI_APICallError" ||
+        // Regex patterns for various token limit formats
+        /\d+\s*tokens?\s*>\s*\d+/i.test(errorMessage) || // "208405 tokens > 200000"
+        /\d+\s*\+\s*\d+\s*>\s*\d+/i.test(errorMessage) || // "173941 + 32000 > 200000"
+        /input\s+length.*exceed/i.test(errorMessage) || // "input length and max_tokens exceed"
+        /context\s+limit/i.test(errorMessage) // "context limit"
+
+      // Handle Anthropic overloaded errors with exponential backoff
+      const isOverloadedError =
+        errorType === "overloaded_error" ||
+        errorMessage.includes("Overloaded") ||
+        errorMessage.includes("rate limit") ||
+        errorMessage.includes("too many requests")
+
+      // Handle empty messages error (can happen after summarization)
+      const isEmptyMessagesError =
+        errorMessage.includes("at least one message is required") || errorMessage.includes("messages: at least one")
+
+      if (isOverloadedError) {
+        if (retryCount >= 3) {
+          log.error("API overloaded after multiple retry attempts", {
+            error: errorMessage,
+            sessionID: input.sessionID,
+            retryCount,
+          })
+          throw new Error(`API overloaded after ${retryCount} attempts. Please try again later.`)
+        }
+
+        // Exponential backoff: 2s, 4s, 8s
+        const backoffMs = Math.pow(2, retryCount + 1) * 1000
+        log.warn("API overloaded, retrying with backoff", {
+          error: errorMessage,
+          sessionID: input.sessionID,
+          retryCount: retryCount + 1,
+          backoffMs,
+        })
+
+        await new Promise((resolve) => setTimeout(resolve, backoffMs))
+        return chat(input, retryCount + 1)
+      }
+
+      if (isEmptyMessagesError) {
+        log.error("Empty messages after summarization", {
+          error: errorMessage,
+          sessionID: input.sessionID,
+          retryCount,
+        })
+        throw new Error("Conversation became empty after summarization. Please start a new conversation.")
+      }
+
+      if (isTokenLimitError) {
+        if (retryCount >= 2) {
+          log.error("Token limit exceeded after multiple summarization attempts", {
+            error: errorMessage,
+            sessionID: input.sessionID,
+            retryCount,
+          })
+          throw new Error(`Unable to reduce context below token limit after ${retryCount} attempts: ${errorMessage}`)
+        }
+
+        log.warn("Token limit exceeded, forcing summarization and retry", {
+          error: errorMessage,
+          sessionID: input.sessionID,
+          retryCount: retryCount + 1,
+        })
+        await summarize({
+          sessionID: input.sessionID,
+          providerID: input.providerID,
+          modelID: input.modelID,
+        })
+        return chat(input, retryCount + 1)
+      }
+      throw error
+    }
     const queued = state().queued.get(input.sessionID) ?? []
     const unprocessed = queued.find((x) => !x.processed)
     if (unprocessed) {
       unprocessed.processed = true
-      return chat(unprocessed.input)
+      return chat(unprocessed.input, retryCount)
     }
     for (const item of queued) {
       item.callback(result)

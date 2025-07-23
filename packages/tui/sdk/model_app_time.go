@@ -1,7 +1,7 @@
 /*
 kuucode
 
-opencode api
+kuucode api
 
 API version: 0.0.3
 */
@@ -72,7 +72,7 @@ func (o *AppTime) SetInitialized(v float32) {
 }
 
 func (o AppTime) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -122,5 +122,3 @@ func (v *NullableAppTime) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

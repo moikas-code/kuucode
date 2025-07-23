@@ -2,11 +2,11 @@ const stage = process.env.SST_STAGE || "dev"
 
 export default {
   url: stage === "production"
-    ? "https://opencode.ai"
-    : `https://${stage}.opencode.ai`,
+    ? "https://kuucode.ai"
+    : `https://${stage}.kuucode.ai`,
   socialCard: "https://social-cards.sst.dev",
   github: "https://github.com/moikas-code/kuucode",
-  discord: "https://opencode.ai/discord",
+  discord: "https://kuucode.ai/discord",
   headerLinks: [
     { name: "Home", url: "/" },
     { name: "Docs", url: "/docs/" },

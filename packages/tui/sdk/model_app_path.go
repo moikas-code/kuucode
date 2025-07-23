@@ -1,7 +1,7 @@
 /*
 kuucode
 
-opencode api
+kuucode api
 
 API version: 0.0.3
 */
@@ -11,8 +11,8 @@ API version: 0.0.3
 package kuucode
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,10 +22,10 @@ var _ MappedNullable = &AppPath{}
 // AppPath struct for AppPath
 type AppPath struct {
 	Config string `json:"config"`
-	Data string `json:"data"`
-	Root string `json:"root"`
-	Cwd string `json:"cwd"`
-	State string `json:"state"`
+	Data   string `json:"data"`
+	Root   string `json:"root"`
+	Cwd    string `json:"cwd"`
+	State  string `json:"state"`
 }
 
 type _AppPath AppPath
@@ -173,7 +173,7 @@ func (o *AppPath) SetState(v string) {
 }
 
 func (o AppPath) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -207,10 +207,10 @@ func (o *AppPath) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -266,5 +266,3 @@ func (v *NullableAppPath) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

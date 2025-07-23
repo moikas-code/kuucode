@@ -6,5 +6,7 @@
   "moduleName": "github.com/moikas-code/kuucode-sdk-go",
   "generateInterfaces": true,
   "structPrefix": true,
-  "enumClassPrefix": true
+  "enumClassPrefix": true,
+  "appName": "kuucode",
+  "appDescription": "kuucode api"
 }

@@ -15,7 +15,7 @@
     "postinstall": "./scripts/hooks",
     "desktop": "./scripts/desktop",
     "desktop:dev": "./scripts/desktop dev",
-    "desktop:tauri": "./scripts/desktop tauri",
+    "desktop:web": "./scripts/desktop web",
     "desktop:build": "./scripts/desktop build"
   },
   "workspaces": {

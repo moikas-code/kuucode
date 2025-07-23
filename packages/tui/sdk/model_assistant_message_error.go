@@ -1,7 +1,7 @@
 /*
 kuucode
 
-opencode api
+kuucode api
 
 API version: 0.0.3
 */
@@ -18,10 +18,10 @@ import (
 
 // AssistantMessageError - struct for AssistantMessageError
 type AssistantMessageError struct {
-	MessageAbortedError *MessageAbortedError
+	MessageAbortedError      *MessageAbortedError
 	MessageOutputLengthError *MessageOutputLengthError
-	ProviderAuthError *ProviderAuthError
-	UnknownError *UnknownError
+	ProviderAuthError        *ProviderAuthError
+	UnknownError             *UnknownError
 }
 
 // MessageAbortedErrorAsAssistantMessageError is a convenience function that returns MessageAbortedError wrapped in AssistantMessageError
@@ -51,7 +51,6 @@ func UnknownErrorAsAssistantMessageError(v *UnknownError) AssistantMessageError 
 		UnknownError: v,
 	}
 }
-
 
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *AssistantMessageError) UnmarshalJSON(data []byte) error {
@@ -162,7 +161,7 @@ func (src AssistantMessageError) MarshalJSON() ([]byte, error) {
 }
 
 // Get the actual instance
-func (obj *AssistantMessageError) GetActualInstance() (interface{}) {
+func (obj *AssistantMessageError) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
@@ -187,7 +186,7 @@ func (obj *AssistantMessageError) GetActualInstance() (interface{}) {
 }
 
 // Get the actual instance value
-func (obj AssistantMessageError) GetActualInstanceValue() (interface{}) {
+func (obj AssistantMessageError) GetActualInstanceValue() interface{} {
 	if obj.MessageAbortedError != nil {
 		return *obj.MessageAbortedError
 	}
@@ -243,5 +242,3 @@ func (v *NullableAssistantMessageError) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -126,7 +126,7 @@ func (m *modelDialog) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case SearchRemoveItemMsg:
 		if item, ok := msg.Item.(modelItem); ok {
 			if m.isModelInRecentSection(item.model, msg.Index) {
-				m.app.State.RemoveModelFromRecentlyUsed(item.model.Provider.ID, item.model.Model.ID)
+				m.app.State.RemoveModelFromRecentlyUsed(item.model.Provider.Id, item.model.Model.Id)
 				items := m.buildDisplayList(m.searchDialog.GetQuery())
 				m.searchDialog.SetItems(items)
 				return m, m.app.SaveState()
@@ -207,8 +207,8 @@ func (m *modelDialog) sortModels() {
 		modelA := m.allModels[i]
 		modelB := m.allModels[j]
 
-		usageA := m.getModelUsageTime(modelA.Provider.ID, modelA.Model.ID)
-		usageB := m.getModelUsageTime(modelB.Provider.ID, modelB.Model.ID)
+		usageA := m.getModelUsageTime(modelA.Provider.Id, modelA.Model.Id)
+		usageB := m.getModelUsageTime(modelB.Provider.Id, modelB.Model.Id)
 
 		// If both have usage times, sort by most recent first
 		if !usageA.IsZero() && !usageB.IsZero() {
@@ -303,7 +303,7 @@ func (m *modelDialog) buildSearchResults(query string) []list.Item {
 	for _, match := range matches {
 		model := modelMap[match.Target]
 		// Create a unique key to avoid duplicates
-		key := fmt.Sprintf("%s:%s", model.Provider.ID, model.Model.ID)
+		key := fmt.Sprintf("%s:%s", model.Provider.Id, model.Model.Id)
 		if seenModels[key] {
 			continue
 		}
@@ -350,8 +350,8 @@ func (m *modelDialog) buildGroupedResults() []list.Item {
 			modelA := models[i]
 			modelB := models[j]
 
-			usageA := m.getModelUsageTime(modelA.Provider.ID, modelA.Model.ID)
-			usageB := m.getModelUsageTime(modelB.Provider.ID, modelB.Model.ID)
+			usageA := m.getModelUsageTime(modelA.Provider.Id, modelA.Model.Id)
+			usageB := m.getModelUsageTime(modelB.Provider.Id, modelB.Model.Id)
 
 			// Sort by usage time first, then by release date, then alphabetically
 			if !usageA.IsZero() && !usageB.IsZero() {
@@ -400,7 +400,7 @@ func (m *modelDialog) getRecentModels(limit int) []ModelWithProvider {
 
 		// Find the corresponding model
 		for _, model := range m.allModels {
-			if model.Provider.ID == usage.ProviderID && model.Model.ID == usage.ModelID {
+			if model.Provider.Id == usage.ProviderID && model.Model.Id == usage.ModelID {
 				recentModels = append(recentModels, model)
 				break
 			}
@@ -425,8 +425,8 @@ func (m *modelDialog) isModelInRecentSection(model ModelWithProvider, index int)
 	if index >= 1 && index <= len(recentModels) {
 		if index-1 < len(recentModels) {
 			recentModel := recentModels[index-1]
-			return recentModel.Provider.ID == model.Provider.ID &&
-				recentModel.Model.ID == model.Model.ID
+			return recentModel.Provider.Id == model.Provider.Id &&
+				recentModel.Model.Id == model.Model.Id
 		}
 	}
 

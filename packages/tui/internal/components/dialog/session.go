@@ -7,7 +7,6 @@ import (
 	"slices"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/muesli/reflow/truncate"
 	"github.com/moikas-code/kuucode-sdk-go"
 	"github.com/moikas-code/kuucode/internal/app"
 	"github.com/moikas-code/kuucode/internal/components/list"
@@ -17,6 +16,7 @@ import (
 	"github.com/moikas-code/kuucode/internal/styles"
 	"github.com/moikas-code/kuucode/internal/theme"
 	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/muesli/reflow/truncate"
 )
 
 // SessionDialog interface for the session switching dialog
@@ -156,7 +156,7 @@ func (s *sessionDialog) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 							s.updateListItems()
 							return nil
 						},
-						s.deleteSession(sessionToDelete.ID),
+						s.deleteSession(sessionToDelete.Id),
 					)
 				} else {
 					// First press - enter delete confirmation mode
@@ -213,7 +213,7 @@ func (s *sessionDialog) updateListItems() {
 		item := sessionItem{
 			title:              sess.Title,
 			isDeleteConfirming: s.deleteConfirmation == i,
-			isCurrentSession:   s.app.Session != nil && s.app.Session.ID == sess.ID,
+			isCurrentSession:   s.app.Session != nil && s.app.Session.Id == sess.Id,
 		}
 		items = append(items, item)
 	}
@@ -242,14 +242,14 @@ func NewSessionDialog(app *app.App) SessionDialog {
 	var filteredSessions []kuucode.Session
 	var items []sessionItem
 	for _, sess := range sessions {
-		if sess.ParentID != "" {
+		if sess.ParentID != nil && *sess.ParentID != "" {
 			continue
 		}
 		filteredSessions = append(filteredSessions, sess)
 		items = append(items, sessionItem{
 			title:              sess.Title,
 			isDeleteConfirming: false,
-			isCurrentSession:   app.Session != nil && app.Session.ID == sess.ID,
+			isCurrentSession:   app.Session != nil && app.Session.Id == sess.Id,
 		})
 	}
 

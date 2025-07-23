@@ -8,7 +8,7 @@ import { cmd } from "./cmd"
 import { ModelsDev } from "../../provider/models"
 import { App } from "../../app/app"
 
-const WORKFLOW_FILE = ".github/workflows/opencode.yml"
+const WORKFLOW_FILE = ".github/workflows/kuucode.yml"
 
 export const InstallGithubCommand = cmd({
   command: "install-github",
@@ -64,7 +64,7 @@ export const InstallGithubCommand = cmd({
         const info = await $`git remote get-url origin`.quiet().nothrow().text()
         // match https or git pattern
         // ie. https://github.com/sst/kuucode.git
-        // ie. git@github.com:sst/opencode.git
+        // ie. git@github.com:sst/kuucode.git
         const parsed = info.match(/git@github\.com:(.*)\.git/) ?? info.match(/github\.com\/(.*)\.git/)
         if (!parsed) {
           prompts.log.error(`Could not find git repository. Please run this command from a git repository.`)
@@ -134,7 +134,7 @@ export const InstallGithubCommand = cmd({
         if (installation) return s.stop("GitHub app already installed")
 
         // Open browser
-        const url = "https://github.com/apps/opencode-agent"
+        const url = "https://github.com/apps/kuucode-agent"
         const command =
           process.platform === "darwin"
             ? `open "${url}"`
@@ -185,19 +185,19 @@ export const InstallGithubCommand = cmd({
         await Bun.write(
           path.join(app.root, WORKFLOW_FILE),
           `
-name: opencode
+name: kuucode
 
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  opencode:
+  kuucode:
     if: |
-      startsWith(github.event.comment.body, 'opencode') ||
-      startsWith(github.event.comment.body, 'hi opencode') ||
-      startsWith(github.event.comment.body, 'hey opencode') ||
-      contains(github.event.comment.body, '@opencode-agent')
+      startsWith(github.event.comment.body, 'kuucode') ||
+      startsWith(github.event.comment.body, 'hi kuucode') ||
+      startsWith(github.event.comment.body, 'hey kuucode') ||
+      contains(github.event.comment.body, '@kuucode-agent')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -207,8 +207,8 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Run opencode
-        uses: sst/opencode/sdks/github@github-v1${envStr}
+      - name: Run kuucode
+        uses: sst/kuucode/sdks/github@github-v1${envStr}
         with:
           model: ${provider}/${model}
 `.trim(),

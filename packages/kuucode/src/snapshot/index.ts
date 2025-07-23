@@ -40,7 +40,7 @@ export namespace Snapshot {
     log.info("added files")
 
     const result =
-      await $`git --git-dir ${git} commit -m "snapshot" --no-gpg-sign --author="opencode <mail@kuucode.ai>"`
+      await $`git --git-dir ${git} commit -m "snapshot" --no-gpg-sign --author="kuucode <mail@kuucode.ai>"`
         .quiet()
         .cwd(app.path.cwd)
         .nothrow()

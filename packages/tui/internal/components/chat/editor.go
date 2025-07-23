@@ -263,7 +263,7 @@ func (m *editorComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m *editorComponent) Content() string {
 	width := m.width
-	if m.app.Session.ID == "" {
+	if m.app.Session.Id == "" {
 		width = min(width, 80)
 	}
 
@@ -335,7 +335,7 @@ func (m *editorComponent) Content() string {
 
 func (m *editorComponent) View() string {
 	width := m.width
-	if m.app.Session.ID == "" {
+	if m.app.Session.Id == "" {
 		width = min(width, 80)
 	}
 

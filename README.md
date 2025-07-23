@@ -92,6 +92,8 @@ $ bun run packages/kuucode/src/index.ts
 
 **SDK Generation**: This project uses OpenAPI Generator to create client SDKs for TypeScript, Go, and Python. See [`SDK_GENERATION.md`](SDK_GENERATION.md) for details.
 
+**Parity Tracking**: Kuucode maintains parity with upstream improvements from `moikas-code/kuucode`. See [`README_PARITY.md`](README_PARITY.md) for the quick start guide or [`docs/PARITY_TRACKING.md`](docs/PARITY_TRACKING.md) for complete documentation.
+
 ### FAQ
 
 #### How is this different than Claude Code?

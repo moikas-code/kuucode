@@ -1,0 +1,374 @@
+#!/usr/bin/env bun
+
+import { $ } from "bun"
+import { readFileSync, writeFileSync, existsSync } from "fs"
+import { join } from "path"
+
+const PARITY_FILE = ".parity-status.json"
+const KB_PATH = "kb"
+
+interface ParityStatus {
+  version: string
+  upstream: {
+    repository: string
+    branch: string
+    lastChecked: string
+  }
+  commits: Record<string, CommitStatus>
+  statistics: {
+    total_commits_reviewed: number
+    integrated: number
+    skipped: number
+    pending: number
+    conflicts: number
+    integration_rate: number
+  }
+  lastUpdated: string
+}
+
+interface CommitStatus {
+  status: "integrated" | "skipped" | "pending" | "conflict" | "reviewed"
+  priority: "critical" | "high" | "medium" | "low"
+  category: "feature" | "bugfix" | "security" | "refactor" | "docs"
+  impact_areas: string[]
+  decision_date?: string
+  decision_reason?: string
+  effort_estimate?: "small" | "medium" | "large"
+  adaptation_notes?: string
+  kb_reference?: string
+  upstream_pr?: string
+  conflicts: string[]
+  notes?: string
+  timestamp: string
+}
+
+interface UpstreamCommit {
+  hash: string
+  author: string
+  date: string
+  title: string
+  files: string[]
+}
+
+class ParityManager {
+  private status: ParityStatus
+
+  constructor() {
+    this.status = this.loadStatus()
+  }
+
+  private loadStatus(): ParityStatus {
+    if (!existsSync(PARITY_FILE)) {
+      return {
+        version: "2.0",
+        upstream: {
+          repository: "sst/opencode",
+          branch: "dev",
+          lastChecked: new Date().toISOString()
+        },
+        commits: {},
+        statistics: {
+          total_commits_reviewed: 0,
+          integrated: 0,
+          skipped: 0,
+          pending: 0,
+          conflicts: 0,
+          integration_rate: 0
+        },
+        lastUpdated: new Date().toISOString()
+      }
+    }
+
+    try {
+      return JSON.parse(readFileSync(PARITY_FILE, "utf-8"))
+    } catch (error) {
+      console.error("Error loading parity status:", error)
+      process.exit(1)
+    }
+  }
+
+  private saveStatus() {
+    this.updateStatistics()
+    this.status.lastUpdated = new Date().toISOString()
+    writeFileSync(PARITY_FILE, JSON.stringify(this.status, null, 2))
+  }
+
+  private updateStatistics() {
+    const commits = Object.values(this.status.commits)
+    this.status.statistics = {
+      total_commits_reviewed: commits.length,
+      integrated: commits.filter(c => c.status === "integrated").length,
+      skipped: commits.filter(c => c.status === "skipped").length,
+      pending: commits.filter(c => c.status === "pending").length,
+      conflicts: commits.filter(c => c.status === "conflict").length,
+      integration_rate: commits.length > 0 ? commits.filter(c => c.status === "integrated").length / commits.length : 0
+    }
+  }
+
+  async checkUpstream(since?: string): Promise<UpstreamCommit[]> {
+    console.log("🔍 Checking upstream for new commits...")
+    
+    try {
+      await $`git fetch upstream`
+    } catch (error) {
+      console.error("Failed to fetch upstream:", error)
+      return []
+    }
+
+    const sinceArg = since || "1 week ago"
+    const result = await $`git log upstream/dev --oneline --no-merges --since="${sinceArg}" --pretty=format:"%H|%an|%ad|%s" --date=short -50`
+    
+    const commits: UpstreamCommit[] = []
+    const lines = result.stdout.toString().trim().split("\n").filter(line => line)
+
+    for (const line of lines) {
+      const [hash, author, date, title] = line.split("|")
+      if (!hash) continue
+
+      // Get files changed in this commit
+      const filesResult = await $`git show --name-only --pretty=format: ${hash}`
+      const files = filesResult.stdout.toString().trim().split("\n").filter(f => f)
+
+      commits.push({ hash: hash.substring(0, 8), author, date, title, files })
+    }
+
+    this.status.upstream.lastChecked = new Date().toISOString()
+    return commits
+  }
+
+  async triage(commits: UpstreamCommit[]) {
+    console.log("🎯 Auto-triaging commits...")
+
+    for (const commit of commits) {
+      if (this.status.commits[commit.hash]) {
+        continue // Already reviewed
+      }
+
+      const priority = this.determinePriority(commit)
+      const category = this.determineCategory(commit)
+      const impactAreas = this.determineImpactAreas(commit)
+
+      this.status.commits[commit.hash] = {
+        status: "pending",
+        priority,
+        category,
+        impact_areas: impactAreas,
+        conflicts: [],
+        timestamp: new Date().toISOString()
+      }
+
+      console.log(`  📝 ${commit.hash}: ${priority} priority ${category} affecting ${impactAreas.join(", ")}`)
+    }
+
+    this.saveStatus()
+  }
+
+  private determinePriority(commit: UpstreamCommit): "critical" | "high" | "medium" | "low" {
+    const title = commit.title.toLowerCase()
+    
+    if (title.includes("security") || title.includes("vulnerability") || title.includes("cve")) {
+      return "critical"
+    }
+    
+    if (title.includes("fix") || title.includes("bug") || commit.files.some(f => f.includes("main.go") || f.includes("index.ts"))) {
+      return "high"
+    }
+    
+    if (title.includes("feat") || title.includes("feature") || commit.files.length > 5) {
+      return "medium"
+    }
+    
+    return "low"
+  }
+
+  private determineCategory(commit: UpstreamCommit): "feature" | "bugfix" | "security" | "refactor" | "docs" {
+    const title = commit.title.toLowerCase()
+    
+    if (title.includes("security") || title.includes("vulnerability")) return "security"
+    if (title.includes("fix") || title.includes("bug")) return "bugfix"
+    if (title.includes("feat") || title.includes("feature")) return "feature"
+    if (title.includes("refactor") || title.includes("cleanup")) return "refactor"
+    if (title.includes("docs") || title.includes("documentation")) return "docs"
+    
+    return "feature" // default
+  }
+
+  private determineImpactAreas(commit: UpstreamCommit): string[] {
+    const areas: string[] = []
+    
+    if (commit.files.some(f => f.includes("tui/"))) areas.push("tui")
+    if (commit.files.some(f => f.includes("sdk/"))) areas.push("sdk")
+    if (commit.files.some(f => f.includes("github/"))) areas.push("github")
+    if (commit.files.some(f => f.includes("packages/opencode/") || f.includes("packages/kuucode/"))) areas.push("core")
+    if (commit.files.some(f => f.includes("docs/") || f.includes("README"))) areas.push("docs")
+    
+    return areas.length > 0 ? areas : ["unknown"]
+  }
+
+  dashboard() {
+    console.log("📊 Kuucode Parity Status Dashboard")
+    console.log("=" .repeat(50))
+    
+    const stats = this.status.statistics
+    const pending = Object.values(this.status.commits).filter(c => c.status === "pending")
+    const conflicts = Object.values(this.status.commits).filter(c => c.status === "conflict")
+    
+    console.log(`├── 🔍 Pending Review: ${stats.pending} commits`)
+    console.log(`├── ✅ Integrated: ${stats.integrated} commits`)
+    console.log(`├── ⏭️  Skipped: ${stats.skipped} commits`)
+    console.log(`├── ⚠️  Conflicts: ${stats.conflicts} commits`)
+    console.log(`└── 📈 Integration Rate: ${(stats.integration_rate * 100).toFixed(1)}%`)
+    
+    if (pending.length > 0) {
+      console.log("\n🎯 Next Actions:")
+      pending
+        .sort((a, b) => {
+          const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 }
+          return priorityOrder[a.priority] - priorityOrder[b.priority]
+        })
+        .slice(0, 5)
+        .forEach((commit, i) => {
+          const hash = Object.keys(this.status.commits).find(h => this.status.commits[h] === commit)
+          console.log(`${i + 1}. Review ${commit.priority} priority ${commit.category} ${hash}`)
+        })
+    }
+    
+    if (conflicts.length > 0) {
+      console.log("\n⚠️  Conflicts to Resolve:")
+      conflicts.forEach(commit => {
+        const hash = Object.keys(this.status.commits).find(h => this.status.commits[h] === commit)
+        console.log(`- ${hash}: ${commit.conflicts.join(", ")}`)
+      })
+    }
+  }
+
+  async updateStatus(hash: string, status: CommitStatus["status"], options: Partial<CommitStatus> = {}) {
+    if (!this.status.commits[hash]) {
+      console.error(`Commit ${hash} not found in parity status`)
+      return
+    }
+
+    this.status.commits[hash] = {
+      ...this.status.commits[hash],
+      status,
+      decision_date: new Date().toISOString().split("T")[0],
+      ...options
+    }
+
+    this.saveStatus()
+    console.log(`✅ Updated ${hash} status to: ${status}`)
+  }
+
+  async createReview(hash: string) {
+    const commit = this.status.commits[hash]
+    if (!commit) {
+      console.error(`Commit ${hash} not found`)
+      return
+    }
+
+    // Get commit details from git
+    const result = await $`git show --stat ${hash}`
+    const commitInfo = result.stdout.toString()
+
+    const template = readFileSync(join(KB_PATH, "templates/parity-review-template.md"), "utf-8")
+    const review = template
+      .replace(/\[COMMIT-HASH\]/g, hash)
+      .replace(/\[commit-hash\]/g, hash)
+
+    const reviewPath = join(KB_PATH, "reviews", `${hash}-review.md`)
+    writeFileSync(reviewPath, review)
+    
+    console.log(`📝 Created review template: ${reviewPath}`)
+    console.log("Edit the template and run: bun scripts/parity update [hash] [status]")
+  }
+
+  listCommits(status?: string, priority?: string) {
+    const commits = Object.entries(this.status.commits)
+      .filter(([_, commit]) => !status || commit.status === status)
+      .filter(([_, commit]) => !priority || commit.priority === priority)
+      .sort(([_, a], [__, b]) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+
+    console.log(`📋 Commits${status ? ` (${status})` : ""}${priority ? ` (${priority} priority)` : ""}:`)
+    
+    commits.forEach(([hash, commit]) => {
+      const statusIcon = {
+        integrated: "✅",
+        skipped: "⏭️",
+        pending: "🔍",
+        conflict: "⚠️",
+        reviewed: "👀"
+      }[commit.status]
+      
+      console.log(`${statusIcon} ${hash} [${commit.priority}] ${commit.category} - ${commit.notes || "No notes"}`)
+    })
+  }
+}
+
+// CLI Interface
+const command = process.argv[2]
+const manager = new ParityManager()
+
+switch (command) {
+  case "check":
+    const since = process.argv[3] || "1 week ago"
+    const commits = await manager.checkUpstream(since)
+    console.log(`Found ${commits.length} new commits`)
+    if (commits.length > 0 && process.argv.includes("--auto-triage")) {
+      await manager.triage(commits)
+    }
+    break
+
+  case "triage":
+    const allCommits = await manager.checkUpstream("1 month ago")
+    await manager.triage(allCommits)
+    break
+
+  case "dashboard":
+  case "status":
+    manager.dashboard()
+    break
+
+  case "update":
+    const [_, __, hash, status, ...options] = process.argv
+    if (!hash || !status) {
+      console.error("Usage: bun scripts/parity update <hash> <status> [options]")
+      process.exit(1)
+    }
+    await manager.updateStatus(hash, status as any, {
+      decision_reason: options.join(" ") || undefined
+    })
+    break
+
+  case "review":
+    const reviewHash = process.argv[3]
+    if (!reviewHash) {
+      console.error("Usage: bun scripts/parity review <hash>")
+      process.exit(1)
+    }
+    await manager.createReview(reviewHash)
+    break
+
+  case "list":
+    const filterStatus = process.argv[3]
+    const filterPriority = process.argv[4]
+    manager.listCommits(filterStatus, filterPriority)
+    break
+
+  default:
+    console.log(`
+🔄 Kuucode Parity Management Tool
+
+Usage:
+  bun scripts/parity check [since]           - Check for new upstream commits
+  bun scripts/parity triage                  - Auto-triage pending commits  
+  bun scripts/parity dashboard               - Show parity status dashboard
+  bun scripts/parity update <hash> <status> - Update commit status
+  bun scripts/parity review <hash>          - Create review template
+  bun scripts/parity list [status] [priority] - List commits
+
+Examples:
+  bun scripts/parity check "2 weeks ago"
+  bun scripts/parity update abc123 integrated "Easy adaptation"
+  bun scripts/parity list pending high
+`)
+}

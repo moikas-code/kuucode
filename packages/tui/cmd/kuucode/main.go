@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -10,10 +11,10 @@ import (
 	"syscall"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	kuucode "github.com/moikas-code/kuucode-sdk-go"
 	"github.com/moikas-code/kuucode/internal/api"
 	"github.com/moikas-code/kuucode/internal/app"
 	"github.com/moikas-code/kuucode/internal/clipboard"
+	"github.com/moikas-code/kuucode/internal/compat"
 	"github.com/moikas-code/kuucode/internal/tui"
 	"github.com/moikas-code/kuucode/internal/util"
 	flag "github.com/spf13/pflag"
@@ -32,36 +33,54 @@ func main() {
 	var mode *string = flag.String("mode", "", "mode to begin with")
 	flag.Parse()
 
+	// Check if there's data piped to stdin
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		slog.Error("Failed to stat stdin", "error", err)
+		os.Exit(1)
+	}
+
+	if (stat.Mode() & os.ModeCharDevice) == 0 {
+		stdin, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			slog.Error("Failed to read stdin", "error", err)
+			os.Exit(1)
+		}
+		stdinContent := strings.TrimSpace(string(stdin))
+		if stdinContent != "" {
+			if prompt == nil || *prompt == "" {
+				prompt = &stdinContent
+			} else {
+				combined := *prompt + "\n" + stdinContent
+				prompt = &combined
+			}
+		}
+	}
+
 	url := os.Getenv("KUUCODE_SERVER")
 
 	appInfoStr := os.Getenv("KUUCODE_APP_INFO")
-	var appInfo kuucode.App
-	err := json.Unmarshal([]byte(appInfoStr), &appInfo)
+	var appInfo compat.App
+	err = json.Unmarshal([]byte(appInfoStr), &appInfo)
 	if err != nil {
 		slog.Error("Failed to unmarshal app info", "error", err)
 		os.Exit(1)
 	}
 
 	modesStr := os.Getenv("KUUCODE_MODES")
-	var modes []kuucode.Mode
+	var modes []compat.Mode
 	err = json.Unmarshal([]byte(modesStr), &modes)
 	if err != nil {
 		slog.Error("Failed to unmarshal modes", "error", err)
 		os.Exit(1)
 	}
 
-	cfg := kuucode.NewConfiguration()
-	cfg.Servers = kuucode.ServerConfigurations{
-		{
-			URL:         url,
-			Description: "kuucode server",
-		},
-	}
-	httpClient := kuucode.NewAPIClient(cfg)
+	// Create compat client that wraps the SDK client
+	compatClient := compat.NewClient(url)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	apiHandler := util.NewAPILogHandler(ctx, httpClient, "tui", slog.LevelDebug)
+	apiHandler := util.NewAPILogHandler(ctx, compatClient, "tui", slog.LevelDebug)
 	logger := slog.New(apiHandler)
 	slog.SetDefault(logger)
 
@@ -75,7 +94,7 @@ func main() {
 	}()
 
 	// Create main context for the application
-	app_, err := app.New(ctx, version, appInfo, modes, httpClient, model, prompt, mode)
+	app_, err := app.New(ctx, version, appInfo, modes, compatClient, model, prompt, mode)
 	if err != nil {
 		panic(err)
 	}
@@ -91,10 +110,10 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
-		stream := httpClient.Event.ListStreaming(ctx)
+		stream := compatClient.Event.ListStreaming(ctx)
 		for stream.Next() {
 			evt := stream.Current().AsUnion()
-			if _, ok := evt.(kuucode.EventListResponseEventStorageWrite); ok {
+			if _, ok := evt.(compat.EventListResponseEventStorageWrite); ok {
 				continue
 			}
 			program.Send(evt)
@@ -105,7 +124,7 @@ func main() {
 		}
 	}()
 
-	go api.Start(ctx, program, httpClient)
+	go api.Start(ctx, program, compatClient)
 
 	// Handle signals in a separate goroutine
 	go func() {

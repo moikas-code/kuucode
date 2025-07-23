@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  description: opencode api
+  description: kuucode api
   title: kuucode
   version: 0.0.3
 servers:

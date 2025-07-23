@@ -5,143 +5,296 @@ import (
 )
 
 // Client type alias for compatibility
-type Client = Client
+type Client = CompatClient
 
-// Parameter types for compatibility
-type AppLogParams struct {
-	Level   AppLogParamsLevel `json:"level"`
-	Service string            `json:"service"`
-	Message string            `json:"message"`
-	Data    interface{}       `json:"data,omitempty"`
-}
+// Core types for compatibility
+type App = kuucode.App
+type Mode = kuucode.Mode
+type Provider = kuucode.Provider
+type Model = kuucode.Model
+type Session = kuucode.Session
+type SessionShare = kuucode.SessionShare
+type Message = kuucode.Message
+type UserMessage = kuucode.UserMessage
+type AssistantMessage = kuucode.AssistantMessage
+type TextPart = kuucode.TextPart
+type FilePart = kuucode.FilePart
+type ToolPart = kuucode.ToolPart
+type StepStartPart = kuucode.StepStartPart
+type StepFinishPart = kuucode.StepFinishPart
+type FilePartSource = kuucode.FilePartSource
+type ToolState = kuucode.ToolState
+type AssistantMessageError = kuucode.AssistantMessageError
 
-type AppLogParamsLevel string
-
-const (
-	AppLogParamsLevelDebug AppLogParamsLevel = "DEBUG"
-	AppLogParamsLevelInfo  AppLogParamsLevel = "INFO"
-	AppLogParamsLevelWarn  AppLogParamsLevel = "WARN"
-	AppLogParamsLevelError AppLogParamsLevel = "ERROR"
-)
-
-type SessionInitParams struct {
-	Provider string `json:"provider"`
-	Model    string `json:"model"`
-	Mode     string `json:"mode,omitempty"`
-}
-
-type SessionChatParams struct {
-	Provider string                       `json:"provider"`
-	Model    string                       `json:"model"`
-	Parts    []SessionChatParamsPartUnion `json:"parts"`
-}
-
-type SessionChatParamsPartUnion interface {
-	isSessionChatParamsPartUnion()
-}
-
-type SessionSummarizeParams struct {
-	Provider string `json:"provider"`
-	Model    string `json:"model"`
-}
-
+// Missing types that the UI code expects
+type MessageUnion = interface{}
+type PartUnion = interface{}
 type FileReadParams struct {
 	Path string `json:"path"`
 }
 
-type FindFilesParams struct {
-	Query string `json:"query"`
-}
+// Config types
+type KeybindsConfig = kuucode.KeybindsConfig
 
-type FindSymbolsParams struct {
-	Query string `json:"query"`
-}
-
-// Response types for compatibility
-type AppProvidersResponse struct {
-	Providers []kuucode.Provider `json:"providers"`
-}
-
-type FileReadResponse struct {
-	Content string `json:"content"`
-}
-
-type FindFilesResponse struct {
-	Files []kuucode.File `json:"files"`
-}
-
-type FindSymbolsResponse struct {
-	Symbols []kuucode.Symbol `json:"symbols"`
-}
-
-// Union types for compatibility
-type MessageUnion interface {
-	isMessageUnion()
-}
-
-type PartUnion interface {
-	isPartUnion()
-}
-
-// Event types for compatibility
-type EventListResponseEventSessionUpdated struct{}
-type EventListResponseEventMessageUpdated struct{}
-type EventListResponseEventMessagePartUpdated struct{}
-type EventListResponseEventInstallationUpdated struct{}
-type EventListResponseEventIdeInstalled struct{}
-type EventListResponseEventSessionDeleted struct{}
-type EventListResponseEventSessionError struct{}
-type EventListResponseEventFileWatcherUpdated struct{}
-
-// Tool state constants for compatibility
+// Constants for compatibility
 const (
-	ToolPartStateStatusError     = "error"
+	UserMessageRoleUser                           = "user"
+	TextPartTypeText                              = "text"
+	FilePartTypeFile                              = "file"
+	FilePartSourceTypeFile                        = "file"
+	FilePartSourceTypeSymbol                      = "symbol"
+	SymbolSourceTypeSymbol                        = "symbol"
+	FileSourceTypeFile                            = "file"
+	TextPartInputTypeText                         = "text"
+	FilePartInputTypeFile                         = "file"
+	ConfigShareDisabled                           = "disabled"
+	AssistantMessageErrorMessageOutputLengthError = "output_length_error"
+
+	// Tool state status constants
 	ToolPartStateStatusPending   = "pending"
 	ToolPartStateStatusCompleted = "completed"
+	ToolPartStateStatusError     = "error"
+	ToolPartStateStatusRunning   = "running"
 )
 
-// Config constants for compatibility
-const (
-	ConfigShareDisabled = "disabled"
-)
+// App log level type
+type AppLogParamsLevel string
 
-// Message type constants for compatibility
-const (
-	UserMessageRoleUser = "user"
-)
+// Session chat parameter types
+type SessionChatParamsPartUnion interface {
+	isSessionChatParamsPartUnion()
+}
 
-// Part type constants for compatibility
-const (
-	TextPartTypeText         = "text"
-	FilePartTypeFile         = "file"
-	TextPartInputTypeText    = "text"
-	FilePartInputTypeFile    = "file"
-	FilePartSourceTypeFile   = "file"
-	FilePartSourceTypeSymbol = "symbol"
-	SymbolSourceTypeSymbol   = "symbol"
-	FileSourceTypeFile       = "file"
-)
+// Event types for compatibility - using type aliases to actual SDK types
+type EventListResponseEventSessionUpdated = kuucode.EventSessionUpdated
+type EventListResponseEventMessageUpdated = kuucode.EventMessageUpdated
+type EventListResponseEventMessagePartUpdated = kuucode.EventMessagePartUpdated
+type EventListResponseEventSessionDeleted = kuucode.EventSessionDeleted
+type EventListResponseEventIdeInstalled = kuucode.EventIdeInstalled
+type EventListResponseEventInstallationUpdated = kuucode.EventInstallationUpdated
+type EventListResponseEventSessionError = kuucode.EventSessionError
+type EventListResponseEventFileWatcherUpdated = kuucode.EventFileWatcherUpdated
+type EventListResponseEventStorageWrite = kuucode.EventStorageWrite
 
-// Error types for compatibility
-type AssistantMessageErrorMessageOutputLengthError struct{}
-
-// Helper function F for compatibility
+// Helper function F for parameter building - matches kuucode.F signature
 func F(value interface{}) interface{} {
 	return value
 }
 
-// Time types for compatibility
-type UserMessageTime struct {
-	Start *float32 `json:"start,omitempty"`
-	End   *float32 `json:"end,omitempty"`
+// Helper function FString for string parameter building
+func FString(value interface{}) string {
+	if str, ok := value.(string); ok {
+		return str
+	}
+	return ""
 }
 
-type TextPartInputTimeParam struct {
-	Start *float32 `json:"start,omitempty"`
-	End   *float32 `json:"end,omitempty"`
+// AsUnion helper function for AssistantMessageError compatibility
+func AsUnion(e *kuucode.AssistantMessageError) interface{} {
+	return e
 }
 
-// Input parameter types for compatibility
+// ToolState compatibility wrapper
+type ToolStateCompat struct {
+	*kuucode.ToolState
+}
+
+// WrapToolState wraps a kuucode.ToolState to provide compatibility methods
+func WrapToolState(ts *kuucode.ToolState) *ToolStateCompat {
+	return &ToolStateCompat{ToolState: ts}
+}
+
+// GetPartId extracts the Id field from a Part union type
+func GetPartId(part kuucode.Part) string {
+	if part.TextPart != nil {
+		return part.TextPart.Id
+	}
+	if part.FilePart != nil {
+		return part.FilePart.Id
+	}
+	if part.ToolPart != nil {
+		return part.ToolPart.Id
+	}
+	if part.StepStartPart != nil {
+		return part.StepStartPart.Id
+	}
+	if part.StepFinishPart != nil {
+		return part.StepFinishPart.Id
+	}
+	if part.SnapshotPart != nil {
+		return part.SnapshotPart.Id
+	}
+	return ""
+}
+
+// GetPartMessageID extracts the MessageID field from a Part union type
+func GetPartMessageID(part kuucode.Part) string {
+	if part.TextPart != nil {
+		return part.TextPart.MessageID
+	}
+	if part.FilePart != nil {
+		return part.FilePart.MessageID
+	}
+	if part.ToolPart != nil {
+		return part.ToolPart.MessageID
+	}
+	if part.StepStartPart != nil {
+		return part.StepStartPart.MessageID
+	}
+	if part.StepFinishPart != nil {
+		return part.StepFinishPart.MessageID
+	}
+	if part.SnapshotPart != nil {
+		return part.SnapshotPart.MessageID
+	}
+	return ""
+}
+
+// GetPartSessionID extracts the SessionID field from a Part union type
+func GetPartSessionID(part kuucode.Part) string {
+	if part.TextPart != nil {
+		return part.TextPart.SessionID
+	}
+	if part.FilePart != nil {
+		return part.FilePart.SessionID
+	}
+	if part.ToolPart != nil {
+		return part.ToolPart.SessionID
+	}
+	if part.StepStartPart != nil {
+		return part.StepStartPart.SessionID
+	}
+	if part.StepFinishPart != nil {
+		return part.StepFinishPart.SessionID
+	}
+	if part.SnapshotPart != nil {
+		return part.SnapshotPart.SessionID
+	}
+	return ""
+}
+
+// PartAsUnion converts a Part union type to PartUnion interface
+func PartAsUnion(part kuucode.Part) PartUnion {
+	if part.TextPart != nil {
+		return *part.TextPart
+	}
+	if part.FilePart != nil {
+		return FilePart(*part.FilePart)
+	}
+	if part.ToolPart != nil {
+		return *part.ToolPart
+	}
+	if part.StepStartPart != nil {
+		return *part.StepStartPart
+	}
+	if part.StepFinishPart != nil {
+		return *part.StepFinishPart
+	}
+	if part.SnapshotPart != nil {
+		return *part.SnapshotPart
+	}
+	return nil
+}
+
+// GetMessageSessionID extracts the SessionID field from a Message union type
+func GetMessageSessionID(msg kuucode.Message) string {
+	if msg.AssistantMessage != nil {
+		return msg.AssistantMessage.SessionID
+	}
+	if msg.UserMessage != nil {
+		return msg.UserMessage.SessionID
+	}
+	return ""
+}
+
+// GetMessageId extracts the Id field from a Message union type
+func GetMessageId(msg kuucode.Message) string {
+	if msg.AssistantMessage != nil {
+		return msg.AssistantMessage.Id
+	}
+	if msg.UserMessage != nil {
+		return msg.UserMessage.Id
+	}
+	return ""
+}
+
+// MessageAsUnion converts a Message union type to MessageUnion interface
+func MessageAsUnion(msg kuucode.Message) MessageUnion {
+	if msg.AssistantMessage != nil {
+		return *msg.AssistantMessage
+	}
+	if msg.UserMessage != nil {
+		return *msg.UserMessage
+	}
+	return nil
+}
+
+// Status returns the status of the tool state for compatibility
+func (ts *ToolStateCompat) Status() string {
+	if ts.ToolState == nil {
+		return ToolPartStateStatusPending
+	}
+	if ts.ToolState.ToolStateCompleted != nil {
+		return ToolPartStateStatusCompleted
+	}
+	if ts.ToolState.ToolStateError != nil {
+		return ToolPartStateStatusError
+	}
+	if ts.ToolState.ToolStatePending != nil {
+		return ToolPartStateStatusPending
+	}
+	if ts.ToolState.ToolStateRunning != nil {
+		return ToolPartStateStatusRunning
+	}
+	return ToolPartStateStatusPending
+}
+
+// Output returns the output for compatibility
+func (ts *ToolStateCompat) Output() interface{} {
+	if ts.ToolState != nil && ts.ToolState.ToolStateCompleted != nil {
+		return ts.ToolState.ToolStateCompleted.Output
+	}
+	return nil
+}
+
+// Input returns the input for compatibility
+func (ts *ToolStateCompat) Input() interface{} {
+	if ts.ToolState != nil && ts.ToolState.ToolStateCompleted != nil {
+		return ts.ToolState.ToolStateCompleted.Input
+	}
+	if ts.ToolState != nil && ts.ToolState.ToolStateRunning != nil {
+		return ts.ToolState.ToolStateRunning.Input
+	}
+	return nil
+}
+
+// Error returns the error for compatibility
+func (ts *ToolStateCompat) Error() interface{} {
+	if ts.ToolState != nil && ts.ToolState.ToolStateError != nil {
+		return ts.ToolState.ToolStateError.Error
+	}
+	return nil
+}
+
+// Metadata returns metadata for compatibility
+func (ts *ToolStateCompat) Metadata() interface{} {
+	if ts.ToolState != nil && ts.ToolState.ToolStateCompleted != nil {
+		return ts.ToolState.ToolStateCompleted.Metadata
+	}
+	return nil
+}
+
+// Union types and interfaces for compatibility - simplified approach
+
+// Log level constants
+const (
+	AppLogParamsLevelDebug = "debug"
+	AppLogParamsLevelInfo  = "info"
+	AppLogParamsLevelWarn  = "warn"
+	AppLogParamsLevelError = "error"
+)
+
+// Parameter types for API calls
 type TextPartInputParam struct {
 	ID   string                  `json:"id"`
 	Type string                  `json:"type"`
@@ -149,14 +302,19 @@ type TextPartInputParam struct {
 	Time *TextPartInputTimeParam `json:"time,omitempty"`
 }
 
-type FilePartInputParam struct {
-	ID       string                    `json:"id"`
-	Type     string                    `json:"type"`
-	Filename string                    `json:"filename"`
-	URL      string                    `json:"url"`
-	Source   *FilePartSourceUnionParam `json:"source,omitempty"`
+type TextPartInputTimeParam struct {
+	Start *float64 `json:"start,omitempty"`
+	End   *float64 `json:"end,omitempty"`
 }
 
+type FilePartInputParam struct {
+	ID     string                    `json:"id"`
+	Type   string                    `json:"type"`
+	URL    string                    `json:"url"`
+	Source *FilePartSourceUnionParam `json:"source,omitempty"`
+}
+
+// Simplified parameter types for compatibility
 type FilePartSourceUnionParam interface {
 	isFilePartSourceUnionParam()
 }
@@ -181,9 +339,9 @@ type SymbolSourceParam struct {
 func (s SymbolSourceParam) isFilePartSourceUnionParam() {}
 
 type FilePartSourceTextParam struct {
-	Start   string `json:"start"`
-	End     string `json:"end"`
-	Content string `json:"content"`
+	Start *int32 `json:"start,omitempty"`
+	End   *int32 `json:"end,omitempty"`
+	Text  string `json:"text"`
 }
 
 type SymbolSourceRangeParam struct {
@@ -201,79 +359,73 @@ type SymbolSourceRangeEndParam struct {
 	Character int32 `json:"character"`
 }
 
-// Implement union interfaces for existing types
-func (kuucode.UserMessage) isMessageUnion()      {}
-func (kuucode.AssistantMessage) isMessageUnion() {}
-
-func (kuucode.TextPart) isPartUnion()       {}
-func (kuucode.FilePart) isPartUnion()       {}
-func (kuucode.ToolPart) isPartUnion()       {}
-func (kuucode.StepStartPart) isPartUnion()  {}
-func (kuucode.StepFinishPart) isPartUnion() {}
-
-func (TextPartInputParam) isSessionChatParamsPartUnion() {}
-func (FilePartInputParam) isSessionChatParamsPartUnion() {}
-
-// Compatibility wrappers for existing types to add missing fields/methods
-type SessionWrapper struct {
-	*kuucode.Session
+// Additional missing types
+type UserMessageTime struct {
+	Start *float64 `json:"start,omitempty"`
+	End   *float64 `json:"end,omitempty"`
 }
 
-func (s *SessionWrapper) ID() string {
-	if s.Session != nil && s.Session.Id != nil {
-		return *s.Session.Id
-	}
-	return ""
+type SymbolSourceRange struct {
+	Start *SymbolSourceRangeStart `json:"start,omitempty"`
+	End   *SymbolSourceRangeEnd   `json:"end,omitempty"`
 }
 
-type ProviderWrapper struct {
-	*kuucode.Provider
+type SymbolSourceRangeStart struct {
+	Line      int32 `json:"line"`
+	Character int32 `json:"character"`
 }
 
-func (p *ProviderWrapper) ID() string {
-	if p.Provider != nil && p.Provider.Id != nil {
-		return *p.Provider.Id
-	}
-	return ""
+type SymbolSourceRangeEnd struct {
+	Line      int32 `json:"line"`
+	Character int32 `json:"character"`
 }
 
-type ModelWrapper struct {
-	*kuucode.Model
+// File read parameters - already defined above
+
+// Service parameter types
+type AppLogParams struct {
+	Level   string      `json:"level"`
+	Service string      `json:"service"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
-func (m *ModelWrapper) ID() string {
-	if m.Model != nil && m.Model.Id != nil {
-		return *m.Model.Id
-	}
-	return ""
+type AppProvidersResponse struct {
+	Providers []kuucode.Provider `json:"providers"`
+	Default   map[string]string  `json:"default,omitempty"`
 }
 
-// Extended types with compatibility methods
-type ToolStateExtended struct {
-	kuucode.ToolState
+type SessionInitParams struct {
+	MessageID  string `json:"messageId"`
+	ProviderID string `json:"providerId"`
+	ModelID    string `json:"modelId"`
 }
 
-func (t *ToolStateExtended) Status() string {
-	// TODO: Map from new SDK tool state to old status format
-	return "pending"
+type SessionChatParams struct {
+	ProviderID string                       `json:"providerId"`
+	ModelID    string                       `json:"modelId"`
+	Mode       string                       `json:"mode"`
+	MessageID  string                       `json:"messageId"`
+	Parts      []SessionChatParamsPartUnion `json:"parts"`
 }
 
-func (t *ToolStateExtended) Output() interface{} {
-	// TODO: Extract output from new SDK tool state
-	return nil
+type SessionSummarizeParams struct {
+	ProviderID string `json:"providerId"`
+	ModelID    string `json:"modelId"`
 }
 
-func (t *ToolStateExtended) Input() interface{} {
-	// TODO: Extract input from new SDK tool state
-	return nil
+type FindFilesParams struct {
+	Query string `json:"query"`
 }
 
-func (t *ToolStateExtended) Error() interface{} {
-	// TODO: Extract error from new SDK tool state
-	return nil
+type FindFilesResponse struct {
+	Files []kuucode.File `json:"files"`
 }
 
-func (t *ToolStateExtended) Metadata() interface{} {
-	// TODO: Extract metadata from new SDK tool state
-	return nil
+type FindSymbolsParams struct {
+	Query string `json:"query"`
+}
+
+type FindSymbolsResponse struct {
+	Symbols []kuucode.Symbol `json:"symbols"`
 }

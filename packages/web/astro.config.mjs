@@ -32,7 +32,7 @@ export default defineConfig({
     configSchema(),
     solidJs(),
     starlight({
-      title: "opencode",
+      title: "kuucode",
       lastUpdated: true,
       expressiveCode: { themes: ["github-light", "github-dark"] },
       social: [
@@ -87,7 +87,7 @@ export default defineConfig({
     }),
   ],
   redirects: {
-    "/discord": "https://discord.gg/opencode",
+    "/discord": "https://discord.gg/kuucode",
   },
 })
 
@@ -97,7 +97,7 @@ function configSchema() {
     hooks: {
       "astro:build:done": async () => {
         console.log("generating config schema")
-        spawnSync("../opencode/script/schema.ts", ["./dist/config.json"])
+        spawnSync("../kuucode/script/schema.ts", ["./dist/config.json"])
       },
     },
   }

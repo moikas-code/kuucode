@@ -3,11 +3,11 @@ import { DateTime } from "luxon"
 import { createStore, reconcile, unwrap } from "solid-js/store"
 import { mapValues } from "remeda"
 import { IconArrowDown } from "./icons"
-import { IconOpencode } from "./icons/custom"
+import { IconKuucode } from "./icons/custom"
 import styles from "./share.module.css"
-import type { MessageV2 } from "opencode/session/message-v2"
-import type { Message } from "opencode/session/message"
-import type { Session } from "opencode/session/index"
+import type { MessageV2 } from "kuucode/session/message-v2"
+import type { Message } from "kuucode/session/message"
+import type { Session } from "kuucode/session/index"
 import { Part, ProviderIcon } from "./share/part"
 
 type MessageWithParts = MessageV2.Info & { parts: MessageV2.Part[] }
@@ -297,9 +297,9 @@ export default function Share(props: {
         <h1 data-component="header-title">{store.info?.title}</h1>
         <div data-component="header-details">
           <ul data-component="header-stats">
-            <li title="opencode version" data-slot="item">
+            <li title="kuucode version" data-slot="item">
               <div data-slot="icon" title="kuucode">
-                <IconOpencode width={16} height={16} />
+                <IconKuucode width={16} height={16} />
               </div>
               <Show when={store.info?.version} fallback="v0.0.1">
                 <span>v{store.info?.version}</span>

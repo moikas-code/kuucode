@@ -174,10 +174,18 @@ export namespace Config {
         .describe("Modes configuration, see https://kuucode.ai/docs/modes"),
       provider: z
         .record(
-          ModelsDev.Provider.partial().extend({
-            models: z.record(ModelsDev.Model.partial()),
-            options: z.record(z.any()).optional(),
-          }),
+          ModelsDev.Provider.partial()
+            .extend({
+              models: z.record(ModelsDev.Model.partial()),
+              options: z
+                .object({
+                  apiKey: z.string().optional(),
+                  baseURL: z.string().optional(),
+                })
+                .catchall(z.any())
+                .optional(),
+            })
+            .strict(),
         )
         .optional()
         .describe("Custom provider configurations and model overrides"),
@@ -222,7 +230,7 @@ export namespace Config {
     let result: any = pipe(
       {},
       mergeDeep(await load(path.join(Global.Path.config, "config.json"))),
-      mergeDeep(await load(path.join(Global.Path.config, "opencode.json"))),
+      mergeDeep(await load(path.join(Global.Path.config, "kuucode.json"))),
     )
 
     await import(path.join(Global.Path.config, "config"), {

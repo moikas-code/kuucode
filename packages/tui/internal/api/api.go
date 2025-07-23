@@ -6,7 +6,7 @@ import (
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/compat"
 )
 
 type Request struct {
@@ -14,7 +14,7 @@ type Request struct {
 	Body json.RawMessage `json:"body"`
 }
 
-func Start(ctx context.Context, program *tea.Program, client *kuucode.Client) {
+func Start(ctx context.Context, program *tea.Program, client *compat.Client) {
 	for {
 		select {
 		case <-ctx.Done():
@@ -30,7 +30,7 @@ func Start(ctx context.Context, program *tea.Program, client *kuucode.Client) {
 	}
 }
 
-func Reply(ctx context.Context, client *kuucode.Client, response interface{}) tea.Cmd {
+func Reply(ctx context.Context, client *compat.Client, response interface{}) tea.Cmd {
 	return func() tea.Msg {
 		err := client.Post(ctx, "/tui/control/response", response, nil)
 		if err != nil {

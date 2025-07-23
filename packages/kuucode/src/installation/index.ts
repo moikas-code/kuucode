@@ -6,7 +6,7 @@ import { Bus } from "../bus"
 import { Log } from "../util/log"
 
 declare global {
-  const OPENCODE_VERSION: string
+  const KUUCODE_VERSION: string
 }
 
 export namespace Installation {
@@ -49,7 +49,7 @@ export namespace Installation {
   }
 
   export async function method() {
-    if (process.execPath.includes(path.join(".opencode", "bin"))) return "curl"
+    if (process.execPath.includes(path.join(".kuucode", "bin"))) return "curl"
     const exec = process.execPath.toLowerCase()
 
     const checks = [
@@ -71,7 +71,7 @@ export namespace Installation {
       },
       {
         name: "brew" as const,
-        command: () => $`brew list --formula opencode-ai`.throws(false).text(),
+        command: () => $`brew list --formula kuucode-ai`.throws(false).text(),
       },
     ]
 
@@ -85,7 +85,7 @@ export namespace Installation {
 
     for (const check of checks) {
       const output = await check.command()
-      if (output.includes("opencode-ai")) {
+      if (output.includes("kuucode-ai")) {
         return check.name
       }
     }
@@ -109,13 +109,13 @@ export namespace Installation {
             VERSION: target,
           })
         case "npm":
-          return $`npm install -g opencode-ai@${target}`
+          return $`npm install -g kuucode-ai@${target}`
         case "pnpm":
-          return $`pnpm install -g opencode-ai@${target}`
+          return $`pnpm install -g kuucode-ai@${target}`
         case "bun":
-          return $`bun install -g opencode-ai@${target}`
+          return $`bun install -g kuucode-ai@${target}`
         case "brew":
-          return $`brew install sst/tap/opencode`.env({
+          return $`brew install sst/tap/kuucode`.env({
             HOMEBREW_NO_AUTO_UPDATE: "1",
           })
         default:
@@ -135,10 +135,10 @@ export namespace Installation {
       })
   }
 
-  export const VERSION = typeof OPENCODE_VERSION === "string" ? OPENCODE_VERSION : "dev"
+  export const VERSION = typeof kuucode_VERSION === "string" ? kuucode_VERSION : "dev"
 
   export async function latest() {
-    return fetch("https://api.github.com/repos/sst/opencode/releases/latest")
+    return fetch("https://api.github.com/repos/sst/kuucode/releases/latest")
       .then((res) => res.json())
       .then((data) => {
         if (typeof data.tag_name !== "string") {

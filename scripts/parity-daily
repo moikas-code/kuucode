@@ -1,0 +1,40 @@
+#!/usr/bin/env bun
+
+// Daily parity check script for local development
+import { $ } from "bun"
+
+console.log("🔄 Daily Kuucode Parity Check")
+console.log("=" .repeat(40))
+
+try {
+  // Check for new commits in the last 24 hours
+  console.log("📡 Fetching upstream changes...")
+  await $`git fetch upstream`
+  
+  // Run parity check
+  console.log("🔍 Checking for new commits...")
+  await $`bun scripts/parity check "24 hours ago" --auto-triage`
+  
+  // Show dashboard
+  console.log("\n📊 Current Status:")
+  await $`bun scripts/parity dashboard`
+  
+  // Show high priority items
+  console.log("\n🚨 High Priority Items:")
+  const result = await $`bun scripts/parity list pending high`.quiet()
+  const lines = result.stdout.toString().trim().split('\n')
+  
+  if (lines.length > 1) {
+    console.log(result.stdout.toString())
+    console.log("\n💡 Next steps:")
+    console.log("  1. Review high priority items: bun scripts/parity review <hash>")
+    console.log("  2. Update status: bun scripts/parity update <hash> <status>")
+    console.log("  3. Check full dashboard: bun scripts/parity dashboard")
+  } else {
+    console.log("✅ No high priority items pending!")
+  }
+  
+} catch (error) {
+  console.error("❌ Error during parity check:", error)
+  process.exit(1)
+}

@@ -3,14 +3,11 @@ package completions
 import (
 	"context"
 	"log/slog"
-	"sort"
-	"strconv"
 	"strings"
 
-	"github.com/moikas-code/kuucode-sdk-go"
 	"github.com/moikas-code/kuucode/internal/app"
+	"github.com/moikas-code/kuucode/internal/compat"
 	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
 )
 
 type filesContextGroup struct {
@@ -29,37 +26,8 @@ func (cg *filesContextGroup) GetEmptyMessage() string {
 func (cg *filesContextGroup) getGitFiles() []CompletionSuggestion {
 	items := make([]CompletionSuggestion, 0)
 
-	status, _ := cg.app.Client.File.Status(context.Background())
-	if status != nil {
-		files := *status
-		sort.Slice(files, func(i, j int) bool {
-			return files[i].Added+files[i].Removed > files[j].Added+files[j].Removed
-		})
-
-		for _, file := range files {
-			displayFunc := func(s styles.Style) string {
-				t := theme.CurrentTheme()
-				green := s.Foreground(t.Success()).Render
-				red := s.Foreground(t.Error()).Render
-				display := file.Path
-				if file.Added > 0 {
-					display += green(" +" + strconv.Itoa(int(file.Added)))
-				}
-				if file.Removed > 0 {
-					display += red(" -" + strconv.Itoa(int(file.Removed)))
-				}
-				return display
-			}
-			item := CompletionSuggestion{
-				Display:    displayFunc,
-				Value:      file.Path,
-				ProviderID: cg.GetId(),
-				RawData:    file,
-			}
-			items = append(items, item)
-		}
-	}
-
+	// TODO: Implement file status via compat layer when available
+	// For now, return empty list since the Status method doesn't exist in the compat layer
 	return items
 }
 
@@ -73,9 +41,9 @@ func (cg *filesContextGroup) GetChildEntries(
 		items = append(items, cg.gitFiles...)
 	}
 
-	files, err := cg.app.Client.Find.Files(
+	files, err := cg.app.Client.Find().Files(
 		context.Background(),
-		kuucode.FindFilesParams{Query: kuucode.F(query)},
+		compat.FindFilesParams{Query: query},
 	)
 	if err != nil {
 		slog.Error("Failed to get completion items", "error", err)
@@ -88,7 +56,7 @@ func (cg *filesContextGroup) GetChildEntries(
 	for _, file := range *files {
 		exists := false
 		for _, existing := range cg.gitFiles {
-			if existing.Value == file {
+			if existing.Value == file.Path {
 				if query != "" {
 					items = append(items, existing)
 				}
@@ -97,14 +65,12 @@ func (cg *filesContextGroup) GetChildEntries(
 		}
 		if !exists {
 			displayFunc := func(s styles.Style) string {
-				// t := theme.CurrentTheme()
-				// return s.Foreground(t.Text()).Render(file)
-				return s.Render(file)
+				return s.Render(file.Path)
 			}
 
 			item := CompletionSuggestion{
 				Display:    displayFunc,
-				Value:      file,
+				Value:      file.Path,
 				ProviderID: cg.GetId(),
 				RawData:    file,
 			}

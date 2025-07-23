@@ -26,7 +26,7 @@ const TOOL: Record<string, [string, string]> = {
 
 export const RunCommand = cmd({
   command: "run [message..]",
-  describe: "run opencode with a message",
+  describe: "run kuucode with a message",
   builder: (yargs: Argv) => {
     return yargs
       .positional("message", {
@@ -89,7 +89,7 @@ export const RunCommand = cmd({
       UI.empty()
 
       const cfg = await Config.get()
-      if (cfg.share === "auto" || Flag.OPENCODE_AUTO_SHARE || args.share) {
+      if (cfg.share === "auto" || Flag.KUUCODE_AUTO_SHARE || args.share) {
         try {
           await Session.share(session.id)
           UI.println(UI.Style.TEXT_INFO_BOLD + "~  https://kuucode.ai/s/" + session.id.slice(-8))

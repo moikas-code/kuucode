@@ -70,12 +70,12 @@ check_deps() {
 
 # Function to start development server
 start_dev() {
-    print_status "Starting Kuucode Desktop in development mode..."
-    print_status "The app will open at http://localhost:5173"
+    print_status "Starting Kuucode Desktop native app..."
+    print_status "This will launch the actual desktop application"
     print_status "Press Ctrl+C to stop"
     echo ""
     
-    # Start the development server
+    # Start the native desktop app
     bun run dev
 }
 
@@ -102,18 +102,15 @@ build_app() {
     fi
 }
 
-# Function to run Tauri dev (native desktop)
-start_tauri() {
-    print_status "Starting Kuucode Desktop with Tauri (native)..."
+# Function to run web version only
+start_web() {
+    print_status "Starting Kuucode Desktop web version..."
+    print_status "The app will open at http://localhost:5173"
+    print_status "Press Ctrl+C to stop"
+    echo ""
     
-    if ! command -v cargo &> /dev/null; then
-        print_error "Rust/Cargo required for Tauri. Install from https://rustup.rs/"
-        exit 1
-    fi
-    
-    check_deps
-    print_status "Starting native desktop app..."
-    bun run tauri dev
+    # Start the web development server
+    bun run dev:web
 }
 
 # Function to show help
@@ -123,16 +120,16 @@ show_help() {
     echo "Usage: $0 [command]"
     echo ""
     echo "Commands:"
-    echo "  dev, start    Start development server (web version)"
-    echo "  tauri         Start native desktop app with Tauri"
+    echo "  dev, start    Start native desktop app (or web if Rust not available)"
+    echo "  web           Start web version only"
     echo "  build         Build the desktop app for production"
     echo "  deps          Check and install dependencies"
     echo "  help          Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0              # Start development server"
-    echo "  $0 dev          # Start development server"
-    echo "  $0 tauri        # Start native desktop app"
+    echo "  $0              # Start native desktop app"
+    echo "  $0 dev          # Start native desktop app"
+    echo "  $0 web          # Start web version only"
     echo "  $0 build        # Build for production"
     echo ""
 }
@@ -140,11 +137,20 @@ show_help() {
 # Main script logic
 case "${1:-dev}" in
     "dev"|"start"|"")
-        check_deps
-        start_dev
+        if ! command -v cargo &> /dev/null; then
+            print_warning "Rust/Cargo not found. Starting web version instead."
+            print_warning "Install Rust from https://rustup.rs/ for native desktop app."
+            echo ""
+            check_deps
+            start_web
+        else
+            check_deps
+            start_dev
+        fi
         ;;
-    "tauri"|"native")
-        start_tauri
+    "web")
+        check_deps
+        start_web
         ;;
     "build")
         build_app

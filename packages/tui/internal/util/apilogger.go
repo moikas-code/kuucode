@@ -5,27 +5,27 @@ import (
 	"log/slog"
 	"sync"
 
-	kuucode "github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuucode/internal/compat"
 )
 
 type APILogHandler struct {
-	client  *kuucode.Client
+	client  *compat.Client
 	service string
 	level   slog.Level
 	attrs   []slog.Attr
 	groups  []string
 	mu      sync.Mutex
-	queue   chan kuucode.AppLogParams
+	queue   chan compat.AppLogParams
 }
 
-func NewAPILogHandler(ctx context.Context, client *kuucode.Client, service string, level slog.Level) *APILogHandler {
+func NewAPILogHandler(ctx context.Context, client *compat.Client, service string, level slog.Level) *APILogHandler {
 	result := &APILogHandler{
 		client:  client,
 		service: service,
 		level:   level,
 		attrs:   make([]slog.Attr, 0),
 		groups:  make([]string, 0),
-		queue:   make(chan kuucode.AppLogParams, 100_000),
+		queue:   make(chan compat.AppLogParams, 100_000),
 	}
 	go func() {
 		for {
@@ -33,7 +33,7 @@ func NewAPILogHandler(ctx context.Context, client *kuucode.Client, service strin
 			case <-ctx.Done():
 				return
 			case params := <-result.queue:
-				_, err := client.App.Log(context.Background(), params)
+				err := client.App.Log(context.Background(), params)
 				if err != nil {
 					slog.Error("Failed to log to API", "error", err)
 				}
@@ -48,18 +48,18 @@ func (h *APILogHandler) Enabled(_ context.Context, level slog.Level) bool {
 }
 
 func (h *APILogHandler) Handle(ctx context.Context, r slog.Record) error {
-	var apiLevel kuucode.AppLogParamsLevel
+	var apiLevel compat.AppLogParamsLevel
 	switch r.Level {
 	case slog.LevelDebug:
-		apiLevel = kuucode.AppLogParamsLevelDebug
+		apiLevel = compat.AppLogParamsLevelDebug
 	case slog.LevelInfo:
-		apiLevel = kuucode.AppLogParamsLevelInfo
+		apiLevel = compat.AppLogParamsLevelInfo
 	case slog.LevelWarn:
-		apiLevel = kuucode.AppLogParamsLevelWarn
+		apiLevel = compat.AppLogParamsLevelWarn
 	case slog.LevelError:
-		apiLevel = kuucode.AppLogParamsLevelError
+		apiLevel = compat.AppLogParamsLevelError
 	default:
-		apiLevel = kuucode.AppLogParamsLevelInfo
+		apiLevel = compat.AppLogParamsLevelInfo
 	}
 
 	extra := make(map[string]any)
@@ -75,14 +75,14 @@ func (h *APILogHandler) Handle(ctx context.Context, r slog.Record) error {
 		return true
 	})
 
-	params := kuucode.AppLogParams{
-		Service: kuucode.F(h.service),
-		Level:   kuucode.F(apiLevel),
-		Message: kuucode.F(r.Message),
+	params := compat.AppLogParams{
+		Service: h.service,
+		Level:   string(apiLevel),
+		Message: r.Message,
 	}
 
 	if len(extra) > 0 {
-		params.Extra = kuucode.F(extra)
+		params.Data = extra
 	}
 
 	h.queue <- params

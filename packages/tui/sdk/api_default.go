@@ -1,7 +1,7 @@
 /*
 kuucode
 
-opencode api
+kuucode api
 
 API version: 0.0.3
 */
@@ -19,17 +19,16 @@ import (
 	"strings"
 )
 
-
 type DefaultAPI interface {
 
 	/*
-	DeleteSessionById Method for DeleteSessionById
+		DeleteSessionById Method for DeleteSessionById
 
-	Delete a session and all its data
+		Delete a session and all its data
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIDeleteSessionByIdRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIDeleteSessionByIdRequest
 	*/
 	DeleteSessionById(ctx context.Context, id string) DefaultAPIDeleteSessionByIdRequest
 
@@ -38,13 +37,13 @@ type DefaultAPI interface {
 	DeleteSessionByIdExecute(r DefaultAPIDeleteSessionByIdRequest) (bool, *http.Response, error)
 
 	/*
-	DeleteSessionByIdShare Method for DeleteSessionByIdShare
+		DeleteSessionByIdShare Method for DeleteSessionByIdShare
 
-	Unshare the session
+		Unshare the session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIDeleteSessionByIdShareRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIDeleteSessionByIdShareRequest
 	*/
 	DeleteSessionByIdShare(ctx context.Context, id string) DefaultAPIDeleteSessionByIdShareRequest
 
@@ -53,12 +52,12 @@ type DefaultAPI interface {
 	DeleteSessionByIdShareExecute(r DefaultAPIDeleteSessionByIdShareRequest) (*Session, *http.Response, error)
 
 	/*
-	GetApp Method for GetApp
+		GetApp Method for GetApp
 
-	Get app info
+		Get app info
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetAppRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetAppRequest
 	*/
 	GetApp(ctx context.Context) DefaultAPIGetAppRequest
 
@@ -67,12 +66,12 @@ type DefaultAPI interface {
 	GetAppExecute(r DefaultAPIGetAppRequest) (*App, *http.Response, error)
 
 	/*
-	GetConfig Method for GetConfig
+		GetConfig Method for GetConfig
 
-	Get config info
+		Get config info
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetConfigRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetConfigRequest
 	*/
 	GetConfig(ctx context.Context) DefaultAPIGetConfigRequest
 
@@ -81,12 +80,12 @@ type DefaultAPI interface {
 	GetConfigExecute(r DefaultAPIGetConfigRequest) (*Config, *http.Response, error)
 
 	/*
-	GetConfigProviders Method for GetConfigProviders
+		GetConfigProviders Method for GetConfigProviders
 
-	List all providers
+		List all providers
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetConfigProvidersRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetConfigProvidersRequest
 	*/
 	GetConfigProviders(ctx context.Context) DefaultAPIGetConfigProvidersRequest
 
@@ -95,12 +94,12 @@ type DefaultAPI interface {
 	GetConfigProvidersExecute(r DefaultAPIGetConfigProvidersRequest) (*GetConfigProviders200Response, *http.Response, error)
 
 	/*
-	GetEvent Method for GetEvent
+		GetEvent Method for GetEvent
 
-	Get events
+		Get events
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetEventRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetEventRequest
 	*/
 	GetEvent(ctx context.Context) DefaultAPIGetEventRequest
 
@@ -109,12 +108,12 @@ type DefaultAPI interface {
 	GetEventExecute(r DefaultAPIGetEventRequest) (*Event, *http.Response, error)
 
 	/*
-	GetFile Method for GetFile
+		GetFile Method for GetFile
 
-	Read a file
+		Read a file
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetFileRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetFileRequest
 	*/
 	GetFile(ctx context.Context) DefaultAPIGetFileRequest
 
@@ -123,12 +122,12 @@ type DefaultAPI interface {
 	GetFileExecute(r DefaultAPIGetFileRequest) (*GetFile200Response, *http.Response, error)
 
 	/*
-	GetFileStatus Method for GetFileStatus
+		GetFileStatus Method for GetFileStatus
 
-	Get file status
+		Get file status
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetFileStatusRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetFileStatusRequest
 	*/
 	GetFileStatus(ctx context.Context) DefaultAPIGetFileStatusRequest
 
@@ -137,12 +136,12 @@ type DefaultAPI interface {
 	GetFileStatusExecute(r DefaultAPIGetFileStatusRequest) ([]File, *http.Response, error)
 
 	/*
-	GetFind Method for GetFind
+		GetFind Method for GetFind
 
-	Find text in files
+		Find text in files
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetFindRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetFindRequest
 	*/
 	GetFind(ctx context.Context) DefaultAPIGetFindRequest
 
@@ -151,12 +150,12 @@ type DefaultAPI interface {
 	GetFindExecute(r DefaultAPIGetFindRequest) ([]Match, *http.Response, error)
 
 	/*
-	GetFindFile Method for GetFindFile
+		GetFindFile Method for GetFindFile
 
-	Find files
+		Find files
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetFindFileRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetFindFileRequest
 	*/
 	GetFindFile(ctx context.Context) DefaultAPIGetFindFileRequest
 
@@ -165,12 +164,12 @@ type DefaultAPI interface {
 	GetFindFileExecute(r DefaultAPIGetFindFileRequest) ([]string, *http.Response, error)
 
 	/*
-	GetFindSymbol Method for GetFindSymbol
+		GetFindSymbol Method for GetFindSymbol
 
-	Find workspace symbols
+		Find workspace symbols
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetFindSymbolRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetFindSymbolRequest
 	*/
 	GetFindSymbol(ctx context.Context) DefaultAPIGetFindSymbolRequest
 
@@ -179,12 +178,12 @@ type DefaultAPI interface {
 	GetFindSymbolExecute(r DefaultAPIGetFindSymbolRequest) ([]Symbol, *http.Response, error)
 
 	/*
-	GetMode Method for GetMode
+		GetMode Method for GetMode
 
-	List all modes
+		List all modes
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetModeRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetModeRequest
 	*/
 	GetMode(ctx context.Context) DefaultAPIGetModeRequest
 
@@ -193,12 +192,12 @@ type DefaultAPI interface {
 	GetModeExecute(r DefaultAPIGetModeRequest) ([]Mode, *http.Response, error)
 
 	/*
-	GetSession Method for GetSession
+		GetSession Method for GetSession
 
-	List all sessions
+		List all sessions
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIGetSessionRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIGetSessionRequest
 	*/
 	GetSession(ctx context.Context) DefaultAPIGetSessionRequest
 
@@ -207,13 +206,13 @@ type DefaultAPI interface {
 	GetSessionExecute(r DefaultAPIGetSessionRequest) ([]Session, *http.Response, error)
 
 	/*
-	GetSessionByIdMessage Method for GetSessionByIdMessage
+		GetSessionByIdMessage Method for GetSessionByIdMessage
 
-	List messages for a session
+		List messages for a session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIGetSessionByIdMessageRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIGetSessionByIdMessageRequest
 	*/
 	GetSessionByIdMessage(ctx context.Context, id string) DefaultAPIGetSessionByIdMessageRequest
 
@@ -222,12 +221,12 @@ type DefaultAPI interface {
 	GetSessionByIdMessageExecute(r DefaultAPIGetSessionByIdMessageRequest) ([]GetSessionByIdMessage200ResponseInner, *http.Response, error)
 
 	/*
-	PostAppInit Method for PostAppInit
+		PostAppInit Method for PostAppInit
 
-	Initialize the app
+		Initialize the app
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIPostAppInitRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIPostAppInitRequest
 	*/
 	PostAppInit(ctx context.Context) DefaultAPIPostAppInitRequest
 
@@ -236,12 +235,12 @@ type DefaultAPI interface {
 	PostAppInitExecute(r DefaultAPIPostAppInitRequest) (bool, *http.Response, error)
 
 	/*
-	PostLog Method for PostLog
+		PostLog Method for PostLog
 
-	Write a log entry to the server logs
+		Write a log entry to the server logs
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIPostLogRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIPostLogRequest
 	*/
 	PostLog(ctx context.Context) DefaultAPIPostLogRequest
 
@@ -250,12 +249,12 @@ type DefaultAPI interface {
 	PostLogExecute(r DefaultAPIPostLogRequest) (bool, *http.Response, error)
 
 	/*
-	PostSession Method for PostSession
+		PostSession Method for PostSession
 
-	Create a new session
+		Create a new session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIPostSessionRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIPostSessionRequest
 	*/
 	PostSession(ctx context.Context) DefaultAPIPostSessionRequest
 
@@ -264,13 +263,13 @@ type DefaultAPI interface {
 	PostSessionExecute(r DefaultAPIPostSessionRequest) (*Session, *http.Response, error)
 
 	/*
-	PostSessionByIdAbort Method for PostSessionByIdAbort
+		PostSessionByIdAbort Method for PostSessionByIdAbort
 
-	Abort a session
+		Abort a session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIPostSessionByIdAbortRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIPostSessionByIdAbortRequest
 	*/
 	PostSessionByIdAbort(ctx context.Context, id string) DefaultAPIPostSessionByIdAbortRequest
 
@@ -279,13 +278,13 @@ type DefaultAPI interface {
 	PostSessionByIdAbortExecute(r DefaultAPIPostSessionByIdAbortRequest) (bool, *http.Response, error)
 
 	/*
-	PostSessionByIdInit Method for PostSessionByIdInit
+		PostSessionByIdInit Method for PostSessionByIdInit
 
-	Analyze the app and create a .agentrc file
+		Analyze the app and create a .agentrc file
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIPostSessionByIdInitRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIPostSessionByIdInitRequest
 	*/
 	PostSessionByIdInit(ctx context.Context, id string) DefaultAPIPostSessionByIdInitRequest
 
@@ -294,13 +293,13 @@ type DefaultAPI interface {
 	PostSessionByIdInitExecute(r DefaultAPIPostSessionByIdInitRequest) (bool, *http.Response, error)
 
 	/*
-	PostSessionByIdMessage Method for PostSessionByIdMessage
+		PostSessionByIdMessage Method for PostSessionByIdMessage
 
-	Create and send a new message to a session
+		Create and send a new message to a session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIPostSessionByIdMessageRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIPostSessionByIdMessageRequest
 	*/
 	PostSessionByIdMessage(ctx context.Context, id string) DefaultAPIPostSessionByIdMessageRequest
 
@@ -309,13 +308,13 @@ type DefaultAPI interface {
 	PostSessionByIdMessageExecute(r DefaultAPIPostSessionByIdMessageRequest) (*AssistantMessage, *http.Response, error)
 
 	/*
-	PostSessionByIdShare Method for PostSessionByIdShare
+		PostSessionByIdShare Method for PostSessionByIdShare
 
-	Share a session
+		Share a session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIPostSessionByIdShareRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIPostSessionByIdShareRequest
 	*/
 	PostSessionByIdShare(ctx context.Context, id string) DefaultAPIPostSessionByIdShareRequest
 
@@ -324,13 +323,13 @@ type DefaultAPI interface {
 	PostSessionByIdShareExecute(r DefaultAPIPostSessionByIdShareRequest) (*Session, *http.Response, error)
 
 	/*
-	PostSessionByIdSummarize Method for PostSessionByIdSummarize
+		PostSessionByIdSummarize Method for PostSessionByIdSummarize
 
-	Summarize the session
+		Summarize the session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param id
-	@return DefaultAPIPostSessionByIdSummarizeRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id
+		@return DefaultAPIPostSessionByIdSummarizeRequest
 	*/
 	PostSessionByIdSummarize(ctx context.Context, id string) DefaultAPIPostSessionByIdSummarizeRequest
 
@@ -339,12 +338,12 @@ type DefaultAPI interface {
 	PostSessionByIdSummarizeExecute(r DefaultAPIPostSessionByIdSummarizeRequest) (bool, *http.Response, error)
 
 	/*
-	PostTuiOpenHelp Method for PostTuiOpenHelp
+		PostTuiOpenHelp Method for PostTuiOpenHelp
 
-	Open the help dialog
+		Open the help dialog
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIPostTuiOpenHelpRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIPostTuiOpenHelpRequest
 	*/
 	PostTuiOpenHelp(ctx context.Context) DefaultAPIPostTuiOpenHelpRequest
 
@@ -353,12 +352,12 @@ type DefaultAPI interface {
 	PostTuiOpenHelpExecute(r DefaultAPIPostTuiOpenHelpRequest) (bool, *http.Response, error)
 
 	/*
-	PostTuiPrompt Method for PostTuiPrompt
+		PostTuiPrompt Method for PostTuiPrompt
 
-	Send a prompt to the TUI
+		Send a prompt to the TUI
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return DefaultAPIPostTuiPromptRequest
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return DefaultAPIPostTuiPromptRequest
 	*/
 	PostTuiPrompt(ctx context.Context) DefaultAPIPostTuiPromptRequest
 
@@ -371,9 +370,9 @@ type DefaultAPI interface {
 type DefaultAPIService service
 
 type DefaultAPIDeleteSessionByIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	id string
+	id         string
 }
 
 func (r DefaultAPIDeleteSessionByIdRequest) Execute() (bool, *http.Response, error) {
@@ -385,26 +384,27 @@ DeleteSessionById Method for DeleteSessionById
 
 Delete a session and all its data
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIDeleteSessionByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIDeleteSessionByIdRequest
 */
 func (a *DefaultAPIService) DeleteSessionById(ctx context.Context, id string) DefaultAPIDeleteSessionByIdRequest {
 	return DefaultAPIDeleteSessionByIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) DeleteSessionByIdExecute(r DefaultAPIDeleteSessionByIdRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.DeleteSessionById")
@@ -474,9 +474,9 @@ func (a *DefaultAPIService) DeleteSessionByIdExecute(r DefaultAPIDeleteSessionBy
 }
 
 type DefaultAPIDeleteSessionByIdShareRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	id string
+	id         string
 }
 
 func (r DefaultAPIDeleteSessionByIdShareRequest) Execute() (*Session, *http.Response, error) {
@@ -488,26 +488,27 @@ DeleteSessionByIdShare Method for DeleteSessionByIdShare
 
 Unshare the session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIDeleteSessionByIdShareRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIDeleteSessionByIdShareRequest
 */
 func (a *DefaultAPIService) DeleteSessionByIdShare(ctx context.Context, id string) DefaultAPIDeleteSessionByIdShareRequest {
 	return DefaultAPIDeleteSessionByIdShareRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return Session
+//
+//	@return Session
 func (a *DefaultAPIService) DeleteSessionByIdShareExecute(r DefaultAPIDeleteSessionByIdShareRequest) (*Session, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Session
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Session
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.DeleteSessionByIdShare")
@@ -577,7 +578,7 @@ func (a *DefaultAPIService) DeleteSessionByIdShareExecute(r DefaultAPIDeleteSess
 }
 
 type DefaultAPIGetAppRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -590,24 +591,25 @@ GetApp Method for GetApp
 
 Get app info
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetAppRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetAppRequest
 */
 func (a *DefaultAPIService) GetApp(ctx context.Context) DefaultAPIGetAppRequest {
 	return DefaultAPIGetAppRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return App
+//
+//	@return App
 func (a *DefaultAPIService) GetAppExecute(r DefaultAPIGetAppRequest) (*App, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *App
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *App
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetApp")
@@ -676,7 +678,7 @@ func (a *DefaultAPIService) GetAppExecute(r DefaultAPIGetAppRequest) (*App, *htt
 }
 
 type DefaultAPIGetConfigRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -689,24 +691,25 @@ GetConfig Method for GetConfig
 
 Get config info
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetConfigRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetConfigRequest
 */
 func (a *DefaultAPIService) GetConfig(ctx context.Context) DefaultAPIGetConfigRequest {
 	return DefaultAPIGetConfigRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Config
+//
+//	@return Config
 func (a *DefaultAPIService) GetConfigExecute(r DefaultAPIGetConfigRequest) (*Config, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Config
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Config
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetConfig")
@@ -775,7 +778,7 @@ func (a *DefaultAPIService) GetConfigExecute(r DefaultAPIGetConfigRequest) (*Con
 }
 
 type DefaultAPIGetConfigProvidersRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -788,24 +791,25 @@ GetConfigProviders Method for GetConfigProviders
 
 List all providers
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetConfigProvidersRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetConfigProvidersRequest
 */
 func (a *DefaultAPIService) GetConfigProviders(ctx context.Context) DefaultAPIGetConfigProvidersRequest {
 	return DefaultAPIGetConfigProvidersRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return GetConfigProviders200Response
+//
+//	@return GetConfigProviders200Response
 func (a *DefaultAPIService) GetConfigProvidersExecute(r DefaultAPIGetConfigProvidersRequest) (*GetConfigProviders200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *GetConfigProviders200Response
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GetConfigProviders200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetConfigProviders")
@@ -874,7 +878,7 @@ func (a *DefaultAPIService) GetConfigProvidersExecute(r DefaultAPIGetConfigProvi
 }
 
 type DefaultAPIGetEventRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -887,24 +891,25 @@ GetEvent Method for GetEvent
 
 Get events
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetEventRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetEventRequest
 */
 func (a *DefaultAPIService) GetEvent(ctx context.Context) DefaultAPIGetEventRequest {
 	return DefaultAPIGetEventRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Event
+//
+//	@return Event
 func (a *DefaultAPIService) GetEventExecute(r DefaultAPIGetEventRequest) (*Event, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Event
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Event
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetEvent")
@@ -973,9 +978,9 @@ func (a *DefaultAPIService) GetEventExecute(r DefaultAPIGetEventRequest) (*Event
 }
 
 type DefaultAPIGetFileRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	path *string
+	path       *string
 }
 
 func (r DefaultAPIGetFileRequest) Path(path string) DefaultAPIGetFileRequest {
@@ -992,24 +997,25 @@ GetFile Method for GetFile
 
 Read a file
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetFileRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetFileRequest
 */
 func (a *DefaultAPIService) GetFile(ctx context.Context) DefaultAPIGetFileRequest {
 	return DefaultAPIGetFileRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return GetFile200Response
+//
+//	@return GetFile200Response
 func (a *DefaultAPIService) GetFileExecute(r DefaultAPIGetFileRequest) (*GetFile200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *GetFile200Response
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GetFile200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetFile")
@@ -1082,7 +1088,7 @@ func (a *DefaultAPIService) GetFileExecute(r DefaultAPIGetFileRequest) (*GetFile
 }
 
 type DefaultAPIGetFileStatusRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -1095,24 +1101,25 @@ GetFileStatus Method for GetFileStatus
 
 Get file status
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetFileStatusRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetFileStatusRequest
 */
 func (a *DefaultAPIService) GetFileStatus(ctx context.Context) DefaultAPIGetFileStatusRequest {
 	return DefaultAPIGetFileStatusRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []File
+//
+//	@return []File
 func (a *DefaultAPIService) GetFileStatusExecute(r DefaultAPIGetFileStatusRequest) ([]File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetFileStatus")
@@ -1181,9 +1188,9 @@ func (a *DefaultAPIService) GetFileStatusExecute(r DefaultAPIGetFileStatusReques
 }
 
 type DefaultAPIGetFindRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	pattern *string
+	pattern    *string
 }
 
 func (r DefaultAPIGetFindRequest) Pattern(pattern string) DefaultAPIGetFindRequest {
@@ -1200,24 +1207,25 @@ GetFind Method for GetFind
 
 Find text in files
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetFindRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetFindRequest
 */
 func (a *DefaultAPIService) GetFind(ctx context.Context) DefaultAPIGetFindRequest {
 	return DefaultAPIGetFindRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []Match
+//
+//	@return []Match
 func (a *DefaultAPIService) GetFindExecute(r DefaultAPIGetFindRequest) ([]Match, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []Match
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []Match
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetFind")
@@ -1290,9 +1298,9 @@ func (a *DefaultAPIService) GetFindExecute(r DefaultAPIGetFindRequest) ([]Match,
 }
 
 type DefaultAPIGetFindFileRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	query *string
+	query      *string
 }
 
 func (r DefaultAPIGetFindFileRequest) Query(query string) DefaultAPIGetFindFileRequest {
@@ -1309,24 +1317,25 @@ GetFindFile Method for GetFindFile
 
 Find files
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetFindFileRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetFindFileRequest
 */
 func (a *DefaultAPIService) GetFindFile(ctx context.Context) DefaultAPIGetFindFileRequest {
 	return DefaultAPIGetFindFileRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []string
+//
+//	@return []string
 func (a *DefaultAPIService) GetFindFileExecute(r DefaultAPIGetFindFileRequest) ([]string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetFindFile")
@@ -1399,9 +1408,9 @@ func (a *DefaultAPIService) GetFindFileExecute(r DefaultAPIGetFindFileRequest) (
 }
 
 type DefaultAPIGetFindSymbolRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	query *string
+	query      *string
 }
 
 func (r DefaultAPIGetFindSymbolRequest) Query(query string) DefaultAPIGetFindSymbolRequest {
@@ -1418,24 +1427,25 @@ GetFindSymbol Method for GetFindSymbol
 
 Find workspace symbols
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetFindSymbolRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetFindSymbolRequest
 */
 func (a *DefaultAPIService) GetFindSymbol(ctx context.Context) DefaultAPIGetFindSymbolRequest {
 	return DefaultAPIGetFindSymbolRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []Symbol
+//
+//	@return []Symbol
 func (a *DefaultAPIService) GetFindSymbolExecute(r DefaultAPIGetFindSymbolRequest) ([]Symbol, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []Symbol
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []Symbol
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetFindSymbol")
@@ -1508,7 +1518,7 @@ func (a *DefaultAPIService) GetFindSymbolExecute(r DefaultAPIGetFindSymbolReques
 }
 
 type DefaultAPIGetModeRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -1521,24 +1531,25 @@ GetMode Method for GetMode
 
 List all modes
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetModeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetModeRequest
 */
 func (a *DefaultAPIService) GetMode(ctx context.Context) DefaultAPIGetModeRequest {
 	return DefaultAPIGetModeRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []Mode
+//
+//	@return []Mode
 func (a *DefaultAPIService) GetModeExecute(r DefaultAPIGetModeRequest) ([]Mode, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []Mode
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []Mode
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetMode")
@@ -1607,7 +1618,7 @@ func (a *DefaultAPIService) GetModeExecute(r DefaultAPIGetModeRequest) ([]Mode, 
 }
 
 type DefaultAPIGetSessionRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -1620,24 +1631,25 @@ GetSession Method for GetSession
 
 List all sessions
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIGetSessionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIGetSessionRequest
 */
 func (a *DefaultAPIService) GetSession(ctx context.Context) DefaultAPIGetSessionRequest {
 	return DefaultAPIGetSessionRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []Session
+//
+//	@return []Session
 func (a *DefaultAPIService) GetSessionExecute(r DefaultAPIGetSessionRequest) ([]Session, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []Session
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []Session
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetSession")
@@ -1706,9 +1718,9 @@ func (a *DefaultAPIService) GetSessionExecute(r DefaultAPIGetSessionRequest) ([]
 }
 
 type DefaultAPIGetSessionByIdMessageRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	id string
+	id         string
 }
 
 func (r DefaultAPIGetSessionByIdMessageRequest) Execute() ([]GetSessionByIdMessage200ResponseInner, *http.Response, error) {
@@ -1720,26 +1732,27 @@ GetSessionByIdMessage Method for GetSessionByIdMessage
 
 List messages for a session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIGetSessionByIdMessageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIGetSessionByIdMessageRequest
 */
 func (a *DefaultAPIService) GetSessionByIdMessage(ctx context.Context, id string) DefaultAPIGetSessionByIdMessageRequest {
 	return DefaultAPIGetSessionByIdMessageRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []GetSessionByIdMessage200ResponseInner
+//
+//	@return []GetSessionByIdMessage200ResponseInner
 func (a *DefaultAPIService) GetSessionByIdMessageExecute(r DefaultAPIGetSessionByIdMessageRequest) ([]GetSessionByIdMessage200ResponseInner, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []GetSessionByIdMessage200ResponseInner
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []GetSessionByIdMessage200ResponseInner
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetSessionByIdMessage")
@@ -1809,7 +1822,7 @@ func (a *DefaultAPIService) GetSessionByIdMessageExecute(r DefaultAPIGetSessionB
 }
 
 type DefaultAPIPostAppInitRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -1822,24 +1835,25 @@ PostAppInit Method for PostAppInit
 
 Initialize the app
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIPostAppInitRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIPostAppInitRequest
 */
 func (a *DefaultAPIService) PostAppInit(ctx context.Context) DefaultAPIPostAppInitRequest {
 	return DefaultAPIPostAppInitRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostAppInitExecute(r DefaultAPIPostAppInitRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostAppInit")
@@ -1908,8 +1922,8 @@ func (a *DefaultAPIService) PostAppInitExecute(r DefaultAPIPostAppInitRequest) (
 }
 
 type DefaultAPIPostLogRequest struct {
-	ctx context.Context
-	ApiService DefaultAPI
+	ctx            context.Context
+	ApiService     DefaultAPI
 	postLogRequest *PostLogRequest
 }
 
@@ -1927,24 +1941,25 @@ PostLog Method for PostLog
 
 Write a log entry to the server logs
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIPostLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIPostLogRequest
 */
 func (a *DefaultAPIService) PostLog(ctx context.Context) DefaultAPIPostLogRequest {
 	return DefaultAPIPostLogRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostLogExecute(r DefaultAPIPostLogRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostLog")
@@ -2015,7 +2030,7 @@ func (a *DefaultAPIService) PostLogExecute(r DefaultAPIPostLogRequest) (bool, *h
 }
 
 type DefaultAPIPostSessionRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -2028,24 +2043,25 @@ PostSession Method for PostSession
 
 Create a new session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIPostSessionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIPostSessionRequest
 */
 func (a *DefaultAPIService) PostSession(ctx context.Context) DefaultAPIPostSessionRequest {
 	return DefaultAPIPostSessionRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Session
+//
+//	@return Session
 func (a *DefaultAPIService) PostSessionExecute(r DefaultAPIPostSessionRequest) (*Session, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Session
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Session
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostSession")
@@ -2105,8 +2121,8 @@ func (a *DefaultAPIService) PostSessionExecute(r DefaultAPIPostSessionRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2124,9 +2140,9 @@ func (a *DefaultAPIService) PostSessionExecute(r DefaultAPIPostSessionRequest) (
 }
 
 type DefaultAPIPostSessionByIdAbortRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	id string
+	id         string
 }
 
 func (r DefaultAPIPostSessionByIdAbortRequest) Execute() (bool, *http.Response, error) {
@@ -2138,26 +2154,27 @@ PostSessionByIdAbort Method for PostSessionByIdAbort
 
 Abort a session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIPostSessionByIdAbortRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIPostSessionByIdAbortRequest
 */
 func (a *DefaultAPIService) PostSessionByIdAbort(ctx context.Context, id string) DefaultAPIPostSessionByIdAbortRequest {
 	return DefaultAPIPostSessionByIdAbortRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostSessionByIdAbortExecute(r DefaultAPIPostSessionByIdAbortRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostSessionByIdAbort")
@@ -2227,9 +2244,9 @@ func (a *DefaultAPIService) PostSessionByIdAbortExecute(r DefaultAPIPostSessionB
 }
 
 type DefaultAPIPostSessionByIdInitRequest struct {
-	ctx context.Context
-	ApiService DefaultAPI
-	id string
+	ctx                        context.Context
+	ApiService                 DefaultAPI
+	id                         string
 	postSessionByIdInitRequest *PostSessionByIdInitRequest
 }
 
@@ -2247,26 +2264,27 @@ PostSessionByIdInit Method for PostSessionByIdInit
 
 Analyze the app and create a .agentrc file
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIPostSessionByIdInitRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIPostSessionByIdInitRequest
 */
 func (a *DefaultAPIService) PostSessionByIdInit(ctx context.Context, id string) DefaultAPIPostSessionByIdInitRequest {
 	return DefaultAPIPostSessionByIdInitRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostSessionByIdInitExecute(r DefaultAPIPostSessionByIdInitRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostSessionByIdInit")
@@ -2338,9 +2356,9 @@ func (a *DefaultAPIService) PostSessionByIdInitExecute(r DefaultAPIPostSessionBy
 }
 
 type DefaultAPIPostSessionByIdMessageRequest struct {
-	ctx context.Context
-	ApiService DefaultAPI
-	id string
+	ctx                           context.Context
+	ApiService                    DefaultAPI
+	id                            string
 	postSessionByIdMessageRequest *PostSessionByIdMessageRequest
 }
 
@@ -2358,26 +2376,27 @@ PostSessionByIdMessage Method for PostSessionByIdMessage
 
 Create and send a new message to a session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIPostSessionByIdMessageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIPostSessionByIdMessageRequest
 */
 func (a *DefaultAPIService) PostSessionByIdMessage(ctx context.Context, id string) DefaultAPIPostSessionByIdMessageRequest {
 	return DefaultAPIPostSessionByIdMessageRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return AssistantMessage
+//
+//	@return AssistantMessage
 func (a *DefaultAPIService) PostSessionByIdMessageExecute(r DefaultAPIPostSessionByIdMessageRequest) (*AssistantMessage, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AssistantMessage
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AssistantMessage
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostSessionByIdMessage")
@@ -2449,9 +2468,9 @@ func (a *DefaultAPIService) PostSessionByIdMessageExecute(r DefaultAPIPostSessio
 }
 
 type DefaultAPIPostSessionByIdShareRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
-	id string
+	id         string
 }
 
 func (r DefaultAPIPostSessionByIdShareRequest) Execute() (*Session, *http.Response, error) {
@@ -2463,26 +2482,27 @@ PostSessionByIdShare Method for PostSessionByIdShare
 
 Share a session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIPostSessionByIdShareRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIPostSessionByIdShareRequest
 */
 func (a *DefaultAPIService) PostSessionByIdShare(ctx context.Context, id string) DefaultAPIPostSessionByIdShareRequest {
 	return DefaultAPIPostSessionByIdShareRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return Session
+//
+//	@return Session
 func (a *DefaultAPIService) PostSessionByIdShareExecute(r DefaultAPIPostSessionByIdShareRequest) (*Session, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Session
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Session
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostSessionByIdShare")
@@ -2552,9 +2572,9 @@ func (a *DefaultAPIService) PostSessionByIdShareExecute(r DefaultAPIPostSessionB
 }
 
 type DefaultAPIPostSessionByIdSummarizeRequest struct {
-	ctx context.Context
-	ApiService DefaultAPI
-	id string
+	ctx                             context.Context
+	ApiService                      DefaultAPI
+	id                              string
 	postSessionByIdSummarizeRequest *PostSessionByIdSummarizeRequest
 }
 
@@ -2572,26 +2592,27 @@ PostSessionByIdSummarize Method for PostSessionByIdSummarize
 
 Summarize the session
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return DefaultAPIPostSessionByIdSummarizeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id
+	@return DefaultAPIPostSessionByIdSummarizeRequest
 */
 func (a *DefaultAPIService) PostSessionByIdSummarize(ctx context.Context, id string) DefaultAPIPostSessionByIdSummarizeRequest {
 	return DefaultAPIPostSessionByIdSummarizeRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostSessionByIdSummarizeExecute(r DefaultAPIPostSessionByIdSummarizeRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostSessionByIdSummarize")
@@ -2663,7 +2684,7 @@ func (a *DefaultAPIService) PostSessionByIdSummarizeExecute(r DefaultAPIPostSess
 }
 
 type DefaultAPIPostTuiOpenHelpRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService DefaultAPI
 }
 
@@ -2676,24 +2697,25 @@ PostTuiOpenHelp Method for PostTuiOpenHelp
 
 Open the help dialog
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIPostTuiOpenHelpRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIPostTuiOpenHelpRequest
 */
 func (a *DefaultAPIService) PostTuiOpenHelp(ctx context.Context) DefaultAPIPostTuiOpenHelpRequest {
 	return DefaultAPIPostTuiOpenHelpRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostTuiOpenHelpExecute(r DefaultAPIPostTuiOpenHelpRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostTuiOpenHelp")
@@ -2762,8 +2784,8 @@ func (a *DefaultAPIService) PostTuiOpenHelpExecute(r DefaultAPIPostTuiOpenHelpRe
 }
 
 type DefaultAPIPostTuiPromptRequest struct {
-	ctx context.Context
-	ApiService DefaultAPI
+	ctx                  context.Context
+	ApiService           DefaultAPI
 	postTuiPromptRequest *PostTuiPromptRequest
 }
 
@@ -2781,24 +2803,25 @@ PostTuiPrompt Method for PostTuiPrompt
 
 Send a prompt to the TUI
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return DefaultAPIPostTuiPromptRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return DefaultAPIPostTuiPromptRequest
 */
 func (a *DefaultAPIService) PostTuiPrompt(ctx context.Context) DefaultAPIPostTuiPromptRequest {
 	return DefaultAPIPostTuiPromptRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return bool
+//
+//	@return bool
 func (a *DefaultAPIService) PostTuiPromptExecute(r DefaultAPIPostTuiPromptRequest) (bool, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  bool
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue bool
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.PostTuiPrompt")

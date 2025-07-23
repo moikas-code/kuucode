@@ -40,25 +40,25 @@ export namespace Ide {
   }
 
   export function alreadyInstalled() {
-    return process.env["OPENCODE_CALLER"] === "vscode"
+    return process.env["KUUCODE_CALLER"] === "vscode"
   }
 
   export async function install(ide: Ide) {
     const cmd = (() => {
       switch (ide) {
         case "Windsurf":
-          return $`windsurf --install-extension sst-dev.opencode`
+          return $`windsurf --install-extension sst-dev.kuucode`
         case "Visual Studio Code":
-          return $`code --install-extension sst-dev.opencode`
+          return $`code --install-extension sst-dev.kuucode`
         case "Cursor":
-          return $`cursor --install-extension sst-dev.opencode`
+          return $`cursor --install-extension sst-dev.kuucode`
         case "VSCodium":
-          return $`codium --install-extension sst-dev.opencode`
+          return $`codium --install-extension sst-dev.kuucode`
         default:
           throw new Error(`Unknown IDE: ${ide}`)
       }
     })()
-    // TODO: check OPENCODE_CALLER
+    // TODO: check KUUCODE_CALLER
     const result = await cmd.quiet().throws(false)
     log.info("installed", {
       ide,
