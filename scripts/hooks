@@ -8,7 +8,7 @@ mkdir -p .git/hooks
 
 cat > .git/hooks/pre-push << 'EOF'
 #!/bin/sh
-bun run typecheck
+npm run typecheck
 EOF
 
 chmod +x .git/hooks/pre-push

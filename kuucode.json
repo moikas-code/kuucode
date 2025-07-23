@@ -4,9 +4,8 @@
     "moidvk": {
       "type": "local",
 
-
       "command": ["moidvk", "serve"]
-  },
+    },
     "weather": {
       "type": "local",
       "command": ["kuucode", "x", "@h1deya/mcp-server-weather"]
@@ -24,12 +23,13 @@
       "command": ["fork-parity-mcp"],
       "environment": {
         "UPSTREAM_REMOTE_NAME": "upstream",
-        "UPSTREAM_BRANCH": "dev"
+        "UPSTREAM_BRANCH": "dev",
+        "LOCAL_BRANCH": "master"
       }
     },
     "image-analysis": {
       "type": "local",
-      "command":[ "mcp-image-server","serve"],
+      "command": ["mcp-image-server", "serve"],
       "environment": {
         "NODE_ENV": "production"
       }
