@@ -10,7 +10,7 @@
   "scripts": {
     "start": "kuucode",
     "dev": "bun run packages/kuucode/src/index.ts",
-    "typecheck": "bun run --filter='*' typecheck",
+    "typecheck": "npm run --workspace=packages/kuucode typecheck && npm run --workspace=packages/desktop typecheck",
     "generate-sdks": "./scripts/generate-sdks",
     "postinstall": "./scripts/hooks",
     "desktop": "./scripts/desktop",
