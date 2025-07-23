@@ -135,7 +135,7 @@ export namespace Installation {
       })
   }
 
-  export const VERSION = typeof kuucode_VERSION === "string" ? kuucode_VERSION : "dev"
+  export const VERSION = typeof KUUCODE_VERSION === "string" ? KUUCODE_VERSION : "dev"
 
   export async function latest() {
     return fetch("https://api.github.com/repos/sst/kuucode/releases/latest")

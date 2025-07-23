@@ -255,25 +255,25 @@ export namespace Provider {
       const existing = database[providerID]
       const parsed: ModelsDev.Provider = {
         id: providerID,
-        npm: provider.npm ?? existing?.npm,
-        name: provider.name ?? existing?.name ?? providerID,
-        env: provider.env ?? existing?.env ?? [],
-        api: provider.api ?? existing?.api,
+        npm: (provider as any).npm ?? existing?.npm,
+        name: (provider as any).name ?? existing?.name ?? providerID,
+        env: (provider as any).env ?? existing?.env ?? [],
+        api: (provider as any).api ?? existing?.api,
         models: existing?.models ?? {},
       }
 
-      for (const [modelID, model] of Object.entries(provider.models ?? {})) {
+      for (const [modelID, model] of Object.entries((provider as any).models ?? {})) {
         const existing = parsed.models[modelID]
         const parsedModel: ModelsDev.Model = {
           id: modelID,
-          name: model.name ?? existing?.name ?? modelID,
-          release_date: model.release_date ?? existing?.release_date,
-          attachment: model.attachment ?? existing?.attachment ?? false,
-          reasoning: model.reasoning ?? existing?.reasoning ?? false,
-          temperature: model.temperature ?? existing?.temperature ?? false,
-          tool_call: model.tool_call ?? existing?.tool_call ?? true,
+          name: (model as any).name ?? existing?.name ?? modelID,
+          release_date: (model as any).release_date ?? existing?.release_date,
+          attachment: (model as any).attachment ?? existing?.attachment ?? false,
+          reasoning: (model as any).reasoning ?? existing?.reasoning ?? false,
+          temperature: (model as any).temperature ?? existing?.temperature ?? false,
+          tool_call: (model as any).tool_call ?? existing?.tool_call ?? true,
           cost:
-            !model.cost && !existing?.cost
+            !(model as any).cost && !existing?.cost
               ? {
                   input: 0,
                   output: 0,
@@ -284,13 +284,13 @@ export namespace Provider {
                   cache_read: 0,
                   cache_write: 0,
                   ...existing?.cost,
-                  ...model.cost,
+                  ...(model as any).cost,
                 },
           options: {
             ...existing?.options,
-            ...model.options,
+            ...(model as any).options,
           },
-          limit: model.limit ??
+          limit: (model as any).limit ??
             existing?.limit ?? {
               context: 0,
               output: 0,
@@ -334,7 +334,7 @@ export namespace Provider {
 
     // load config
     for (const [providerID, provider] of configProviders) {
-      mergeProvider(providerID, provider.options ?? {}, "config")
+      mergeProvider(providerID, (provider as any).options ?? {}, "config")
     }
 
     for (const [providerID, provider] of Object.entries(providers)) {

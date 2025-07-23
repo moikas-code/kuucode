@@ -26,18 +26,18 @@ export namespace MCP {
         [name: string]: Awaited<ReturnType<typeof experimental_createMCPClient>>
       } = {}
       for (const [key, mcp] of Object.entries(cfg.mcp ?? {})) {
-        if (mcp.enabled === false) {
+        if ((mcp as any).enabled === false) {
           log.info("mcp server disabled", { key })
           continue
         }
-        log.info("found", { key, type: mcp.type })
-        if (mcp.type === "remote") {
+        log.info("found", { key, type: (mcp as any).type })
+        if ((mcp as any).type === "remote") {
           const client = await experimental_createMCPClient({
             name: key,
             transport: {
               type: "sse",
-              url: mcp.url,
-              headers: mcp.headers,
+              url: (mcp as any).url,
+              headers: (mcp as any).headers,
             },
           }).catch(() => {})
           if (!client) {
@@ -54,8 +54,8 @@ export namespace MCP {
           clients[key] = client
         }
 
-        if (mcp.type === "local") {
-          const [cmd, ...args] = mcp.command
+        if ((mcp as any).type === "local") {
+          const [cmd, ...args] = (mcp as any).command
           const client = await experimental_createMCPClient({
             name: key,
             transport: new Experimental_StdioMCPTransport({
@@ -65,7 +65,7 @@ export namespace MCP {
               env: {
                 ...process.env,
                 ...(cmd === "kuucode" ? { BUN_BE_BUN: "1" } : {}),
-                ...mcp.environment,
+                ...(mcp as any).environment,
               },
             }),
           }).catch(() => {})

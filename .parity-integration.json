@@ -1,37 +1,183 @@
 {
   "project": "kuucode",
-  "upstream": "sst/opencode",
+  "upstream": {
+    "remote": "upstream",
+    "branch": "dev",
+    "repository": "sst/opencode"
+  },
   "branding": {
     "from": "opencode",
     "to": "kuucode"
   },
   "pathMappings": {
     "packages/opencode": "packages/kuucode",
-    "opencode.json": "kuucode.json"
+    "opencode.json": "kuucode.json",
+    "OPENCODE_": "KUUCODE_"
   },
-  "skipPatterns": ["vscode", "extension", "packages/web", "docs/", "README", "\.md$"],
-  "autoIntegratePatterns": ["^fix.*typo", "^typo:", "spelling", "grammar", "^chore.*deps", "dependency update"],
-  "draftPRPatterns": ["^security:", "CVE", "vulnerability", "^feat.*tui", "^fix.*tui", "internal/tui", "packages/tui"],
-  "transformations": [
+  "integrationRules": [
     {
-      "find": "opencode",
-      "replace": "kuucode",
-      "files": ["*.ts", "*.js", "*.go", "*.json"]
+      "name": "skip-docs",
+      "pattern": "packages/web|docs/|README|\\.(md|mdx)$",
+      "action": "skip",
+      "reason": "Documentation/web changes - kuucode maintains separate docs and web presence",
+      "priority": 1
     },
     {
-      "find": "packages/opencode",
-      "replace": "packages/kuucode",
-      "files": ["*.ts", "*.js", "*.json"]
+      "name": "skip-vscode",
+      "pattern": "vscode|\\.vscode|extension|packages/vscode",
+      "action": "skip",
+      "reason": "VSCode-specific changes - out of scope for kuucode desktop app",
+      "priority": 2
     },
     {
-      "find": "OPENCODE_",
-      "replace": "KUUCODE_",
-      "files": ["*.go", "*.ts", "*.js"]
+      "name": "skip-ci",
+      "pattern": "github/workflows|\\.github|ci:|workflow",
+      "action": "skip",
+      "reason": "CI/CD changes - kuucode has different workflow setup",
+      "priority": 3
+    },
+    {
+      "name": "security-critical",
+      "pattern": "^security:|CVE|vulnerability|auth.*fix|security.*patch",
+      "action": "draft-pr",
+      "reason": "Security fixes need review but should be prioritized",
+      "priority": 4,
+      "metadata": {
+        "urgency": "critical",
+        "reviewers": ["security-team"]
+      }
+    },
+    {
+      "name": "tui-features",
+      "pattern": "^feat.*tui|tui.*feat|packages/tui|internal/tui",
+      "action": "draft-pr",
+      "reason": "TUI features likely valuable for kuucode",
+      "priority": 5,
+      "metadata": {
+        "category": "enhancement",
+        "impact": "high"
+      }
+    },
+    {
+      "name": "tui-fixes",
+      "pattern": "^fix.*tui|tui.*fix|packages/tui.*fix",
+      "action": "draft-pr",
+      "reason": "TUI bug fixes likely applicable to kuucode",
+      "priority": 6,
+      "metadata": {
+        "category": "bugfix",
+        "impact": "medium"
+      }
+    },
+    {
+      "name": "core-changes",
+      "pattern": "packages/opencode|packages/kuucode|src/.*\\.(ts|js|go)$",
+      "action": "draft-pr",
+      "reason": "Core functionality changes need careful review",
+      "priority": 7,
+      "metadata": {
+        "category": "core",
+        "impact": "high"
+      }
+    },
+    {
+      "name": "auto-typos",
+      "pattern": "^fix.*typo|^typo:|spelling.*fix|grammar.*fix",
+      "action": "auto",
+      "reason": "Simple typo fixes in code are safe to auto-apply",
+      "priority": 8,
+      "transformations": ["branding", "paths"],
+      "conditions": {
+        "excludeFiles": ["*.md", "*.mdx", "docs/*", "packages/web/*"]
+      }
+    },
+    {
+      "name": "auto-deps",
+      "pattern": "^chore.*deps|dependency.*update|bump.*version",
+      "action": "auto",
+      "reason": "Dependency updates are generally safe",
+      "priority": 9,
+      "transformations": ["branding"],
+      "conditions": {
+        "requireTests": true
+      }
     }
   ],
+  "transformations": {
+    "branding": [
+      {
+        "find": "opencode",
+        "replace": "kuucode",
+        "files": ["*.ts", "*.js", "*.go", "*.json"],
+        "excludeFiles": ["*.md", "*.mdx", "docs/*"]
+      },
+      {
+        "find": "OPENCODE_",
+        "replace": "KUUCODE_",
+        "files": ["*.go", "*.ts", "*.js", "*.env*"]
+      }
+    ],
+    "paths": [
+      {
+        "find": "packages/opencode",
+        "replace": "packages/kuucode",
+        "files": ["*.ts", "*.js", "*.json", "*.go"]
+      },
+      {
+        "find": "opencode\\.json",
+        "replace": "kuucode.json",
+        "files": ["*.ts", "*.js", "*.json"]
+      }
+    ]
+  },
+  "testCommands": {
+    "typecheck": "bun run typecheck",
+    "test": "bun test",
+    "lint": "bun run lint",
+    "build": "bun run build"
+  },
+  "conflictDetection": {
+    "enabled": true,
+    "checkLocalChanges": true,
+    "lookbackDays": 30,
+    "excludePatterns": ["*.lock", "node_modules/*", ".git/*"]
+  },
+  "automation": {
+    "autoIntegration": {
+      "enabled": true,
+      "requireTests": true,
+      "requireCleanBuild": true,
+      "maxFilesChanged": 10
+    },
+    "draftPR": {
+      "enabled": true,
+      "template": "parity-integration",
+      "assignReviewers": true,
+      "addLabels": ["parity", "upstream"]
+    }
+  },
   "notifications": {
-    "autoIntegrated": "integration",
-    "draftPRCreated": "daily",
-    "manualReviewNeeded": "critical"
+    "autoIntegrated": {
+      "type": "integration",
+      "channels": ["discord", "slack"]
+    },
+    "draftPRCreated": {
+      "type": "daily",
+      "channels": ["discord"]
+    },
+    "manualReviewNeeded": {
+      "type": "critical",
+      "channels": ["discord", "email"]
+    },
+    "conflictDetected": {
+      "type": "critical",
+      "channels": ["discord"]
+    }
+  },
+  "analytics": {
+    "trackIntegrationSuccess": true,
+    "trackConflictRate": true,
+    "trackTimeToIntegration": true,
+    "generateWeeklyReports": true
   }
 }

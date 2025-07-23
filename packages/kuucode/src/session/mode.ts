@@ -43,7 +43,7 @@ export namespace Mode {
           name: key,
           tools: {},
         }
-      const model = value.model ?? cfg.model
+      const model = (value as any).model ?? cfg.model
       if (model) {
         const [providerID, ...rest] = model.split("/")
         const modelID = rest.join("/")
@@ -52,8 +52,8 @@ export namespace Mode {
           providerID,
         }
       }
-      if (value.prompt) item.prompt = value.prompt
-      if (value.tools) item.tools = value.tools
+      if ((value as any).prompt) item.prompt = (value as any).prompt
+      if ((value as any).tools) item.tools = (value as any).tools
     }
 
     return result
