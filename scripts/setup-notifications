@@ -1,0 +1,50 @@
+#!/usr/bin/env bun
+
+// Setup script for Discord notifications
+import { writeFileSync, existsSync } from "fs"
+
+const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1397447455800561767/"
+
+console.log("🔧 Setting up Kuucode Parity Notifications")
+console.log("=" .repeat(50))
+
+// Create .env file if it doesn't exist
+if (!existsSync(".env")) {
+  const envContent = `# Kuucode Environment Variables
+DISCORD_WEBHOOK_URL=${WEBHOOK_URL}
+`
+  writeFileSync(".env", envContent)
+  console.log("✅ Created .env file with Discord webhook")
+} else {
+  console.log("ℹ️  .env file already exists")
+  
+  // Check if webhook is already configured
+  const envContent = require("fs").readFileSync(".env", "utf-8")
+  if (!envContent.includes("DISCORD_WEBHOOK_URL")) {
+    require("fs").appendFileSync(".env", `\nDISCORD_WEBHOOK_URL=${WEBHOOK_URL}\n`)
+    console.log("✅ Added Discord webhook to existing .env file")
+  } else {
+    console.log("ℹ️  Discord webhook already configured in .env")
+  }
+}
+
+console.log("\n🧪 Testing notification setup...")
+
+// Test the notification
+try {
+  process.env.DISCORD_WEBHOOK_URL = WEBHOOK_URL
+  const { $ } = await import("bun")
+  await $`bun scripts/parity-notify daily "Notification setup complete! 🎉"`
+  
+  console.log("\n✅ Setup complete! Your notifications are working.")
+  console.log("\n📋 Next steps:")
+  console.log("  1. Run daily checks: npm run parity-daily")
+  console.log("  2. Manual notifications: npm run parity-notify <type> <message>")
+  console.log("  3. GitHub Actions will run automatically daily at 9 AM UTC")
+  
+} catch (error) {
+  console.error("\n❌ Test notification failed:", error)
+  console.log("\n🔧 Manual setup required:")
+  console.log("  1. Export webhook: export DISCORD_WEBHOOK_URL=\"your_webhook_url\"")
+  console.log("  2. Test: npm run parity-notify daily \"test message\"")
+}

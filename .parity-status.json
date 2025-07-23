@@ -3,7 +3,7 @@
   "upstream": {
     "repository": "sst/opencode",
     "branch": "dev",
-    "lastChecked": "2025-07-22T23:19:42.798Z"
+    "lastChecked": "2025-07-23T05:37:23.315Z"
   },
   "commits": {
     "12783536": {
@@ -330,15 +330,28 @@
       "status": "skipped",
       "notes": "WIP API logger improvements - debugging/profiling code not essential for kuucode functionality",
       "timestamp": "2025-07-23T02:55:17.254Z"
+    },
+    "b7b0cdbd": {
+      "status": "integrated",
+      "priority": "high",
+      "category": "feature",
+      "impact_areas": [
+        "tui",
+        "core"
+      ],
+      "conflicts": [],
+      "timestamp": "2025-07-23T04:46:57.418Z",
+      "decision_date": "2025-07-23",
+      "decision_reason": "Session sorting improvement - ensures most recently interacted sessions appear at top. Good UX enhancement for both API and TUI."
     }
   },
   "statistics": {
-    "total_commits_reviewed": 50,
-    "integrated": 2,
-    "skipped": 0,
-    "pending": 48,
+    "total_commits_reviewed": 61,
+    "integrated": 24,
+    "skipped": 37,
+    "pending": 0,
     "conflicts": 0,
-    "integration_rate": 0.04
+    "integration_rate": 0.39344262295081966
   },
-  "lastUpdated": "2025-07-23T02:55:25.454Z"
+  "lastUpdated": "2025-07-23T05:37:23.317Z"
 }

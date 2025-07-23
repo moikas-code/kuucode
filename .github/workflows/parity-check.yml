@@ -35,6 +35,8 @@ jobs:
         run: |
           since="${{ github.event.inputs.since || '1 week ago' }}"
           bun scripts/parity check "$since" --auto-triage
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Generate parity report
         run: |
@@ -69,6 +71,16 @@ jobs:
                 title: `🔄 Weekly Parity Review - ${new Date().toISOString().split('T')[0]}`,
                 body: report + '\n\n**Action Required**: Review high priority upstream changes for integration.',
                 labels: ['parity', 'upstream', 'review-needed']
+              });
+              
+              // Send Discord notification for high priority items
+              execSync(`bun scripts/parity-notify critical "Weekly parity check found ${parseInt(highPriorityCount) - 1} high priority commits requiring review"`, {
+                env: { ...process.env, DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL }
+              });
+            } else {
+              // Send success notification
+              execSync('bun scripts/parity-notify daily "Weekly parity check complete - no high priority items found"', {
+                env: { ...process.env, DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL }
               });
             }
 

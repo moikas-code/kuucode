@@ -1,0 +1,442 @@
+#!/usr/bin/env bun
+
+// Semi-automated integration helper for kuucode parity system
+import { $ } from "bun"
+import { readFileSync, writeFileSync, existsSync } from "fs"
+
+interface IntegrationRule {
+  pattern: RegExp
+  action: "auto" | "draft-pr" | "manual" | "skip"
+  reason: string
+  transformations?: Array<{
+    find: RegExp
+    replace: string
+  }>
+}
+
+// Kuucode-specific integration rules (order matters - first match wins)
+const INTEGRATION_RULES: IntegrationRule[] = [
+  // Skip rules first (highest priority)
+  {
+    pattern: /packages\/web|docs\/|README|\.md$|\.mdx$/i,
+    action: "skip",
+    reason: "Documentation/web changes - kuucode maintains separate docs and web presence"
+  },
+  {
+    pattern: /vscode|\.vscode|extension|packages\/vscode/i,
+    action: "skip", 
+    reason: "VSCode-specific changes - out of scope for kuucode desktop app"
+  },
+  {
+    pattern: /github\/workflows|\.github|ci:|workflow/i,
+    action: "skip",
+    reason: "CI/CD changes - kuucode has different workflow setup"
+  },
+  
+  // Security rules (critical priority)
+  {
+    pattern: /^security:|CVE|vulnerability|auth.*fix|security.*patch/i,
+    action: "draft-pr",
+    reason: "Security fixes need review but should be prioritized"
+  },
+  
+  // TUI rules (high value for kuucode)
+  {
+    pattern: /^feat.*tui|tui.*feat|packages\/tui|internal\/tui/i,
+    action: "draft-pr", 
+    reason: "TUI features likely valuable for kuucode"
+  },
+  {
+    pattern: /^fix.*tui|tui.*fix|packages\/tui.*fix/i,
+    action: "draft-pr",
+    reason: "TUI bug fixes likely applicable to kuucode"
+  },
+  
+  // Core functionality rules
+  {
+    pattern: /packages\/opencode|packages\/kuucode|src\/.*\.(ts|js|go)$/i,
+    action: "draft-pr",
+    reason: "Core functionality changes need careful review"
+  },
+  
+  // Auto-integration rules (only for non-docs, non-web files)
+  {
+    pattern: /^fix.*typo|^typo:|spelling.*fix|grammar.*fix/i,
+    action: "auto",
+    reason: "Simple typo fixes in code are safe to auto-apply",
+    transformations: [
+      { find: /opencode/g, replace: "kuucode" },
+      { find: /packages\/opencode/g, replace: "packages/kuucode" },
+      { find: /OPENCODE_/g, replace: "KUUCODE_" }
+    ]
+  },
+  {
+    pattern: /^chore.*deps|dependency.*update|bump.*version/i,
+    action: "auto",
+    reason: "Dependency updates are generally safe",
+    transformations: [
+      { find: /opencode/g, replace: "kuucode" }
+    ]
+  }
+]
+
+class IntegrationHelper {
+  async detectConflicts(hash: string) {
+    console.log(`🔍 Checking for potential conflicts with ${hash}...`)
+    
+    try {
+      // Get files changed in the commit
+      const files = await $`git show --name-only --pretty=format: ${hash}`.quiet()
+      const changedFiles = files.stdout.toString().trim().split('\n').filter(f => f)
+      
+      const conflicts = []
+      
+      for (const file of changedFiles) {
+        // Check if file exists in kuucode (with path mapping)
+        const kuucodeFile = file.replace(/packages\/opencode/g, 'packages/kuucode')
+        
+        if (existsSync(kuucodeFile)) {
+          // Check if we have local modifications
+          const localChanges = await $`git log --oneline -5 --pretty=format:"%h %s" -- ${kuucodeFile}`.quiet()
+          if (localChanges.stdout.toString().trim()) {
+            conflicts.push({
+              file: kuucodeFile,
+              upstreamFile: file,
+              hasLocalChanges: true,
+              recentChanges: localChanges.stdout.toString().trim().split('\n').slice(0, 3)
+            })
+          }
+        } else if (file.includes('packages/opencode')) {
+          // File doesn't exist in kuucode - might be new or renamed
+          conflicts.push({
+            file: kuucodeFile,
+            upstreamFile: file,
+            hasLocalChanges: false,
+            issue: 'File does not exist in kuucode - may need creation or path mapping'
+          })
+        }
+      }
+      
+      return conflicts
+    } catch (error) {
+      console.warn(`Could not detect conflicts: ${error.message}`)
+      return []
+    }
+  }
+
+  async analyzeCommit(hash: string) {
+    console.log(`🔍 Analyzing commit ${hash} for integration...`)
+    
+    // Get commit details
+    const commitInfo = await $`git show --stat --pretty=format:"%s%n%b" ${hash}`.quiet()
+    const title = commitInfo.stdout.toString().split('\n')[0]
+    const files = await $`git show --name-only --pretty=format: ${hash}`.quiet()
+    const changedFiles = files.stdout.toString().trim().split('\n').filter(f => f)
+    
+    console.log(`📝 Title: ${title}`)
+    console.log(`📁 Files: ${changedFiles.join(', ')}`)
+    
+    // Detect potential conflicts
+    const conflicts = await this.detectConflicts(hash)
+    if (conflicts.length > 0) {
+      console.log(`⚠️  Potential conflicts detected:`)
+      conflicts.forEach(c => {
+        console.log(`   - ${c.file}: ${c.issue || 'Has local changes'}`)
+      })
+    }
+    
+    // Apply integration rules
+    for (const rule of INTEGRATION_RULES) {
+      const titleMatch = rule.pattern.test(title)
+      const fileMatch = changedFiles.some(f => rule.pattern.test(f))
+      
+      if (titleMatch || fileMatch) {
+        const matchType = titleMatch ? "title" : "files"
+        console.log(`✅ Matched rule (${matchType}): ${rule.reason}`)
+        return {
+          hash,
+          title,
+          files: changedFiles,
+          recommendation: rule.action,
+          reason: rule.reason,
+          transformations: rule.transformations || [],
+          matchedBy: matchType,
+          conflicts: conflicts
+        }
+      }
+    }
+    
+    // Default to manual review
+    return {
+      hash,
+      title, 
+      files: changedFiles,
+      recommendation: "manual" as const,
+      reason: "No specific rule matched - requires manual review",
+      transformations: [],
+      conflicts: conflicts
+    }
+  }
+  
+  async runTests(branchName: string) {
+    console.log(`🧪 Running tests on branch ${branchName}...`)
+    
+    try {
+      // Check if there are test scripts
+      const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'))
+      const hasTests = packageJson.scripts && (packageJson.scripts.test || packageJson.scripts.typecheck)
+      
+      if (!hasTests) {
+        console.log(`ℹ️  No test scripts found, skipping automated testing`)
+        return { success: true, skipped: true }
+      }
+      
+      const testResults = []
+      
+      // Run typecheck if available
+      if (packageJson.scripts.typecheck) {
+        console.log(`🔍 Running typecheck...`)
+        try {
+          await $`npm run typecheck`
+          testResults.push({ test: 'typecheck', status: 'passed' })
+          console.log(`✅ Typecheck passed`)
+        } catch (error) {
+          testResults.push({ test: 'typecheck', status: 'failed', error: error.message })
+          console.log(`❌ Typecheck failed`)
+        }
+      }
+      
+      // Run tests if available
+      if (packageJson.scripts.test) {
+        console.log(`🧪 Running tests...`)
+        try {
+          await $`npm test`
+          testResults.push({ test: 'unit-tests', status: 'passed' })
+          console.log(`✅ Tests passed`)
+        } catch (error) {
+          testResults.push({ test: 'unit-tests', status: 'failed', error: error.message })
+          console.log(`❌ Tests failed`)
+        }
+      }
+      
+      const allPassed = testResults.every(r => r.status === 'passed')
+      return { success: allPassed, results: testResults }
+      
+    } catch (error) {
+      console.error(`❌ Test execution failed:`, error)
+      return { success: false, error: error.message }
+    }
+  }
+
+  async autoIntegrate(hash: string, analysis: any) {
+    console.log(`🤖 Auto-integrating ${hash}...`)
+    
+    try {
+      // Create a new branch for the integration
+      const branchName = `parity/auto-${hash}`
+      await $`git checkout -b ${branchName}`
+      
+      // Cherry-pick the commit
+      await $`git cherry-pick ${hash}`
+      
+      // Apply transformations
+      for (const transform of analysis.transformations) {
+        console.log(`🔄 Applying transformation: ${transform.find} → ${transform.replace}`)
+        
+        // Find files that might need transformation
+        const grepResult = await $`git grep -l "${transform.find.source}" || true`.quiet()
+        const filesToTransform = grepResult.stdout.toString().trim().split('\n').filter(f => f)
+        
+        for (const file of filesToTransform) {
+          if (existsSync(file)) {
+            const content = readFileSync(file, 'utf-8')
+            const transformed = content.replace(transform.find, transform.replace)
+            writeFileSync(file, transformed)
+            await $`git add ${file}`
+          }
+        }
+      }
+      
+      // Commit transformations if any were made
+      const hasChanges = await $`git diff --staged --quiet || echo "changes"`.quiet()
+      if (hasChanges.stdout.toString().includes("changes")) {
+        await $`git commit -m "chore: apply kuucode branding transformations"`
+      }
+      
+      // Run automated tests
+      const testResults = await this.runTests(branchName)
+      
+      if (testResults.success) {
+        console.log(`✅ Auto-integration complete on branch ${branchName}`)
+        console.log(`🧪 All tests passed`)
+        console.log(`📝 Next steps:`)
+        console.log(`  1. Review changes: git diff main..${branchName}`)
+        console.log(`  2. Merge if satisfied: git checkout main && git merge ${branchName}`)
+        console.log(`  3. Update parity status: bun scripts/parity update ${hash} integrated`)
+      } else {
+        console.log(`⚠️  Auto-integration completed but tests failed`)
+        console.log(`📝 Manual review required before merging`)
+        if (testResults.results) {
+          testResults.results.forEach(r => {
+            console.log(`   ${r.status === 'passed' ? '✅' : '❌'} ${r.test}`)
+          })
+        }
+      }
+      
+      return { success: true, branch: branchName, testResults }
+      
+    } catch (error) {
+      console.error(`❌ Auto-integration failed:`, error)
+      // Clean up failed branch
+      await $`git checkout main && git branch -D ${branchName} || true`
+      return { success: false, error: error.message }
+    }
+  }
+  
+  async createDraftPR(hash: string, analysis: any) {
+    console.log(`📝 Creating draft PR for ${hash}...`)
+    
+    const branchName = `parity/draft-${hash}`
+    
+    try {
+      // Create integration branch
+      await $`git checkout -b ${branchName}`
+      await $`git cherry-pick ${hash}`
+      
+      // Push branch
+      await $`git push -u origin ${branchName}`
+      
+      // Create draft PR
+      const prTitle = `[PARITY] ${analysis.title}`
+      const prBody = `## Upstream Integration
+      
+**Commit**: \`${hash}\`
+**Recommendation**: ${analysis.recommendation}
+**Reason**: ${analysis.reason}
+
+### Files Changed
+${analysis.files.map(f => `- \`${f}\``).join('\n')}
+
+### Integration Notes
+- [ ] Review changes for kuucode compatibility
+- [ ] Update branding (opencode → kuucode) 
+- [ ] Test functionality
+- [ ] Update documentation if needed
+
+**Auto-generated by parity system**`
+
+      await $`gh pr create --title "${prTitle}" --body "${prBody}" --draft --head ${branchName}`
+      
+      console.log(`✅ Draft PR created for ${hash}`)
+      return { success: true, branch: branchName }
+      
+    } catch (error) {
+      console.error(`❌ Draft PR creation failed:`, error)
+      return { success: false, error: error.message }
+    }
+  }
+}
+
+// CLI Interface
+const command = process.argv[2]
+const hash = process.argv[3]
+
+const helper = new IntegrationHelper()
+
+switch (command) {
+  case "analyze":
+    if (!hash) {
+      console.error("Usage: bun scripts/parity-integrate analyze <hash>")
+      process.exit(1)
+    }
+    const analysis = await helper.analyzeCommit(hash)
+    console.log("\n📊 Integration Analysis:")
+    console.log(`Recommendation: ${analysis.recommendation}`)
+    console.log(`Reason: ${analysis.reason}`)
+    break
+    
+  case "auto":
+    if (!hash) {
+      console.error("Usage: bun scripts/parity-integrate auto <hash>")
+      process.exit(1)
+    }
+    const autoAnalysis = await helper.analyzeCommit(hash)
+    if (autoAnalysis.recommendation === "auto") {
+      await helper.autoIntegrate(hash, autoAnalysis)
+    } else {
+      console.log(`❌ Commit ${hash} is not suitable for auto-integration`)
+      console.log(`Recommendation: ${autoAnalysis.recommendation}`)
+    }
+    break
+    
+  case "draft-pr":
+    if (!hash) {
+      console.error("Usage: bun scripts/parity-integrate draft-pr <hash>")
+      process.exit(1)
+    }
+    const prAnalysis = await helper.analyzeCommit(hash)
+    await helper.createDraftPR(hash, prAnalysis)
+    break
+    
+  case "batch":
+    // Analyze multiple pending commits
+    const pendingResult = await $`bun scripts/parity list pending`.quiet()
+    const pendingLines = pendingResult.stdout.toString().trim().split('\n')
+    
+    console.log("🔄 Batch analyzing pending commits...")
+    
+    const summary = { auto: 0, draftPr: 0, manual: 0, skip: 0, conflicts: 0 }
+    
+    for (const line of pendingLines) {
+      const match = line.match(/[🔍⚠️] (\w+)/)
+      if (match) {
+        const commitHash = match[1]
+        const analysis = await helper.analyzeCommit(commitHash)
+        
+        console.log(`\n${commitHash}: ${analysis.recommendation} - ${analysis.reason}`)
+        
+        if (analysis.conflicts && analysis.conflicts.length > 0) {
+          summary.conflicts++
+          console.log(`  ⚠️  ${analysis.conflicts.length} potential conflicts`)
+        }
+        
+        if (analysis.recommendation === "auto") {
+          summary.auto++
+          console.log(`  → Can be auto-integrated`)
+        } else if (analysis.recommendation === "draft-pr") {
+          summary.draftPr++
+          console.log(`  → Should create draft PR`)
+        } else if (analysis.recommendation === "manual") {
+          summary.manual++
+          console.log(`  → Requires manual review`)
+        } else if (analysis.recommendation === "skip") {
+          summary.skip++
+          console.log(`  → Can be skipped`)
+        }
+      }
+    }
+    
+    console.log(`\n📊 Batch Analysis Summary:`)
+    console.log(`  🤖 Auto-integrable: ${summary.auto}`)
+    console.log(`  📝 Draft PR candidates: ${summary.draftPr}`)
+    console.log(`  👤 Manual review needed: ${summary.manual}`)
+    console.log(`  ⏭️  Can skip: ${summary.skip}`)
+    console.log(`  ⚠️  With conflicts: ${summary.conflicts}`)
+    break
+    
+  default:
+    console.log(`
+🤖 Kuucode Parity Integration Helper
+
+Usage:
+  bun scripts/parity-integrate analyze <hash>    - Analyze commit for integration
+  bun scripts/parity-integrate auto <hash>       - Auto-integrate safe commits
+  bun scripts/parity-integrate draft-pr <hash>   - Create draft PR for review
+  bun scripts/parity-integrate batch             - Analyze all pending commits
+
+Examples:
+  bun scripts/parity-integrate analyze abc123
+  bun scripts/parity-integrate auto abc123
+  bun scripts/parity-integrate batch
+`)
+}

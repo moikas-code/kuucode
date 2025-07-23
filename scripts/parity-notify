@@ -1,0 +1,178 @@
+#!/usr/bin/env bun
+
+// Discord notification script for parity system
+import { $ } from "bun"
+
+const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL || process.env.KUUCODE_DISCORD_WEBHOOK
+
+interface NotificationData {
+  type: "daily" | "critical" | "integration" | "security"
+  title: string
+  description: string
+  stats?: {
+    pending: number
+    integrated: number
+    skipped: number
+    integration_rate: number
+  }
+  commits?: Array<{
+    hash: string
+    priority: string
+    category: string
+    title: string
+  }>
+}
+
+async function sendDiscordNotification(data: NotificationData) {
+  if (!DISCORD_WEBHOOK) {
+    console.error("❌ Discord webhook URL not configured. Set DISCORD_WEBHOOK_URL environment variable.")
+    return false
+  }
+  const color = {
+    daily: 3447003,      // Blue
+    critical: 15158332,  // Red
+    integration: 3066993, // Green
+    security: 15105570   // Orange
+  }[data.type]
+
+  const fields = []
+  
+  if (data.stats) {
+    fields.push(
+      { name: "📊 Integration Rate", value: `${(data.stats.integration_rate * 100).toFixed(1)}%`, inline: true },
+      { name: "✅ Integrated", value: data.stats.integrated.toString(), inline: true },
+      { name: "🔍 Pending", value: data.stats.pending.toString(), inline: true }
+    )
+  }
+
+  if (data.commits && data.commits.length > 0) {
+    const commitList = data.commits
+      .slice(0, 5) // Limit to 5 commits
+      .map(c => `• \`${c.hash}\` [${c.priority}] ${c.category}: ${c.title.substring(0, 60)}${c.title.length > 60 ? '...' : ''}`)
+      .join('\n')
+    
+    fields.push({
+      name: `🎯 ${data.commits.length > 5 ? `Top 5 of ${data.commits.length}` : data.commits.length} Commits`,
+      value: commitList,
+      inline: false
+    })
+  }
+
+  const payload = {
+    embeds: [{
+      title: data.title,
+      description: data.description,
+      color,
+      fields,
+      timestamp: new Date().toISOString(),
+      footer: {
+        text: "Kuucode Parity System"
+      }
+    }]
+  }
+
+  try {
+    const response = await fetch(DISCORD_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+
+    if (!response.ok) {
+      throw new Error(`Discord API error: ${response.status}`)
+    }
+
+    console.log("✅ Discord notification sent successfully")
+    return true
+  } catch (error) {
+    console.error("❌ Failed to send Discord notification:", error)
+    return false
+  }
+}
+
+// CLI Interface
+const type = process.argv[2] as NotificationData["type"]
+const message = process.argv[3]
+
+if (!type || !message) {
+  console.log(`
+🔔 Kuucode Parity Discord Notifications
+
+Usage:
+  bun scripts/parity-notify <type> <message>
+
+Types:
+  daily      - Daily parity check results
+  critical   - High priority items found
+  integration - Successful integrations
+  security   - Security-related updates
+
+Examples:
+  bun scripts/parity-notify daily "Found 3 new commits, 1 high priority"
+  bun scripts/parity-notify critical "Security fix available upstream"
+`)
+  process.exit(1)
+}
+
+// Get current parity status for context
+let stats = null
+let commits = []
+
+try {
+  const statusResult = await $`bun scripts/parity dashboard`.quiet()
+  const statusOutput = statusResult.stdout.toString()
+  
+  // Parse stats from dashboard output
+  const pendingMatch = statusOutput.match(/Pending Review: (\d+)/)
+  const integratedMatch = statusOutput.match(/Integrated: (\d+)/)
+  const skippedMatch = statusOutput.match(/Skipped: (\d+)/)
+  const rateMatch = statusOutput.match(/Integration Rate: ([\d.]+)%/)
+  
+  if (pendingMatch && integratedMatch && skippedMatch && rateMatch) {
+    stats = {
+      pending: parseInt(pendingMatch[1]),
+      integrated: parseInt(integratedMatch[1]),
+      skipped: parseInt(skippedMatch[1]),
+      integration_rate: parseFloat(rateMatch[1]) / 100
+    }
+  }
+
+  // Get high priority pending commits
+  if (stats && stats.pending > 0) {
+    const commitsResult = await $`bun scripts/parity list pending high`.quiet()
+    const commitsOutput = commitsResult.stdout.toString()
+    
+    // Parse commit lines (format: 🔍 hash [priority] category - title)
+    const commitLines = commitsOutput.split('\n').filter(line => line.includes('🔍'))
+    commits = commitLines.map(line => {
+      const match = line.match(/🔍 (\w+) \[(\w+)\] (\w+) - (.+)/)
+      if (match) {
+        return {
+          hash: match[1],
+          priority: match[2],
+          category: match[3],
+          title: match[4]
+        }
+      }
+      return null
+    }).filter(Boolean)
+  }
+} catch (error) {
+  console.warn("Could not fetch parity status for context")
+}
+
+// Send notification
+const notificationData: NotificationData = {
+  type,
+  title: {
+    daily: "📅 Daily Parity Check",
+    critical: "🚨 Critical Parity Alert",
+    integration: "✅ Integration Complete",
+    security: "🔒 Security Update Available"
+  }[type],
+  description: message,
+  stats,
+  commits: type === "critical" ? commits : undefined
+}
+
+await sendDiscordNotification(notificationData)

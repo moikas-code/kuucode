@@ -16,7 +16,11 @@
     "desktop": "./scripts/desktop",
     "desktop:dev": "./scripts/desktop dev",
     "desktop:web": "./scripts/desktop web",
-    "desktop:build": "./scripts/desktop build"
+    "desktop:build": "./scripts/desktop build",
+    "parity-daily": "./scripts/parity-daily",
+    "parity-notify": "./scripts/parity-notify",
+    "parity-integrate": "./scripts/parity-integrate",
+    "setup-notifications": "./scripts/setup-notifications"
   },
   "workspaces": {
     "packages": [

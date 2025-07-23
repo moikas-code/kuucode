@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/tauri"
+import { invoke } from "@tauri-apps/api/core"
 import { listen } from "@tauri-apps/api/event"
 import { Terminal } from "xterm"
 import { FitAddon } from "xterm-addon-fit"

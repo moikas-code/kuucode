@@ -26,12 +26,26 @@ try {
   
   if (lines.length > 1) {
     console.log(result.stdout.toString())
+    
+    // Run integration analysis on high priority items
+    console.log("\n🤖 Running integration analysis...")
+    await $`bun scripts/parity-integrate batch`
+    
     console.log("\n💡 Next steps:")
     console.log("  1. Review high priority items: bun scripts/parity review <hash>")
-    console.log("  2. Update status: bun scripts/parity update <hash> <status>")
-    console.log("  3. Check full dashboard: bun scripts/parity dashboard")
+    console.log("  2. Auto-integrate safe items: bun scripts/parity-integrate auto <hash>")
+    console.log("  3. Create draft PRs: bun scripts/parity-integrate draft-pr <hash>")
+    console.log("  4. Update status: bun scripts/parity update <hash> <status>")
+    console.log("  5. Check full dashboard: bun scripts/parity dashboard")
+    
+    // Send Discord notification for high priority items
+    const highPriorityCount = lines.length - 1
+    await $`bun scripts/parity-notify critical "Found ${highPriorityCount} high priority commits requiring review"`
   } else {
     console.log("✅ No high priority items pending!")
+    
+    // Send daily status notification
+    await $`bun scripts/parity-notify daily "Daily parity check complete - no high priority items pending"`
   }
   
 } catch (error) {

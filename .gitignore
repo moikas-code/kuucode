@@ -12,3 +12,7 @@ openapi.json
 /sdks/python/
 /packages/tui/sdk-backup/
 /packages/tui/sdk-new/
+
+.fork-parity/
+
+packages/desktop/src-tauri/target/

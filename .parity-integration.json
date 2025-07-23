@@ -1,0 +1,37 @@
+{
+  "project": "kuucode",
+  "upstream": "sst/opencode",
+  "branding": {
+    "from": "opencode",
+    "to": "kuucode"
+  },
+  "pathMappings": {
+    "packages/opencode": "packages/kuucode",
+    "opencode.json": "kuucode.json"
+  },
+  "skipPatterns": ["vscode", "extension", "packages/web", "docs/", "README", "\.md$"],
+  "autoIntegratePatterns": ["^fix.*typo", "^typo:", "spelling", "grammar", "^chore.*deps", "dependency update"],
+  "draftPRPatterns": ["^security:", "CVE", "vulnerability", "^feat.*tui", "^fix.*tui", "internal/tui", "packages/tui"],
+  "transformations": [
+    {
+      "find": "opencode",
+      "replace": "kuucode",
+      "files": ["*.ts", "*.js", "*.go", "*.json"]
+    },
+    {
+      "find": "packages/opencode",
+      "replace": "packages/kuucode",
+      "files": ["*.ts", "*.js", "*.json"]
+    },
+    {
+      "find": "OPENCODE_",
+      "replace": "KUUCODE_",
+      "files": ["*.go", "*.ts", "*.js"]
+    }
+  ],
+  "notifications": {
+    "autoIntegrated": "integration",
+    "draftPRCreated": "daily",
+    "manualReviewNeeded": "critical"
+  }
+}

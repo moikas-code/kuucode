@@ -1,8 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{Manager, Menu, MenuItem, Submenu, CustomMenuItem};
-use serde::{Deserialize, Serialize};
+use tauri::{Manager, Emitter};
 use std::process::{Command, Stdio, Child};
 use std::sync::{Arc, Mutex};
 use std::io::{BufRead, BufReader};
@@ -107,40 +106,10 @@ async fn stop_kuucode_tui(state: tauri::State<'_, AppState>) -> Result<String, S
     }
 }
 
-fn create_menu() -> Menu {
-    let kuucode_menu = Submenu::new(
-        "Kuucode",
-        Menu::new()
-            .add_item(CustomMenuItem::new("restart", "Restart Kuucode").accelerator("CmdOrCtrl+R"))
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Quit),
-    );
-
-    let edit_menu = Submenu::new(
-        "Edit",
-        Menu::new()
-            .add_native_item(MenuItem::Copy)
-            .add_native_item(MenuItem::Paste)
-            .add_native_item(MenuItem::SelectAll),
-    );
-
-    let view_menu = Submenu::new(
-        "View",
-        Menu::new()
-            .add_native_item(MenuItem::EnterFullScreen),
-    );
-
-    Menu::new()
-        .add_submenu(kuucode_menu)
-        .add_submenu(edit_menu)
-        .add_submenu(view_menu)
-}
+// Simplified - no menu for now to get basic functionality working
 
 fn main() {
-    let menu = create_menu();
-    
     tauri::Builder::default()
-        .menu(menu)
         .manage(AppState {
             kuucode_process: Arc::new(Mutex::new(None)),
         })
@@ -150,7 +119,7 @@ fn main() {
             stop_kuucode_tui
         ])
         .setup(|app| {
-            let window = app.get_window("main").unwrap();
+            let window = app.get_webview_window("main").unwrap();
             
             // Set window properties
             window.set_title("Kuucode").unwrap();
@@ -169,20 +138,12 @@ fn main() {
             
             Ok(())
         })
-        .on_menu_event(|event| {
-            match event.menu_item_id() {
-                "restart" => {
-                    // Handle restart kuucode
-                    println!("Restart kuucode requested");
-                }
-                _ => {}
-            }
-        })
-        .on_window_event(|event| {
-            match event.event() {
+        // Menu events removed for now
+        .on_window_event(|window, event| {
+            match event {
                 tauri::WindowEvent::CloseRequested { .. } => {
                     // Clean up kuucode process when window closes
-                    if let Some(state) = event.window().try_state::<AppState>() {
+                    if let Some(state) = window.try_state::<AppState>() {
                         let mut process_guard = state.kuucode_process.lock().unwrap();
                         if let Some(mut child) = process_guard.take() {
                             let _ = child.kill();

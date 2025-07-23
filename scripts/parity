@@ -329,7 +329,7 @@ switch (command) {
     break
 
   case "update":
-    const [_, __, hash, status, ...options] = process.argv
+    const [_, __, ___, hash, status, ...options] = process.argv
     if (!hash || !status) {
       console.error("Usage: bun scripts/parity update <hash> <status> [options]")
       process.exit(1)
