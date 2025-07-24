@@ -42,8 +42,8 @@ type modelDialog struct {
 }
 
 type ModelWithProvider struct {
-	Model    kuucode.Model
-	Provider kuucode.Provider
+	Model    kuuzuki.Model
+	Provider kuuzuki.Provider
 }
 
 // modelItem is a custom list item for model selections

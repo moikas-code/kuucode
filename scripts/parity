@@ -199,7 +199,7 @@ class ParityManager {
     if (commit.files.some(f => f.includes("tui/"))) areas.push("tui")
     if (commit.files.some(f => f.includes("sdk/"))) areas.push("sdk")
     if (commit.files.some(f => f.includes("github/"))) areas.push("github")
-    if (commit.files.some(f => f.includes("packages/opencode/") || f.includes("packages/kuucode/"))) areas.push("core")
+    if (commit.files.some(f => f.includes("packages/opencode/") || f.includes("packages/kuuzuki/"))) areas.push("core")
     if (commit.files.some(f => f.includes("docs/") || f.includes("README"))) areas.push("docs")
     
     return areas.length > 0 ? areas : ["unknown"]

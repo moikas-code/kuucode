@@ -49,8 +49,8 @@ function detectPlatformAndArch() {
 
 function findBinary() {
   const { platform, arch } = detectPlatformAndArch()
-  const packageName = `kuucode-${platform}-${arch}`
-  const binary = platform === "win32" ? "kuucode.exe" : "kuucode"
+  const packageName = `kuuzuki-${platform}-${arch}`
+  const binary = platform === "win32" ? "kuuzuki.exe" : "kuuzuki"
 
   try {
     // Use require.resolve to find the package
@@ -71,7 +71,7 @@ function findBinary() {
 function main() {
   try {
     const binaryPath = findBinary()
-    const binScript = path.join(__dirname, "bin", "kuucode")
+    const binScript = path.join(__dirname, "bin", "kuuzuki")
 
     // Remove existing bin script if it exists
     if (fs.existsSync(binScript)) {
@@ -80,9 +80,9 @@ function main() {
 
     // Create symlink to the actual binary
     fs.symlinkSync(binaryPath, binScript)
-    console.log(`kuucode binary symlinked: ${binScript} -> ${binaryPath}`)
+    console.log(`kuuzuki binary symlinked: ${binScript} -> ${binaryPath}`)
   } catch (error) {
-    console.error("Failed to create kuucode binary symlink:", error.message)
+    console.error("Failed to create kuuzuki binary symlink:", error.message)
     process.exit(1)
   }
 }

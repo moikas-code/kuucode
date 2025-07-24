@@ -8,7 +8,7 @@ import { cmd } from "./cmd"
 import { ModelsDev } from "../../provider/models"
 import { App } from "../../app/app"
 
-const WORKFLOW_FILE = ".github/workflows/kuucode.yml"
+const WORKFLOW_FILE = ".github/workflows/kuuzuki.yml"
 
 export const InstallGithubCommand = cmd({
   command: "install-github",
@@ -63,8 +63,8 @@ export const InstallGithubCommand = cmd({
         // Get repo info
         const info = await $`git remote get-url origin`.quiet().nothrow().text()
         // match https or git pattern
-        // ie. https://github.com/sst/kuucode.git
-        // ie. git@github.com:sst/kuucode.git
+        // ie. https://github.com/sst/kuuzuki.git
+        // ie. git@github.com:sst/kuuzuki.git
         const parsed = info.match(/git@github\.com:(.*)\.git/) ?? info.match(/github\.com\/(.*)\.git/)
         if (!parsed) {
           prompts.log.error(`Could not find git repository. Please run this command from a git repository.`)
@@ -185,18 +185,18 @@ export const InstallGithubCommand = cmd({
         await Bun.write(
           path.join(app.root, WORKFLOW_FILE),
           `
-name: kuucode
+name: kuuzuki
 
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  kuucode:
+  kuuzuki:
     if: |
-      startsWith(github.event.comment.body, 'kuucode') ||
-      startsWith(github.event.comment.body, 'hi kuucode') ||
-      startsWith(github.event.comment.body, 'hey kuucode') ||
+      startsWith(github.event.comment.body, 'kuuzuki') ||
+      startsWith(github.event.comment.body, 'hi kuuzuki') ||
+      startsWith(github.event.comment.body, 'hey kuuzuki') ||
       contains(github.event.comment.body, '@kuuzuki-agent')
     runs-on: ubuntu-latest
     permissions:
@@ -207,8 +207,8 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Run kuucode
-        uses: sst/kuucode/sdks/github@github-v1${envStr}
+      - name: Run kuuzuki
+        uses: sst/kuuzuki/sdks/github@github-v1${envStr}
         with:
           model: ${provider}/${model}
 `.trim(),

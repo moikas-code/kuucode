@@ -289,7 +289,7 @@ export default {
     }
 
     /**
-     * Used by the kuucode CLI to check if the GitHub app is installed
+     * Used by the kuuzuki CLI to check if the GitHub app is installed
      */
     if (request.method === "GET" && method === "get_github_app_installation") {
       const owner = url.searchParams.get("owner")

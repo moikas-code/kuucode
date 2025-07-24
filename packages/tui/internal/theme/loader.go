@@ -64,9 +64,9 @@ func LoadThemesFromJSON() error {
 // LoadThemesFromDirectories loads themes from user directories in the correct override order.
 // The hierarchy is (from lowest to highest priority):
 // 1. Built-in themes (embedded)
-// 2. USER_CONFIG/kuucode/themes/*.json
-// 3. PROJECT_ROOT/.kuucode/themes/*.json
-// 4. CWD/.kuucode/themes/*.json
+// 2. USER_CONFIG/kuuzuki/themes/*.json
+// 3. PROJECT_ROOT/.kuuzuki/themes/*.json
+// 4. CWD/.kuuzuki/themes/*.json
 func LoadThemesFromDirectories(userConfig, projectRoot, cwd string) error {
 	if err := LoadThemesFromJSON(); err != nil {
 		return fmt.Errorf("failed to load built-in themes: %w", err)
@@ -74,10 +74,10 @@ func LoadThemesFromDirectories(userConfig, projectRoot, cwd string) error {
 
 	dirs := []string{
 		filepath.Join(userConfig, "themes"),
-		filepath.Join(projectRoot, ".kuucode", "themes"),
+		filepath.Join(projectRoot, ".kuuzuki", "themes"),
 	}
 	if cwd != projectRoot {
-		dirs = append(dirs, filepath.Join(cwd, ".kuucode", "themes"))
+		dirs = append(dirs, filepath.Join(cwd, ".kuuzuki", "themes"))
 	}
 
 	for _, dir := range dirs {

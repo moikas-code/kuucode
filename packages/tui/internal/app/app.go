@@ -15,7 +15,7 @@ import (
 	"github.com/moikas-code/kuuzuki/internal/clipboard"
 	"github.com/moikas-code/kuuzuki/internal/commands"
 	"github.com/moikas-code/kuuzuki/internal/compat"
-	kuucode "github.com/moikas-code/kuuzuki/internal/compat"
+	kuuzuki "github.com/moikas-code/kuuzuki/internal/compat"
 	"github.com/moikas-code/kuuzuki/internal/components/toast"
 	"github.com/moikas-code/kuuzuki/internal/id"
 	"github.com/moikas-code/kuuzuki/internal/styles"
@@ -29,26 +29,26 @@ type Message struct {
 }
 
 // ToSessionChatParams converts Message to session chat parameters
-func (m Message) ToSessionChatParams() []kuucode.SessionChatParamsPartUnion {
+func (m Message) ToSessionChatParams() []kuuzuki.SessionChatParamsPartUnion {
 	// Simplified implementation for compatibility
 	// TODO: Implement proper conversion once SDK structure is clarified
-	return []kuucode.SessionChatParamsPartUnion{}
+	return []kuuzuki.SessionChatParamsPartUnion{}
 }
 
 type App struct {
-	Info             kuucode.App
-	Modes            []kuucode.Mode
-	Providers        []kuucode.Provider
+	Info             kuuzuki.App
+	Modes            []kuuzuki.Mode
+	Providers        []kuuzuki.Provider
 	Version          string
 	StatePath        string
 	Config           *kuucodesdk.Config
 	Client           *compat.Client
 	State            *State
 	ModeIndex        int
-	Mode             *kuucode.Mode
-	Provider         *kuucode.Provider
-	Model            *kuucode.Model
-	Session          *kuucode.Session
+	Mode             *kuuzuki.Mode
+	Provider         *kuuzuki.Provider
+	Model            *kuuzuki.Model
+	Session          *kuuzuki.Session
 	Messages         []Message
 	Commands         commands.CommandRegistry
 	InitialModel     *string
@@ -59,13 +59,13 @@ type App struct {
 }
 
 type SessionCreatedMsg = struct {
-	Session *kuucode.Session
+	Session *kuuzuki.Session
 }
-type SessionSelectedMsg = *kuucode.Session
+type SessionSelectedMsg = *kuuzuki.Session
 type SessionLoadedMsg struct{}
 type ModelSelectedMsg struct {
-	Provider kuucode.Provider
-	Model    kuucode.Model
+	Provider kuuzuki.Provider
+	Model    kuuzuki.Model
 }
 type SessionClearedMsg struct{}
 type CompactSessionMsg struct{}
@@ -80,8 +80,8 @@ type FileRenderedMsg struct {
 func New(
 	ctx context.Context,
 	version string,
-	appInfo kuucode.App,
-	modes []kuucode.Mode,
+	appInfo kuuzuki.App,
+	modes []kuuzuki.Mode,
 	httpClient *compat.Client,
 	initialModel *string,
 	initialPrompt *string,
@@ -120,7 +120,7 @@ func New(
 	}
 
 	var modeIndex int
-	var mode *kuucode.Mode
+	var mode *kuuzuki.Mode
 	modeName := "build"
 	if appState.Mode != "" {
 		modeName = appState.Mode
@@ -173,7 +173,7 @@ func New(
 		Client:        httpClient,
 		ModeIndex:     modeIndex,
 		Mode:          mode,
-		Session:       &kuucode.Session{},
+		Session:       &kuuzuki.Session{},
 		Messages:      []Message{},
 		Commands:      commands.LoadFromConfig(configInfo),
 		InitialModel:  initialModel,
@@ -270,10 +270,10 @@ func (a *App) InitializeProvider() tea.Cmd {
 		return nil
 	}
 	providers := providersResponse.Providers
-	var defaultProvider *kuucode.Provider
-	var defaultModel *kuucode.Model
+	var defaultProvider *kuuzuki.Provider
+	var defaultModel *kuuzuki.Model
 
-	var anthropic *kuucode.Provider
+	var anthropic *kuuzuki.Provider
 	for _, provider := range providers {
 		if provider.Id == "anthropic" {
 			anthropic = &provider
@@ -306,8 +306,8 @@ func (a *App) InitializeProvider() tea.Cmd {
 		a.State.Model = model.ModelID
 	}
 
-	var currentProvider *kuucode.Provider
-	var currentModel *kuucode.Model
+	var currentProvider *kuuzuki.Provider
+	var currentModel *kuuzuki.Model
 	for _, provider := range providers {
 		if provider.Id == a.State.Provider {
 			currentProvider = &provider
@@ -324,8 +324,8 @@ func (a *App) InitializeProvider() tea.Cmd {
 		currentModel = defaultModel
 	}
 
-	var initialProvider *kuucode.Provider
-	var initialModel *kuucode.Model
+	var initialProvider *kuuzuki.Provider
+	var initialModel *kuuzuki.Model
 	if a.InitialModel != nil && *a.InitialModel != "" {
 		splits := strings.Split(*a.InitialModel, "/")
 		for _, provider := range providers {
@@ -358,9 +358,9 @@ func (a *App) InitializeProvider() tea.Cmd {
 }
 
 func getDefaultModel(
-	response *kuucode.AppProvidersResponse,
-	provider kuucode.Provider,
-) *kuucode.Model {
+	response *kuuzuki.AppProvidersResponse,
+	provider kuuzuki.Provider,
+) *kuuzuki.Model {
 	if response.Default != nil {
 		if match, ok := response.Default[provider.Id]; ok {
 			model := provider.Models[match]
@@ -378,7 +378,7 @@ func (a *App) IsBusy() bool {
 		return false
 	}
 	lastMessage := a.Messages[len(a.Messages)-1]
-	if casted, ok := lastMessage.Info.(kuucode.AssistantMessage); ok {
+	if casted, ok := lastMessage.Info.(kuuzuki.AssistantMessage); ok {
 		return casted.Time.Completed == nil || *casted.Time.Completed == 0
 	}
 	return true
@@ -407,10 +407,10 @@ func (a *App) InitializeProject(ctx context.Context) tea.Cmd {
 	cmds = append(cmds, util.CmdHandler(SessionCreatedMsg{Session: session}))
 
 	go func() {
-		err := a.Client.Session.Init().Post(ctx, a.Session.Id, kuucode.SessionInitParams{
-			MessageID:  kuucode.F(id.Ascending(id.Message)).(string),
-			ProviderID: kuucode.F(a.Provider.Id).(string),
-			ModelID:    kuucode.F(a.Model.Id).(string),
+		err := a.Client.Session.Init().Post(ctx, a.Session.Id, kuuzuki.SessionInitParams{
+			MessageID:  kuuzuki.F(id.Ascending(id.Message)).(string),
+			ProviderID: kuuzuki.F(a.Provider.Id).(string),
+			ModelID:    kuuzuki.F(a.Model.Id).(string),
 		})
 		if err != nil {
 			slog.Error("Failed to initialize project", "error", err)
@@ -437,9 +437,9 @@ func (a *App) CompactSession(ctx context.Context) tea.Cmd {
 		err := a.Client.Session.Summarize().Post(
 			compactCtx,
 			a.Session.Id,
-			kuucode.SessionSummarizeParams{
-				ProviderID: kuucode.F(a.Provider.Id).(string),
-				ModelID:    kuucode.F(a.Model.Id).(string),
+			kuuzuki.SessionSummarizeParams{
+				ProviderID: kuuzuki.F(a.Provider.Id).(string),
+				ModelID:    kuuzuki.F(a.Model.Id).(string),
 			},
 		)
 		if err != nil {
@@ -460,7 +460,7 @@ func (a *App) MarkProjectInitialized(ctx context.Context) error {
 	return nil
 }
 
-func (a *App) CreateSession(ctx context.Context) (*kuucode.Session, error) {
+func (a *App) CreateSession(ctx context.Context) (*kuuzuki.Session, error) {
 	session, err := a.Client.Session.New(ctx)
 	if err != nil {
 		return nil, err
@@ -485,12 +485,12 @@ func (a *App) SendPrompt(ctx context.Context, prompt Prompt) (*App, tea.Cmd) {
 	a.Messages = append(a.Messages, message)
 
 	cmds = append(cmds, func() tea.Msg {
-		err := a.Client.Session.Chat().Post(ctx, a.Session.Id, kuucode.SessionChatParams{
-			ProviderID: kuucode.F(a.Provider.Id).(string),
-			ModelID:    kuucode.F(a.Model.Id).(string),
-			Mode:       kuucode.F(a.Mode.Name).(string),
-			MessageID:  kuucode.F(messageID).(string),
-			Parts:      kuucode.F(message.ToSessionChatParams()).([]kuucode.SessionChatParamsPartUnion),
+		err := a.Client.Session.Chat().Post(ctx, a.Session.Id, kuuzuki.SessionChatParams{
+			ProviderID: kuuzuki.F(a.Provider.Id).(string),
+			ModelID:    kuuzuki.F(a.Model.Id).(string),
+			Mode:       kuuzuki.F(a.Mode.Name).(string),
+			MessageID:  kuuzuki.F(messageID).(string),
+			Parts:      kuuzuki.F(message.ToSessionChatParams()).([]kuuzuki.SessionChatParamsPartUnion),
 		})
 		if err != nil {
 			errormsg := fmt.Sprintf("failed to send message: %v", err)
@@ -520,15 +520,15 @@ func (a *App) Cancel(ctx context.Context, sessionID string) error {
 	return nil
 }
 
-func (a *App) ListSessions(ctx context.Context) ([]kuucode.Session, error) {
+func (a *App) ListSessions(ctx context.Context) ([]kuuzuki.Session, error) {
 	response, err := a.Client.Session.List(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if response == nil {
-		return []kuucode.Session{}, nil
+		return []kuuzuki.Session{}, nil
 	}
-	sessions := make([]kuucode.Session, len(response))
+	sessions := make([]kuuzuki.Session, len(response))
 	for i, session := range response {
 		sessions[i] = *session
 	}
@@ -568,13 +568,13 @@ func (a *App) ListMessages(ctx context.Context, sessionId string) ([]Message, er
 	return messages, nil
 }
 
-func (a *App) ListProviders(ctx context.Context) ([]kuucode.Provider, error) {
+func (a *App) ListProviders(ctx context.Context) ([]kuuzuki.Provider, error) {
 	response, err := a.Client.App.Providers().Get(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if response == nil {
-		return []kuucode.Provider{}, nil
+		return []kuuzuki.Provider{}, nil
 	}
 
 	providers := *response

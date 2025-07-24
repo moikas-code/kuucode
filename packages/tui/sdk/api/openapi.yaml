@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  description: kuucode API
-  title: kuucode
+  description: kuuzuki API
+  title: kuuzuki
   version: 1.0.0
 servers:
 - url: /

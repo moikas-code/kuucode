@@ -9,7 +9,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import { spawnSync } from "child_process"
 
-const github = "https://github.com/moikas-code/kuucode"
+const github = "https://github.com/moikas-code/kuuzuki"
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,7 +32,7 @@ export default defineConfig({
     configSchema(),
     solidJs(),
     starlight({
-      title: "kuucode",
+      title: "kuuzuki",
       lastUpdated: true,
       expressiveCode: { themes: ["github-light", "github-dark"] },
       social: [
@@ -87,7 +87,7 @@ export default defineConfig({
     }),
   ],
   redirects: {
-    "/discord": "https://discord.gg/kuucode",
+    "/discord": "https://discord.gg/kuuzuki",
   },
 })
 
@@ -97,7 +97,7 @@ function configSchema() {
     hooks: {
       "astro:build:done": async () => {
         console.log("generating config schema")
-        spawnSync("../kuucode/script/schema.ts", ["./dist/config.json"])
+        spawnSync("../kuuzuki/script/schema.ts", ["./dist/config.json"])
       },
     },
   }

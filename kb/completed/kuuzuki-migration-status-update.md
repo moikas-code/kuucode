@@ -12,8 +12,8 @@
    - ✅ **FIXED**: Duplicate type declarations resolved
 
 2. **Union Type References (100% Complete)**
-   - ✅ Fixed `kuucode.MessageUnion` → `compat.MessageUnion` references
-   - ✅ Fixed `kuucode.PartUnion` → `compat.PartUnion` references
+   - ✅ Fixed `kuuzuki.MessageUnion` → `compat.MessageUnion` references
+   - ✅ Fixed `kuuzuki.PartUnion` → `compat.PartUnion` references
    - ✅ Added proper imports with aliases to avoid conflicts
 
 3. **ToolState Method Calls (100% Complete)**
@@ -38,7 +38,7 @@
 
 ### **Category 1: Missing Event Constants (5 errors)**
 **Files**: `/internal/tui/tui.go`
-**Issue**: Some event constants still reference `kuucode.EventListResponse...`
+**Issue**: Some event constants still reference `kuuzuki.EventListResponse...`
 **Status**: Need to complete the sed replacement that was partially applied
 
 ### **Category 2: Pointer vs Value Type Mismatches (8 errors)**

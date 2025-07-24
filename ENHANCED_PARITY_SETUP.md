@@ -15,7 +15,7 @@ The enhanced fork-parity MCP is **fully configured and working**! Here's what ha
 ### **2. MCP Installation** ✅
 
 - **Command**: `fork-parity-mcp` available and working
-- **Configuration**: `kuucode.json` properly configured
+- **Configuration**: `kuuzuki.json` properly configured
 - **Environment**: Upstream and branch settings configured
 
 ### **3. Tested Functions** ✅
@@ -95,7 +95,7 @@ fork_parity_update_commit_status(hash, status, metadata)
 
 ```json
 {
-  "project": "kuucode",
+  "project": "kuuzuki",
   "upstream": {
     "remote": "upstream",
     "branch": "dev",
@@ -113,7 +113,7 @@ fork_parity_update_commit_status(hash, status, metadata)
 }
 ```
 
-### **MCP Configuration**: `kuucode.json`
+### **MCP Configuration**: `kuuzuki.json`
 
 ```json
 {
@@ -137,7 +137,7 @@ The SDK generation commit (`10c8b495`) needs manual review:
 
 - **Impact**: Affects docs, api, config, build, ui, test areas
 - **Risk**: 75% conflict probability
-- **Decision**: Determine if SDK changes are valuable for kuucode
+- **Decision**: Determine if SDK changes are valuable for kuuzuki
 
 ### **2. Set Up Automation (This Week)**
 

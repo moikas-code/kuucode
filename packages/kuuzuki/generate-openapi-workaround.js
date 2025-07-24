@@ -6,9 +6,9 @@
 const openApiSpec = {
   "openapi": "3.0.0",
   "info": {
-    "title": "kuucode",
+    "title": "kuuzuki",
     "version": "1.0.0",
-    "description": "kuucode API"
+    "description": "kuuzuki API"
   },
   "paths": {
     "/session": {

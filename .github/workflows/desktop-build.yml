@@ -71,7 +71,7 @@ jobs:
       - name: Build TUI
         run: |
           cd packages/tui
-          go build -o kuucode-tui ./cmd/kuucode
+          go build -o kuuzuki-tui ./cmd/kuuzuki
 
       - name: Build frontend
         run: bun run build:web
@@ -88,10 +88,10 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: kuucode-desktop-${{ matrix.platform }}
+          name: kuuzuki-desktop-${{ matrix.platform }}
           path: |
             packages/desktop/src-tauri/target/release/bundle/
-            packages/desktop/src-tauri/target/release/kuucode-desktop*
+            packages/desktop/src-tauri/target/release/kuuzuki-desktop*
           retention-days: 30
 
   release:
@@ -123,7 +123,7 @@ jobs:
             - **Windows**: `.msi` installer and portable `.exe`
 
             ### Installation
-            - **Linux**: `sudo dpkg -i kuucode-desktop_*.deb` or `sudo rpm -i kuucode-desktop-*.rpm`
+            - **Linux**: `sudo dpkg -i kuuzuki-desktop_*.deb` or `sudo rpm -i kuuzuki-desktop-*.rpm`
             - **macOS**: Open the `.dmg` and drag to Applications
             - **Windows**: Run the `.msi` installer
 

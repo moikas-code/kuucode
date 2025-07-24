@@ -18,7 +18,7 @@ type CompletionSuggestion struct {
 	// The ID of the provider that generated this suggestion.
 	ProviderID string
 
-	// The raw, underlying data object (e.g., kuucode.Symbol, commands.Command).
+	// The raw, underlying data object (e.g., kuuzuki.Symbol, commands.Command).
 	// This allows the selection handler to perform rich actions.
 	RawData any
 }

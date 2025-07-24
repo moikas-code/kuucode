@@ -18,11 +18,11 @@ func (p Prompt) ToMessage(
 	sessionID string,
 ) Message {
 	// Simplified implementation for compatibility
-	message := kuucode.UserMessage{
+	message := kuuzuki.UserMessage{
 		Id:        messageID,
 		SessionID: sessionID,
 		Role:      compat.UserMessageRoleUser,
-		Time: kuucode.PermissionInfoTime{
+		Time: kuuzuki.PermissionInfoTime{
 			Created: float32(time.Now().UnixMilli()),
 		},
 	}

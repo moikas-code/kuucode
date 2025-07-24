@@ -4,7 +4,7 @@
 
 ## What This Is
 
-A comprehensive system to track and integrate valuable improvements from the upstream `sst/opencode` repository into your `kuucode` fork while maintaining your unique features.
+A comprehensive system to track and integrate valuable improvements from the upstream `sst/opencode` repository into your `kuuzuki` fork while maintaining your unique features.
 
 ## Current Status
 
@@ -39,7 +39,7 @@ bun scripts/parity review abc123
 # 3. Make decision
 bun scripts/parity update abc123 integrated "Easy bug fix, no conflicts"
 # OR
-bun scripts/parity update abc123 skipped "Conflicts with kuucode features"
+bun scripts/parity update abc123 skipped "Conflicts with kuuzuki features"
 
 # 4. Check progress
 bun scripts/parity dashboard
@@ -66,14 +66,14 @@ bun scripts/parity dashboard
 
 ### 🔍 Review Carefully
 
-- New features (may enhance kuucode)
+- New features (may enhance kuuzuki)
 - API changes (check compatibility)
-- UI/UX improvements (align with kuucode vision)
+- UI/UX improvements (align with kuuzuki vision)
 
 ### ❌ Usually Skip
 
-- Branding changes (opencode → kuucode handled separately)
-- Features conflicting with kuucode enhancements
+- Branding changes (opencode → kuuzuki handled separately)
+- Features conflicting with kuuzuki enhancements
 - Experimental/WIP code
 
 ## Files You Should Know

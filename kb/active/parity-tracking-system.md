@@ -1,7 +1,7 @@
 # Kuuzuki Parity Tracking System
 
 ## Overview
-Comprehensive system for tracking and managing parity between kuucode (our fork) and opencode (upstream).
+Comprehensive system for tracking and managing parity between kuuzuki (our fork) and opencode (upstream).
 
 ## System Components
 
@@ -104,11 +104,11 @@ bun scripts/parity update abc123 integrated "Easy adaptation, good feature"
 - New features
 - Breaking changes
 - Core architecture changes
-- Changes affecting kuucode-specific features
+- Changes affecting kuuzuki-specific features
 
 ### Skip Candidates
-- Branding-specific changes (opencode → kuucode handled separately)
-- Features that conflict with kuucode enhancements
+- Branding-specific changes (opencode → kuuzuki handled separately)
+- Features that conflict with kuuzuki enhancements
 - Experimental/WIP features
 
 ## Metrics & Reporting
@@ -127,9 +127,9 @@ bun scripts/parity update abc123 integrated "Easy adaptation, good feature"
 ## Best Practices
 
 ### Decision Making
-1. **Value Assessment**: Does this benefit kuucode users?
+1. **Value Assessment**: Does this benefit kuuzuki users?
 2. **Effort Analysis**: Cost vs. benefit of integration
-3. **Conflict Check**: Does it interfere with kuucode features?
+3. **Conflict Check**: Does it interfere with kuuzuki features?
 4. **Maintenance Impact**: Long-term maintenance burden
 
 ### Documentation

@@ -183,7 +183,7 @@ func renderText(
 	showToolDetails bool,
 	width int,
 	extra string,
-	toolCalls ...kuucode.ToolPart,
+	toolCalls ...kuuzuki.ToolPart,
 ) string {
 	t := theme.CurrentTheme()
 
@@ -191,10 +191,10 @@ func renderText(
 	backgroundColor := t.BackgroundPanel()
 	var content string
 	switch casted := message.(type) {
-	case kuucode.AssistantMessage:
+	case kuuzuki.AssistantMessage:
 		ts = time.UnixMilli(int64(casted.Time.Created))
 		content = util.ToMarkdown(text, width, backgroundColor)
-	case kuucode.UserMessage:
+	case kuuzuki.UserMessage:
 		ts = time.UnixMilli(int64(casted.Time.Created))
 		base := styles.NewStyle().Foreground(t.Text()).Background(backgroundColor)
 		text = ansi.WordwrapWc(text, width-6, " -")
@@ -245,7 +245,7 @@ func renderText(
 	content = strings.Join(sections, "\n")
 
 	switch message.(type) {
-	case kuucode.UserMessage:
+	case kuuzuki.UserMessage:
 		return renderContentBlock(
 			app,
 			content,
@@ -253,7 +253,7 @@ func renderText(
 			WithTextColor(t.Text()),
 			WithBorderColorRight(t.Secondary()),
 		)
-	case kuucode.AssistantMessage:
+	case kuuzuki.AssistantMessage:
 		return renderContentBlock(
 			app,
 			content,
@@ -266,7 +266,7 @@ func renderText(
 
 func renderToolDetails(
 	app *app.App,
-	toolCall kuucode.ToolPart,
+	toolCall kuuzuki.ToolPart,
 	width int,
 ) string {
 	measure := util.Measure("chat.renderToolDetails")
@@ -421,7 +421,7 @@ func renderToolDetails(
 				steps := []string{}
 				for _, item := range toolcalls {
 					data, _ := json.Marshal(item)
-					var toolCall kuucode.ToolPart
+					var toolCall kuuzuki.ToolPart
 					_ = json.Unmarshal(data, &toolCall)
 					step := renderToolTitle(toolCall, width)
 					step = "∟ " + step
@@ -512,7 +512,7 @@ func getTodoPhase(metadata map[string]any) string {
 	}
 }
 
-func getTodoTitle(toolCall kuucode.ToolPart) string {
+func getTodoTitle(toolCall kuuzuki.ToolPart) string {
 	if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusCompleted {
 		if metadata, ok := kuucodecompat.WrapToolState(&toolCall.State).Metadata().(map[string]any); ok {
 			return getTodoPhase(metadata)
@@ -522,7 +522,7 @@ func getTodoTitle(toolCall kuucode.ToolPart) string {
 }
 
 func renderToolTitle(
-	toolCall kuucode.ToolPart,
+	toolCall kuuzuki.ToolPart,
 	width int,
 ) string {
 	if kuucodecompat.WrapToolState(&toolCall.State).Status() == kuucodecompat.ToolPartStateStatusPending {

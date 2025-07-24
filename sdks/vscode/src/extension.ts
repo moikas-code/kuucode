@@ -4,10 +4,10 @@ export function deactivate() {}
 import * as vscode from "vscode"
 
 export function activate(context: vscode.ExtensionContext) {
-  const TERMINAL_NAME = "kuucode"
+  const TERMINAL_NAME = "kuuzuki"
 
-  // Register command to open terminal in split screen and run kuucode
-  let openTerminalDisposable = vscode.commands.registerCommand("kuucode.openTerminal", async () => {
+  // Register command to open terminal in split screen and run kuuzuki
+  let openTerminalDisposable = vscode.commands.registerCommand("kuuzuki.openTerminal", async () => {
     // Create a new terminal in split screen
     const terminal = vscode.window.createTerminal({
       name: TERMINAL_NAME,
@@ -18,11 +18,11 @@ export function activate(context: vscode.ExtensionContext) {
     })
 
     terminal.show()
-    terminal.sendText("KUUZUKI_THEME=system KUUZUKI_CALLER=vscode kuucode")
+    terminal.sendText("KUUZUKI_THEME=system KUUZUKI_CALLER=vscode kuuzuki")
   })
 
   // Register command to add filepath to terminal
-  let addFilepathDisposable = vscode.commands.registerCommand("kuucode.addFilepathToTerminal", async () => {
+  let addFilepathDisposable = vscode.commands.registerCommand("kuuzuki.addFilepathToTerminal", async () => {
     const activeEditor = vscode.window.activeTextEditor
 
     if (!activeEditor) {

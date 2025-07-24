@@ -233,13 +233,13 @@ func (m *messagesComponent) renderView() tea.Cmd {
 		partCount := 0
 		lineCount := 0
 
-		orphanedToolCalls := make([]kuucode.ToolPart, 0)
+		orphanedToolCalls := make([]kuuzuki.ToolPart, 0)
 
 		width := m.width // always use full width
 
 		lastAssistantMessage := "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 		for _, msg := range slices.Backward(m.app.Messages) {
-			if assistant, ok := msg.Info.(kuucode.AssistantMessage); ok {
+			if assistant, ok := msg.Info.(kuuzuki.AssistantMessage); ok {
 				lastAssistantMessage = assistant.Id
 				break
 			}
@@ -249,10 +249,10 @@ func (m *messagesComponent) renderView() tea.Cmd {
 			var cached bool
 
 			switch casted := message.Info.(type) {
-			case kuucode.UserMessage:
+			case kuuzuki.UserMessage:
 				for partIndex, part := range message.Parts {
 					switch part := part.(type) {
-					case kuucode.TextPart:
+					case kuuzuki.TextPart:
 						if part.Synthetic != nil && *part.Synthetic {
 							continue
 						}
@@ -335,21 +335,21 @@ func (m *messagesComponent) renderView() tea.Cmd {
 					}
 				}
 
-			case kuucode.AssistantMessage:
+			case kuuzuki.AssistantMessage:
 				hasTextPart := false
 				for partIndex, p := range message.Parts {
 					switch part := p.(type) {
-					case kuucode.TextPart:
+					case kuuzuki.TextPart:
 						hasTextPart = true
 						finished := part.Time.End != nil && *part.Time.End > 0
 						remainingParts := message.Parts[partIndex+1:]
-						toolCallParts := make([]kuucode.ToolPart, 0)
+						toolCallParts := make([]kuuzuki.ToolPart, 0)
 
 						// sometimes tool calls happen without an assistant message
 						// these should be included in this assistant message as well
 						if len(orphanedToolCalls) > 0 {
 							toolCallParts = append(toolCallParts, orphanedToolCalls...)
-							orphanedToolCalls = make([]kuucode.ToolPart, 0)
+							orphanedToolCalls = make([]kuuzuki.ToolPart, 0)
 						}
 
 						remaining := true
@@ -358,11 +358,11 @@ func (m *messagesComponent) renderView() tea.Cmd {
 								break
 							}
 							switch part := part.(type) {
-							case kuucode.TextPart:
+							case kuuzuki.TextPart:
 								// we only want tool calls associated with the current text part.
 								// if we hit another text part, we're done.
 								remaining = false
-							case kuucode.ToolPart:
+							case kuuzuki.ToolPart:
 								toolCallParts = append(toolCallParts, part)
 								if kuucodecompat.WrapToolState(&part.State).Status() != kuucodecompat.ToolPartStateStatusCompleted && kuucodecompat.WrapToolState(&part.State).Status() != kuucodecompat.ToolPartStateStatusError {
 									// i don't think there's a case where a tool call isn't in result state
@@ -417,7 +417,7 @@ func (m *messagesComponent) renderView() tea.Cmd {
 							lineCount += lipgloss.Height(content) + 1
 							blocks = append(blocks, content)
 						}
-					case kuucode.ToolPart:
+					case kuuzuki.ToolPart:
 						if !m.showToolDetails {
 							if !hasTextPart {
 								orphanedToolCalls = append(orphanedToolCalls, part)
@@ -470,16 +470,16 @@ func (m *messagesComponent) renderView() tea.Cmd {
 			}
 
 			error := ""
-			if assistant, ok := message.Info.(kuucode.AssistantMessage); ok {
+			if assistant, ok := message.Info.(kuuzuki.AssistantMessage); ok {
 				switch err := compat.AsUnion(assistant.Error).(type) {
 				case nil:
 				case string:
 					error = "Message output length exceeded"
-				case kuucode.ProviderAuthError:
+				case kuuzuki.ProviderAuthError:
 					error = err.Data.Message
-				case kuucode.MessageAbortedError:
+				case kuuzuki.MessageAbortedError:
 					error = "Request was aborted"
-				case kuucode.UnknownError:
+				case kuuzuki.UnknownError:
 					error = err.Data.Message
 				}
 			}
@@ -578,7 +578,7 @@ func (m *messagesComponent) renderHeader() string {
 	contextWindow := m.app.Model.Limit.Context
 
 	for _, message := range m.app.Messages {
-		if assistant, ok := message.Info.(kuucode.AssistantMessage); ok {
+		if assistant, ok := message.Info.(kuuzuki.AssistantMessage); ok {
 			cost += float64(assistant.Cost)
 			usage := assistant.Tokens
 			if usage.Output > 0 {
@@ -770,9 +770,9 @@ func (m *messagesComponent) CopyLastMessage() (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 	lastMessage := m.app.Messages[len(m.app.Messages)-1]
-	var lastTextPart *kuucode.TextPart
+	var lastTextPart *kuuzuki.TextPart
 	for _, part := range lastMessage.Parts {
-		if p, ok := part.(kuucode.TextPart); ok {
+		if p, ok := part.(kuuzuki.TextPart); ok {
 			lastTextPart = &p
 		}
 	}

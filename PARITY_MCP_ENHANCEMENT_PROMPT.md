@@ -2,7 +2,7 @@
 
 ## 🎯 **Objective**
 
-Extract and contribute the proven semi-automated integration features from kuucode's parity system to enhance the base fork-parity MCP with intelligent automation capabilities.
+Extract and contribute the proven semi-automated integration features from kuuzuki's parity system to enhance the base fork-parity MCP with intelligent automation capabilities.
 
 ## 📊 **Proven Results from Kuucode Implementation**
 
@@ -122,9 +122,9 @@ interface Transformation {
 
 **Use Cases**:
 
-- Branding changes (opencode → kuucode)
-- Path mappings (packages/opencode → packages/kuucode)
-- Environment variables (OPENCODE* → KUUCODE*)
+- Branding changes (opencode → kuuzuki)
+- Path mappings (packages/opencode → packages/kuuzuki)
+- Environment variables (OPENCODE* → KUUZUKI*)
 - Configuration updates
 
 ## 🔧 **Recommended MCP Architecture**
@@ -189,7 +189,7 @@ fork_parity_migration_plan(commit_hashes[])
 
 ### **Phase 1: Core Intelligence (Immediate)**
 
-1. **Extract rule engine** from kuucode implementation
+1. **Extract rule engine** from kuuzuki implementation
 2. **Generalize conflict detection** algorithms
 3. **Create configuration schema** for project-specific rules
 4. **Build batch analysis framework**
@@ -259,7 +259,7 @@ fork_parity_migration_plan(commit_hashes[])
 
 ### **For MCP Enhancement**
 
-1. **Review kuucode implementation** in `scripts/parity-integrate`
+1. **Review kuuzuki implementation** in `scripts/parity-integrate`
 2. **Extract generic algorithms** from project-specific code
 3. **Design configuration schema** for broad applicability
 4. **Create plugin architecture** for extensibility
@@ -283,7 +283,7 @@ fork_parity_migration_plan(commit_hashes[])
 
 ## 🏆 **Conclusion**
 
-The kuucode parity system has proven that **intelligent, semi-automated fork maintenance** is not only possible but highly effective. The patterns are mature, tested, and ready for generalization.
+The kuuzuki parity system has proven that **intelligent, semi-automated fork maintenance** is not only possible but highly effective. The patterns are mature, tested, and ready for generalization.
 
 This contribution would transform the fork-parity MCP from a basic analysis tool into a **comprehensive fork maintenance platform**, benefiting the entire community of fork maintainers with proven automation capabilities.
 

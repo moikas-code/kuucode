@@ -43,8 +43,8 @@ let state:
 
 async function run() {
   try {
-    const match = body.match(/^hey\s*kuucode,?\s*(.*)$/s)
-    if (!match?.[1]) throw new Error("Command must start with `hey kuucode`")
+    const match = body.match(/^hey\s*kuuzuki,?\s*(.*)$/s)
+    if (!match?.[1]) throw new Error("Command must start with `hey kuuzuki`")
     const userPrompt = match[1]
 
     const oidcToken = await generateGitHubToken()
@@ -57,7 +57,7 @@ async function run() {
     await configureGit(appToken)
     await assertPermissions()
 
-    const comment = await createComment("kuucode started...")
+    const comment = await createComment("kuuzuki started...")
     commentId = comment.data.id
 
     // Set state
@@ -87,7 +87,7 @@ async function run() {
     })
 
     const response = responseRet.stdout
-    shareUrl = responseRet.stderr.match(/https:\/\/kuucode\.ai\/s\/\w+/)?.[0]
+    shareUrl = responseRet.stderr.match(/https:\/\/kuuzuki\.ai\/s\/\w+/)?.[0]
 
     // Comment and push changes
     if (await branchIsDirty()) {
@@ -98,7 +98,7 @@ async function run() {
       if (state.type === "issue") {
         const branch = await pushToNewBranch(summary)
         const pr = await createPR(repoData.data.default_branch, branch, summary, `${response}\n\nCloses #${issueId}`)
-        await updateComment(`kuucode created pull request #${pr}`)
+        await updateComment(`kuuzuki created pull request #${pr}`)
       } else if (state.type === "local-pr") {
         await pushToCurrentBranch(summary)
         await updateComment(response)
@@ -122,7 +122,7 @@ async function run() {
       msg = e.message
     }
     if (commentId) await updateComment(msg)
-    core.setFailed(`kuucode failed with error: ${msg}`)
+    core.setFailed(`kuuzuki failed with error: ${msg}`)
     // Also output the clean error message for the action to capture
     //core.setOutput("prepare_error", e.message);
     process.exit(1)
@@ -256,7 +256,7 @@ function generateBranchName() {
     .replace(/\.\d{3}Z/, "")
     .split("T")
     .join("_")
-  return `kuucode/${type}${issueId}-${timestamp}`
+  return `kuuzuki/${type}${issueId}-${timestamp}`
 }
 
 async function pushToCurrentBranch(summary: string) {
@@ -311,11 +311,11 @@ async function runKuucode(
     share?: boolean
   },
 ) {
-  console.log("Running kuucode...")
+  console.log("Running kuuzuki...")
 
   const promptPath = path.join(os.tmpdir(), "PROMPT")
   await Bun.write(promptPath, prompt)
-  const ret = await $`cat ${promptPath} | kuucode run -m ${process.env.INPUT_MODEL} ${opts?.share ? "--share" : ""}`
+  const ret = await $`cat ${promptPath} | kuuzuki run -m ${process.env.INPUT_MODEL} ${opts?.share ? "--share" : ""}`
   return {
     stdout: ret.stdout.toString().trim(),
     stderr: ret.stderr.toString().trim(),

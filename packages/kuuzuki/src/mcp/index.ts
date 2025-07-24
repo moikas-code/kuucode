@@ -64,7 +64,7 @@ export namespace MCP {
               args,
               env: {
                 ...process.env,
-                ...(cmd === "kuucode" ? { BUN_BE_BUN: "1" } : {}),
+                ...(cmd === "kuuzuki" ? { BUN_BE_BUN: "1" } : {}),
                 ...(mcp as any).environment,
               },
             }),

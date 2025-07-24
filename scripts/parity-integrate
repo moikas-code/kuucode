@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-// Semi-automated integration helper for kuucode parity system
+// Semi-automated integration helper for kuuzuki parity system
 import { $ } from "bun"
 import { readFileSync, writeFileSync, existsSync } from "fs"
 
@@ -20,17 +20,17 @@ const INTEGRATION_RULES: IntegrationRule[] = [
   {
     pattern: /packages\/web|docs\/|README|\.md$|\.mdx$/i,
     action: "skip",
-    reason: "Documentation/web changes - kuucode maintains separate docs and web presence"
+    reason: "Documentation/web changes - kuuzuki maintains separate docs and web presence"
   },
   {
     pattern: /vscode|\.vscode|extension|packages\/vscode/i,
     action: "skip", 
-    reason: "VSCode-specific changes - out of scope for kuucode desktop app"
+    reason: "VSCode-specific changes - out of scope for kuuzuki desktop app"
   },
   {
     pattern: /github\/workflows|\.github|ci:|workflow/i,
     action: "skip",
-    reason: "CI/CD changes - kuucode has different workflow setup"
+    reason: "CI/CD changes - kuuzuki has different workflow setup"
   },
   
   // Security rules (critical priority)
@@ -40,21 +40,21 @@ const INTEGRATION_RULES: IntegrationRule[] = [
     reason: "Security fixes need review but should be prioritized"
   },
   
-  // TUI rules (high value for kuucode)
+  // TUI rules (high value for kuuzuki)
   {
     pattern: /^feat.*tui|tui.*feat|packages\/tui|internal\/tui/i,
     action: "draft-pr", 
-    reason: "TUI features likely valuable for kuucode"
+    reason: "TUI features likely valuable for kuuzuki"
   },
   {
     pattern: /^fix.*tui|tui.*fix|packages\/tui.*fix/i,
     action: "draft-pr",
-    reason: "TUI bug fixes likely applicable to kuucode"
+    reason: "TUI bug fixes likely applicable to kuuzuki"
   },
   
   // Core functionality rules
   {
-    pattern: /packages\/opencode|packages\/kuucode|src\/.*\.(ts|js|go)$/i,
+    pattern: /packages\/opencode|packages\/kuuzuki|src\/.*\.(ts|js|go)$/i,
     action: "draft-pr",
     reason: "Core functionality changes need careful review"
   },
@@ -65,8 +65,8 @@ const INTEGRATION_RULES: IntegrationRule[] = [
     action: "auto",
     reason: "Simple typo fixes in code are safe to auto-apply",
     transformations: [
-      { find: /opencode/g, replace: "kuucode" },
-      { find: /packages\/opencode/g, replace: "packages/kuucode" },
+      { find: /opencode/g, replace: "kuuzuki" },
+      { find: /packages\/opencode/g, replace: "packages/kuuzuki" },
       { find: /OPENCODE_/g, replace: "KUUZUKI_" }
     ]
   },
@@ -75,7 +75,7 @@ const INTEGRATION_RULES: IntegrationRule[] = [
     action: "auto",
     reason: "Dependency updates are generally safe",
     transformations: [
-      { find: /opencode/g, replace: "kuucode" }
+      { find: /opencode/g, replace: "kuuzuki" }
     ]
   }
 ]
@@ -92,8 +92,8 @@ class IntegrationHelper {
       const conflicts = []
       
       for (const file of changedFiles) {
-        // Check if file exists in kuucode (with path mapping)
-        const kuucodeFile = file.replace(/packages\/opencode/g, 'packages/kuucode')
+        // Check if file exists in kuuzuki (with path mapping)
+        const kuucodeFile = file.replace(/packages\/opencode/g, 'packages/kuuzuki')
         
         if (existsSync(kuucodeFile)) {
           // Check if we have local modifications
@@ -107,12 +107,12 @@ class IntegrationHelper {
             })
           }
         } else if (file.includes('packages/opencode')) {
-          // File doesn't exist in kuucode - might be new or renamed
+          // File doesn't exist in kuuzuki - might be new or renamed
           conflicts.push({
             file: kuucodeFile,
             upstreamFile: file,
             hasLocalChanges: false,
-            issue: 'File does not exist in kuucode - may need creation or path mapping'
+            issue: 'File does not exist in kuuzuki - may need creation or path mapping'
           })
         }
       }
@@ -260,7 +260,7 @@ class IntegrationHelper {
       // Commit transformations if any were made
       const hasChanges = await $`git diff --staged --quiet || echo "changes"`.quiet()
       if (hasChanges.stdout.toString().includes("changes")) {
-        await $`git commit -m "chore: apply kuucode branding transformations"`
+        await $`git commit -m "chore: apply kuuzuki branding transformations"`
       }
       
       // Run automated tests
@@ -318,8 +318,8 @@ class IntegrationHelper {
 ${analysis.files.map(f => `- \`${f}\``).join('\n')}
 
 ### Integration Notes
-- [ ] Review changes for kuucode compatibility
-- [ ] Update branding (opencode → kuucode) 
+- [ ] Review changes for kuuzuki compatibility
+- [ ] Update branding (opencode → kuuzuki) 
 - [ ] Test functionality
 - [ ] Update documentation if needed
 

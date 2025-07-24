@@ -2,12 +2,12 @@
 
 ## Update Summary
 
-Updated `/packages/kuucode/AGENTS.md` to reflect that kuucode is now a standalone desktop application rather than just a CLI tool.
+Updated `/packages/kuuzuki/AGENTS.md` to reflect that kuuzuki is now a standalone desktop application rather than just a CLI tool.
 
 ## Changes Made
 
 ### 1. Added Desktop App Description
-- Emphasized kuucode as a **standalone desktop application**
+- Emphasized kuuzuki as a **standalone desktop application**
 - Highlighted AI-first development workflow
 - Described terminal-based interface as primary
 - Listed key features: native menubar, filesystem sidebar, AI integration
@@ -35,11 +35,11 @@ Updated `/packages/kuucode/AGENTS.md` to reflect that kuucode is now a standalon
 ┌─────────────────────────────────────────────────────┐
 │ Native Menubar (Kuuzuki | Edit | View | Help)       │
 ├─────────────┬───────────────────────────────────────┤
-│ Filesystem  │ 🚀 KUUCODE TERMINAL (PRIMARY)        │
+│ Filesystem  │ 🚀 KUUZUKI TERMINAL (PRIMARY)        │
 │ Sidebar     │                                       │
-│             │ kuucode> help                         │
-│ 📁 src/     │ kuucode> editor main.ts               │
-│ 📄 main.ts  │ kuucode> explain this function        │
+│             │ kuuzuki> help                         │
+│ 📁 src/     │ kuuzuki> editor main.ts               │
+│ 📄 main.ts  │ kuuzuki> explain this function        │
 │ 📄 app.ts   │                                       │
 │             │ Terminal Output Area                  │
 │             │                                       │
@@ -50,7 +50,7 @@ Updated `/packages/kuucode/AGENTS.md` to reflect that kuucode is now a standalon
 
 ## Impact
 
-This update ensures that developers working on kuucode understand:
+This update ensures that developers working on kuuzuki understand:
 1. The primary focus is now the desktop application
 2. The terminal interface is the main interaction method
 3. AI integration is central to the user experience

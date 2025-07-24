@@ -1,30 +1,30 @@
 package compat
 
 import (
-	kuucode "github.com/moikas-code/kuuzuki-sdk-go"
+	kuuzuki "github.com/moikas-code/kuuzuki-sdk-go"
 )
 
 // Client type alias for compatibility
 type Client = CompatClient
 
 // Core types for compatibility
-type App = kuucode.App
-type Mode = kuucode.Mode
-type Provider = kuucode.Provider
-type Model = kuucode.Model
-type Session = kuucode.Session
-type SessionShare = kuucode.SessionShare
-type Message = kuucode.Message
-type UserMessage = kuucode.UserMessage
-type AssistantMessage = kuucode.AssistantMessage
-type TextPart = kuucode.TextPart
-type FilePart = kuucode.FilePart
-type ToolPart = kuucode.ToolPart
-type StepStartPart = kuucode.StepStartPart
-type StepFinishPart = kuucode.StepFinishPart
-type FilePartSource = kuucode.FilePartSource
-type ToolState = kuucode.ToolState
-type AssistantMessageError = kuucode.AssistantMessageError
+type App = kuuzuki.App
+type Mode = kuuzuki.Mode
+type Provider = kuuzuki.Provider
+type Model = kuuzuki.Model
+type Session = kuuzuki.Session
+type SessionShare = kuuzuki.SessionShare
+type Message = kuuzuki.Message
+type UserMessage = kuuzuki.UserMessage
+type AssistantMessage = kuuzuki.AssistantMessage
+type TextPart = kuuzuki.TextPart
+type FilePart = kuuzuki.FilePart
+type ToolPart = kuuzuki.ToolPart
+type StepStartPart = kuuzuki.StepStartPart
+type StepFinishPart = kuuzuki.StepFinishPart
+type FilePartSource = kuuzuki.FilePartSource
+type ToolState = kuuzuki.ToolState
+type AssistantMessageError = kuuzuki.AssistantMessageError
 
 // Missing types that the UI code expects
 type MessageUnion = interface{}
@@ -34,7 +34,7 @@ type FileReadParams struct {
 }
 
 // Config types
-type KeybindsConfig = kuucode.KeybindsConfig
+type KeybindsConfig = kuuzuki.KeybindsConfig
 
 // Constants for compatibility
 const (
@@ -66,17 +66,17 @@ type SessionChatParamsPartUnion interface {
 }
 
 // Event types for compatibility - using type aliases to actual SDK types
-type EventListResponseEventSessionUpdated = kuucode.EventSessionUpdated
-type EventListResponseEventMessageUpdated = kuucode.EventMessageUpdated
-type EventListResponseEventMessagePartUpdated = kuucode.EventMessagePartUpdated
-type EventListResponseEventSessionDeleted = kuucode.EventSessionDeleted
-type EventListResponseEventIdeInstalled = kuucode.EventIdeInstalled
-type EventListResponseEventInstallationUpdated = kuucode.EventInstallationUpdated
-type EventListResponseEventSessionError = kuucode.EventSessionError
-type EventListResponseEventFileWatcherUpdated = kuucode.EventFileWatcherUpdated
-type EventListResponseEventStorageWrite = kuucode.EventStorageWrite
+type EventListResponseEventSessionUpdated = kuuzuki.EventSessionUpdated
+type EventListResponseEventMessageUpdated = kuuzuki.EventMessageUpdated
+type EventListResponseEventMessagePartUpdated = kuuzuki.EventMessagePartUpdated
+type EventListResponseEventSessionDeleted = kuuzuki.EventSessionDeleted
+type EventListResponseEventIdeInstalled = kuuzuki.EventIdeInstalled
+type EventListResponseEventInstallationUpdated = kuuzuki.EventInstallationUpdated
+type EventListResponseEventSessionError = kuuzuki.EventSessionError
+type EventListResponseEventFileWatcherUpdated = kuuzuki.EventFileWatcherUpdated
+type EventListResponseEventStorageWrite = kuuzuki.EventStorageWrite
 
-// Helper function F for parameter building - matches kuucode.F signature
+// Helper function F for parameter building - matches kuuzuki.F signature
 func F(value interface{}) interface{} {
 	return value
 }
@@ -90,22 +90,22 @@ func FString(value interface{}) string {
 }
 
 // AsUnion helper function for AssistantMessageError compatibility
-func AsUnion(e *kuucode.AssistantMessageError) interface{} {
+func AsUnion(e *kuuzuki.AssistantMessageError) interface{} {
 	return e
 }
 
 // ToolState compatibility wrapper
 type ToolStateCompat struct {
-	*kuucode.ToolState
+	*kuuzuki.ToolState
 }
 
-// WrapToolState wraps a kuucode.ToolState to provide compatibility methods
-func WrapToolState(ts *kuucode.ToolState) *ToolStateCompat {
+// WrapToolState wraps a kuuzuki.ToolState to provide compatibility methods
+func WrapToolState(ts *kuuzuki.ToolState) *ToolStateCompat {
 	return &ToolStateCompat{ToolState: ts}
 }
 
 // GetPartId extracts the Id field from a Part union type
-func GetPartId(part kuucode.Part) string {
+func GetPartId(part kuuzuki.Part) string {
 	if part.TextPart != nil {
 		return part.TextPart.Id
 	}
@@ -128,7 +128,7 @@ func GetPartId(part kuucode.Part) string {
 }
 
 // GetPartMessageID extracts the MessageID field from a Part union type
-func GetPartMessageID(part kuucode.Part) string {
+func GetPartMessageID(part kuuzuki.Part) string {
 	if part.TextPart != nil {
 		return part.TextPart.MessageID
 	}
@@ -151,7 +151,7 @@ func GetPartMessageID(part kuucode.Part) string {
 }
 
 // GetPartSessionID extracts the SessionID field from a Part union type
-func GetPartSessionID(part kuucode.Part) string {
+func GetPartSessionID(part kuuzuki.Part) string {
 	if part.TextPart != nil {
 		return part.TextPart.SessionID
 	}
@@ -174,7 +174,7 @@ func GetPartSessionID(part kuucode.Part) string {
 }
 
 // PartAsUnion converts a Part union type to PartUnion interface
-func PartAsUnion(part kuucode.Part) PartUnion {
+func PartAsUnion(part kuuzuki.Part) PartUnion {
 	if part.TextPart != nil {
 		return *part.TextPart
 	}
@@ -197,7 +197,7 @@ func PartAsUnion(part kuucode.Part) PartUnion {
 }
 
 // GetMessageSessionID extracts the SessionID field from a Message union type
-func GetMessageSessionID(msg kuucode.Message) string {
+func GetMessageSessionID(msg kuuzuki.Message) string {
 	if msg.AssistantMessage != nil {
 		return msg.AssistantMessage.SessionID
 	}
@@ -208,7 +208,7 @@ func GetMessageSessionID(msg kuucode.Message) string {
 }
 
 // GetMessageId extracts the Id field from a Message union type
-func GetMessageId(msg kuucode.Message) string {
+func GetMessageId(msg kuuzuki.Message) string {
 	if msg.AssistantMessage != nil {
 		return msg.AssistantMessage.Id
 	}
@@ -219,7 +219,7 @@ func GetMessageId(msg kuucode.Message) string {
 }
 
 // MessageAsUnion converts a Message union type to MessageUnion interface
-func MessageAsUnion(msg kuucode.Message) MessageUnion {
+func MessageAsUnion(msg kuuzuki.Message) MessageUnion {
 	if msg.AssistantMessage != nil {
 		return *msg.AssistantMessage
 	}
@@ -391,7 +391,7 @@ type AppLogParams struct {
 }
 
 type AppProvidersResponse struct {
-	Providers []kuucode.Provider `json:"providers"`
+	Providers []kuuzuki.Provider `json:"providers"`
 	Default   map[string]string  `json:"default,omitempty"`
 }
 
@@ -419,7 +419,7 @@ type FindFilesParams struct {
 }
 
 type FindFilesResponse struct {
-	Files []kuucode.File `json:"files"`
+	Files []kuuzuki.File `json:"files"`
 }
 
 type FindSymbolsParams struct {
@@ -427,5 +427,5 @@ type FindSymbolsParams struct {
 }
 
 type FindSymbolsResponse struct {
-	Symbols []kuucode.Symbol `json:"symbols"`
+	Symbols []kuuzuki.Symbol `json:"symbols"`
 }

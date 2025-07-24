@@ -13,7 +13,7 @@ struct Payload {
     cwd: String,
 }
 
-// Global state to track the kuucode process
+// Global state to track the kuuzuki process
 struct AppState {
     kuucode_process: Arc<Mutex<Option<Child>>>,
 }
@@ -30,13 +30,13 @@ async fn start_kuucode_tui(
         let _ = child.kill();
     }
     
-    // Start kuucode TUI
-    let mut child = Command::new("kuucode")
+    // Start kuuzuki TUI
+    let mut child = Command::new("kuuzuki")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
-        .map_err(|e| format!("Failed to start kuucode: {}. Make sure kuucode is installed.", e))?;
+        .map_err(|e| format!("Failed to start kuuzuki: {}. Make sure kuuzuki is installed.", e))?;
 
     // Get stdout and stderr handles
     let stdout = child.stdout.take().unwrap();
@@ -99,7 +99,7 @@ async fn stop_kuucode_tui(state: tauri::State<'_, AppState>) -> Result<String, S
     
     if let Some(mut child) = process_guard.take() {
         child.kill()
-            .map_err(|e| format!("Failed to stop kuucode: {}", e))?;
+            .map_err(|e| format!("Failed to stop kuuzuki: {}", e))?;
         Ok("Kuucode stopped".to_string())
     } else {
         Ok("Kuucode was not running".to_string())
@@ -142,7 +142,7 @@ fn main() {
         .on_window_event(|window, event| {
             match event {
                 tauri::WindowEvent::CloseRequested { .. } => {
-                    // Clean up kuucode process when window closes
+                    // Clean up kuuzuki process when window closes
                     if let Some(state) = window.try_state::<AppState>() {
                         let mut process_guard = state.kuucode_process.lock().unwrap();
                         if let Some(mut child) = process_guard.take() {

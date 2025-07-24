@@ -29,7 +29,7 @@ bun scripts/parity review abc123
 
 # 4. Update status after decision
 bun scripts/parity update abc123 integrated "Easy adaptation, good feature"
-bun scripts/parity update abc123 skipped "Conflicts with kuucode features"
+bun scripts/parity update abc123 skipped "Conflicts with kuuzuki features"
 
 # 5. Check progress
 bun scripts/parity dashboard
@@ -52,7 +52,7 @@ kb/active/parity-*.md        # Documentation
 ### Status Categories
 
 - **pending** - Awaiting review
-- **integrated** - Successfully integrated into kuucode
+- **integrated** - Successfully integrated into kuuzuki
 - **skipped** - Decided not to integrate
 - **conflict** - Has integration conflicts
 - **reviewed** - Reviewed but decision pending
@@ -137,10 +137,10 @@ For commits marked as "integrated":
    git show --stat [commit-hash]
    ```
 
-2. **Adapt to kuucode**
+2. **Adapt to kuuzuki**
 
-   - Change opencode → kuucode branding
-   - Resolve any conflicts with kuucode features
+   - Change opencode → kuuzuki branding
+   - Resolve any conflicts with kuuzuki features
    - Test functionality
 
 3. **Document the integration**
@@ -169,14 +169,14 @@ cd sdks/github && bun install && bun run tsc --noEmit
 - 🔍 New features
 - 🔍 Breaking changes
 - 🔍 Core architecture changes
-- 🔍 Changes affecting kuucode-specific features
+- 🔍 Changes affecting kuuzuki-specific features
 
 ### Skip Candidates
 
 - ❌ Branding-specific changes (opencode-specific)
-- ❌ Features that conflict with kuucode enhancements
+- ❌ Features that conflict with kuuzuki enhancements
 - ❌ Experimental/WIP features
-- ❌ Changes that reduce kuucode's competitive advantage
+- ❌ Changes that reduce kuuzuki's competitive advantage
 
 ## Automation
 
@@ -197,7 +197,7 @@ cd sdks/github && bun install && bun run tsc --noEmit
 echo 'bun scripts/parity-daily' >> ~/.bashrc
 
 # Or create a cron job for weekly checks
-# 0 9 * * 1 cd /path/to/kuucode && bun scripts/parity check "1 week ago" --auto-triage
+# 0 9 * * 1 cd /path/to/kuuzuki && bun scripts/parity check "1 week ago" --auto-triage
 ```
 
 ## Troubleshooting
@@ -283,10 +283,10 @@ bun scripts/parity update e4f754ee integrated "Mouse selection fix, no conflicts
 # 1. Review the commit
 bun scripts/parity review xyz789
 
-# 2. Determine it conflicts with kuucode features
+# 2. Determine it conflicts with kuuzuki features
 
 # 3. Update status
-bun scripts/parity update xyz789 skipped "Conflicts with kuucode's enhanced TUI features"
+bun scripts/parity update xyz789 skipped "Conflicts with kuuzuki's enhanced TUI features"
 ```
 
 ## Quick Start Checklist

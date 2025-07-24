@@ -2,7 +2,7 @@
 
 ## 🚨 **CRITICAL DECISION REQUIRED**
 
-The kuucode TUI migration has reached a major architectural decision point. We have ~100+ compilation errors that fall into several categories requiring different approaches.
+The kuuzuki TUI migration has reached a major architectural decision point. We have ~100+ compilation errors that fall into several categories requiring different approaches.
 
 ## Current Error Analysis (100+ errors)
 
@@ -14,9 +14,9 @@ The kuucode TUI migration has reached a major architectural decision point. We h
 
 ### 2. **F() Function Type Assertions** (⚠️ IN PROGRESS)
 - **Status**: Infrastructure added, needs application
-- **Issue**: `kuucode.F()` returns `interface{}` but code expects `string`
+- **Issue**: `kuuzuki.F()` returns `interface{}` but code expects `string`
 - **Added**: `FString()` helper function
-- **Remaining**: Replace `kuucode.F()` with `kuucode.FString()` in ~20 locations
+- **Remaining**: Replace `kuuzuki.F()` with `kuuzuki.FString()` in ~20 locations
 - **Solution**: Systematic replacement - **1 hour work**
 
 ### 3. **ID Field Migration** (🔄 SYSTEMATIC ISSUE)
@@ -102,7 +102,7 @@ type AssistantMessage struct { Id string ... }
 4. Fix remaining service method chaining
 
 ### **Phase 2: Systematic Fixes** (2 hours)
-1. Replace `kuucode.F()` with `kuucode.FString()` where strings expected
+1. Replace `kuuzuki.F()` with `kuuzuki.FString()` where strings expected
 2. Global ID field migration: `.ID` → `.Id`
 3. Fix method chaining calls throughout codebase
 

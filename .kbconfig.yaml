@@ -1,6 +1,6 @@
 type: filesystem
 filesystem:
-  root_path: /home/moika/Documents/code/kuucode/kb
+  root_path: /home/moika/Documents/code/kuuzuki/kb
   enable_versioning: false
   enable_compression: false
 graph:

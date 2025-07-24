@@ -67,7 +67,7 @@ export const SessionsCommand = cmd({
         UI.empty()
         UI.println(UI.Style.TEXT_DIM + `Total: ${count} sessions`)
         UI.empty()
-        UI.println(UI.Style.TEXT_DIM + "Use 'kuucode run --session <id>' to continue a session")
+        UI.println(UI.Style.TEXT_DIM + "Use 'kuuzuki run --session <id>' to continue a session")
       }
     })
   },

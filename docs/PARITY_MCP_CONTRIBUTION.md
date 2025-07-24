@@ -2,7 +2,7 @@
 
 ## 🎯 Proven Patterns from Kuucode Implementation
 
-After testing kuucode's semi-automated integration system with real upstream commits, here are the proven patterns that should be contributed to the base fork-parity MCP:
+After testing kuuzuki's semi-automated integration system with real upstream commits, here are the proven patterns that should be contributed to the base fork-parity MCP:
 
 ## ✅ Successfully Tested Features
 
@@ -105,7 +105,7 @@ fork_parity_validate_integration(hash, validation_rules)
 
 ```json
 {
-  "project": "kuucode",
+  "project": "kuuzuki",
   "upstream": "sst/opencode",
   "rules": [...],
   "pathMappings": {...},
@@ -168,7 +168,7 @@ fork_parity_validate_integration(hash, validation_rules)
 
 ## 🚀 Next Steps for MCP Contribution
 
-1. **Extract generic algorithms** from kuucode implementation
+1. **Extract generic algorithms** from kuuzuki implementation
 2. **Design configuration schema** for project-specific rules
 3. **Create plugin architecture** for extensibility
 4. **Build comprehensive test suite** with multiple fork scenarios

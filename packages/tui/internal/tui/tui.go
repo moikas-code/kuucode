@@ -347,17 +347,17 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		a.showCompletionDialog = false
 	case compat.EventListResponseEventInstallationUpdated:
 		return a, toast.NewSuccessToast(
-			"kuucode updated to "+msg.Properties.Version+", restart to apply.",
+			"kuuzuki updated to "+msg.Properties.Version+", restart to apply.",
 			toast.WithTitle("New version installed"),
 		)
 	case compat.EventListResponseEventIdeInstalled:
 		return a, toast.NewSuccessToast(
-			"Installed the kuucode extension in "+msg.Properties.Ide,
+			"Installed the kuuzuki extension in "+msg.Properties.Ide,
 			toast.WithTitle(msg.Properties.Ide+" extension installed"),
 		)
 	case compat.EventListResponseEventSessionDeleted:
 		if a.app.Session != nil && msg.Properties.Info.Id == a.app.Session.Id {
-			a.app.Session = &kuucode.Session{}
+			a.app.Session = &kuuzuki.Session{}
 			a.app.Messages = []app.Message{}
 		}
 		return a, toast.NewSuccessToast("Session deleted successfully")
@@ -370,9 +370,9 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if compat.GetPartSessionID(msg.Properties.Part) == a.app.Session.Id {
 			messageIndex := slices.IndexFunc(a.app.Messages, func(m app.Message) bool {
 				switch casted := m.Info.(type) {
-				case kuucode.UserMessage:
+				case kuuzuki.UserMessage:
 					return casted.Id == compat.GetPartMessageID(msg.Properties.Part)
-				case kuucode.AssistantMessage:
+				case kuuzuki.AssistantMessage:
 					return casted.Id == compat.GetPartMessageID(msg.Properties.Part)
 				}
 				return false
@@ -381,15 +381,15 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				message := a.app.Messages[messageIndex]
 				partIndex := slices.IndexFunc(message.Parts, func(p compat.PartUnion) bool {
 					switch casted := p.(type) {
-					case kuucode.TextPart:
+					case kuuzuki.TextPart:
 						return casted.Id == compat.GetPartId(msg.Properties.Part)
 					case compat.FilePart:
 						return casted.Id == compat.GetPartId(msg.Properties.Part)
-					case kuucode.ToolPart:
+					case kuuzuki.ToolPart:
 						return casted.Id == compat.GetPartId(msg.Properties.Part)
-					case kuucode.StepStartPart:
+					case kuuzuki.StepStartPart:
 						return casted.Id == compat.GetPartId(msg.Properties.Part)
-					case kuucode.StepFinishPart:
+					case kuuzuki.StepFinishPart:
 						return casted.Id == compat.GetPartId(msg.Properties.Part)
 					}
 					return false
@@ -407,9 +407,9 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if compat.GetMessageSessionID(msg.Properties.Info) == a.app.Session.Id {
 			matchIndex := slices.IndexFunc(a.app.Messages, func(m app.Message) bool {
 				switch casted := m.Info.(type) {
-				case kuucode.UserMessage:
+				case kuuzuki.UserMessage:
 					return casted.Id == compat.GetMessageId(msg.Properties.Info)
-				case kuucode.AssistantMessage:
+				case kuuzuki.AssistantMessage:
 					return casted.Id == compat.GetMessageId(msg.Properties.Info)
 				}
 				return false
@@ -433,10 +433,10 @@ func (a Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case compat.EventListResponseEventSessionError:
 		switch err := interface{}(msg.Properties.Error).(type) {
 		case nil:
-		case kuucode.ProviderAuthError:
+		case kuuzuki.ProviderAuthError:
 			slog.Error("Failed to authenticate with provider", "error", err.Data.Message)
 			return a, toast.NewErrorToast("Provider error: " + err.Data.Message)
-		case kuucode.UnknownError:
+		case kuuzuki.UnknownError:
 			slog.Error("Server error", "name", err.Name, "message", err.Data.Message)
 			return a, toast.NewErrorToast(err.Data.Message, toast.WithTitle(string(err.Name)))
 		}
@@ -618,12 +618,12 @@ func (a Model) home() string {
 	baseStyle := styles.NewStyle().Background(t.Background())
 	base := baseStyle.Render
 
-	kuucode := `
+	kuuzuki := `
 █ █ █ █ █ █ █▀▀ █▀▀█ █▀▀▄ █▀▀
 █▀▄ █░█ █░█ █░░ █░░█ █░░█ █▀▀
 ▀ ▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀▀ ▀▀▀  ▀▀▀`
 
-	logo := base(kuucode)
+	logo := base(kuuzuki)
 	// cwd := app.Info.Path.Cwd
 	// config := app.Info.Path.Config
 
@@ -837,7 +837,7 @@ func (a Model) executeCommand(command commands.Command) (tea.Model, tea.Cmd) {
 		if a.app.Session.Id == "" {
 			return a, nil
 		}
-		a.app.Session = &kuucode.Session{}
+		a.app.Session = &kuuzuki.Session{}
 		a.app.Messages = []app.Message{}
 		cmds = append(cmds, util.CmdHandler(app.SessionClearedMsg{}))
 	case commands.SessionListCommand:
@@ -1085,10 +1085,10 @@ func formatConversationToMarkdown(messages []app.Message) string {
 		var timestamp time.Time
 
 		switch info := msg.Info.(type) {
-		case kuucode.UserMessage:
+		case kuuzuki.UserMessage:
 			role = "User"
 			timestamp = time.UnixMilli(int64(info.Time.Created))
-		case kuucode.AssistantMessage:
+		case kuuzuki.AssistantMessage:
 			role = "Assistant"
 			timestamp = time.UnixMilli(int64(info.Time.Created))
 		default:
@@ -1101,11 +1101,11 @@ func formatConversationToMarkdown(messages []app.Message) string {
 
 		for _, part := range msg.Parts {
 			switch p := part.(type) {
-			case kuucode.TextPart:
+			case kuuzuki.TextPart:
 				builder.WriteString(p.Text + "\n\n")
 			case compat.FilePart:
 				builder.WriteString(fmt.Sprintf("[File: %s]\n\n", p.Filename))
-			case kuucode.ToolPart:
+			case kuuzuki.ToolPart:
 				builder.WriteString(fmt.Sprintf("[Tool: %s]\n\n", p.Tool))
 			}
 		}

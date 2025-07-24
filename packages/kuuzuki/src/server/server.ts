@@ -73,9 +73,9 @@ export namespace Server {
         openAPISpecs(app, {
           documentation: {
             info: {
-              title: "kuucode",
+              title: "kuuzuki",
               version: "0.0.3",
-              description: "kuucode api",
+              description: "kuuzuki api",
             },
             openapi: "3.0.0",
           },
@@ -755,9 +755,9 @@ export namespace Server {
     const result = await generateSpecs(a, {
       documentation: {
         info: {
-          title: "kuucode",
+          title: "kuuzuki",
           version: "1.0.0",
-          description: "kuucode api",
+          description: "kuuzuki api",
         },
         openapi: "3.0.0",
       },

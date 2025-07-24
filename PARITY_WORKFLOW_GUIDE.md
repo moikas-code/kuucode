@@ -8,7 +8,7 @@ The enhanced MCP automatically discovers new upstream commits and creates action
 
 ```bash
 # Sync with upstream and analyze new commits
-fork_parity_sync_and_analyze(repository_path: "/home/moika/Documents/code/kuucode")
+fork_parity_sync_and_analyze(repository_path: "/home/moika/Documents/code/kuuzuki")
 ```
 
 This command:
@@ -29,7 +29,7 @@ This shows you:
 
 - **High-priority commits** that need immediate attention
 - **Security fixes** that should be reviewed quickly
-- **TUI improvements** valuable for kuucode
+- **TUI improvements** valuable for kuuzuki
 - **Core changes** requiring careful evaluation
 
 ### **3. Weekly Batch Analysis**
@@ -123,7 +123,7 @@ Tasks are automatically prioritized:
 
 **High** ⚠️
 
-- TUI improvements valuable for kuucode
+- TUI improvements valuable for kuuzuki
 - Core functionality enhancements
 - Performance improvements
 

@@ -7,7 +7,7 @@
 1. **Create a `.env` file** (not committed to git):
 
 ```bash
-# In your kuucode project root
+# In your kuuzuki project root
 echo "DISCORD_WEBHOOK_URL=https://discordapp.com/api/webhooks/1397447455800561767/" > .env
 ```
 

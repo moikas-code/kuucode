@@ -2,7 +2,7 @@
 
 ## Key Files and Functions for Token Limits and API Calls
 
-### 1. Core Token Management - `packages/kuucode/src/session/index.ts`
+### 1. Core Token Management - `packages/kuuzuki/src/session/index.ts`
 
 **Key Constants:**
 - `OUTPUT_TOKEN_MAX = 32_000` (line 47) - Maximum output tokens allowed
@@ -43,7 +43,7 @@ const tokens = {
 - Output tokens: `tokens.output * model.cost.output / 1_000_000`
 - Cache read/write: Separate pricing for cached tokens
 
-### 3. Provider Integration - `packages/kuucode/src/provider/provider.ts`
+### 3. Provider Integration - `packages/kuuzuki/src/provider/provider.ts`
 
 **API Client Setup:**
 - **Anthropic**: Lines 41-69, custom fetch with OAuth tokens
@@ -58,7 +58,7 @@ limit: {
 }
 ```
 
-### 4. Model Definitions - `packages/kuucode/src/provider/models.ts`
+### 4. Model Definitions - `packages/kuuzuki/src/provider/models.ts`
 
 **Model Schema (lines 26-29):**
 ```typescript
@@ -70,7 +70,7 @@ limit: z.object({
 
 **Data Source**: Models fetched from `https://models.dev/api.json`
 
-### 5. Error Handling - `packages/kuucode/src/session/index.ts`
+### 5. Error Handling - `packages/kuuzuki/src/session/index.ts`
 
 **API Key Errors:**
 - Line 1022: `LoadAPIKeyError.isInstance(e)` - Handles authentication failures
@@ -89,7 +89,7 @@ limit: z.object({
 - **Summarization**: `summarize()` function (lines 1109+) creates condensed conversation history
 
 **Provider-Specific Transforms:**
-- `packages/kuucode/src/provider/transform.ts`
+- `packages/kuuzuki/src/provider/transform.ts`
 - Anthropic-specific caching controls for context optimization
 
 ### 7. Session Management

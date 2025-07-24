@@ -1,5 +1,5 @@
 {
-  "project": "kuucode",
+  "project": "kuuzuki",
   "upstream": {
     "remote": "upstream",
     "branch": "dev",
@@ -7,11 +7,11 @@
   },
   "branding": {
     "from": "opencode",
-    "to": "kuucode"
+    "to": "kuuzuki"
   },
   "pathMappings": {
-    "packages/opencode": "packages/kuucode",
-    "opencode.json": "kuucode.json",
+    "packages/opencode": "packages/kuuzuki",
+    "opencode.json": "kuuzuki.json",
     "OPENCODE_": "KUUCODE_"
   },
   "integrationRules": [
@@ -19,21 +19,21 @@
       "name": "skip-docs",
       "pattern": "packages/web|docs/|README|\\.(md|mdx)$",
       "action": "skip",
-      "reason": "Documentation/web changes - kuucode maintains separate docs and web presence",
+      "reason": "Documentation/web changes - kuuzuki maintains separate docs and web presence",
       "priority": 1
     },
     {
       "name": "skip-vscode",
       "pattern": "vscode|\\.vscode|extension|packages/vscode",
       "action": "skip",
-      "reason": "VSCode-specific changes - out of scope for kuucode desktop app",
+      "reason": "VSCode-specific changes - out of scope for kuuzuki desktop app",
       "priority": 2
     },
     {
       "name": "skip-ci",
       "pattern": "github/workflows|\\.github|ci:|workflow",
       "action": "skip",
-      "reason": "CI/CD changes - kuucode has different workflow setup",
+      "reason": "CI/CD changes - kuuzuki has different workflow setup",
       "priority": 3
     },
     {
@@ -51,7 +51,7 @@
       "name": "tui-features",
       "pattern": "^feat.*tui|tui.*feat|packages/tui|internal/tui",
       "action": "draft-pr",
-      "reason": "TUI features likely valuable for kuucode",
+      "reason": "TUI features likely valuable for kuuzuki",
       "priority": 5,
       "metadata": {
         "category": "enhancement",
@@ -62,7 +62,7 @@
       "name": "tui-fixes",
       "pattern": "^fix.*tui|tui.*fix|packages/tui.*fix",
       "action": "draft-pr",
-      "reason": "TUI bug fixes likely applicable to kuucode",
+      "reason": "TUI bug fixes likely applicable to kuuzuki",
       "priority": 6,
       "metadata": {
         "category": "bugfix",
@@ -71,7 +71,7 @@
     },
     {
       "name": "core-changes",
-      "pattern": "packages/opencode|packages/kuucode|src/.*\\.(ts|js|go)$",
+      "pattern": "packages/opencode|packages/kuuzuki|src/.*\\.(ts|js|go)$",
       "action": "draft-pr",
       "reason": "Core functionality changes need careful review",
       "priority": 7,
@@ -107,7 +107,7 @@
     "branding": [
       {
         "find": "opencode",
-        "replace": "kuucode",
+        "replace": "kuuzuki",
         "files": ["*.ts", "*.js", "*.go", "*.json"],
         "excludeFiles": ["*.md", "*.mdx", "docs/*"]
       },
@@ -120,12 +120,12 @@
     "paths": [
       {
         "find": "packages/opencode",
-        "replace": "packages/kuucode",
+        "replace": "packages/kuuzuki",
         "files": ["*.ts", "*.js", "*.json", "*.go"]
       },
       {
         "find": "opencode\\.json",
-        "replace": "kuucode.json",
+        "replace": "kuuzuki.json",
         "files": ["*.ts", "*.js", "*.json"]
       }
     ]

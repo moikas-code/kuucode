@@ -7,9 +7,9 @@ After analyzing the codebase, the compatibility issues are more extensive than i
 ## Key Issues Identified
 
 ### 1. Missing Core Types
-- `kuucode.Client` → needs compat wrapper
-- `kuucode.MessageUnion` → interface for message types
-- `kuucode.PartUnion` → interface for part types
+- `kuuzuki.Client` → needs compat wrapper
+- `kuuzuki.MessageUnion` → interface for message types
+- `kuuzuki.PartUnion` → interface for part types
 - Various parameter types (`SessionChatParams`, `AppLogParams`, etc.)
 - Event types (`EventListResponseEvent*`)
 
@@ -37,7 +37,7 @@ After analyzing the codebase, the compatibility issues are more extensive than i
 
 ### Phase 2: Systematic Import Updates
 1. Update all files to import compat layer instead of SDK directly
-2. Replace all `kuucode.*` references with `compat.*`
+2. Replace all `kuuzuki.*` references with `compat.*`
 3. Fix field access patterns
 
 ### Phase 3: Implementation

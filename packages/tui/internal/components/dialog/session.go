@@ -106,7 +106,7 @@ type sessionDialog struct {
 	width              int
 	height             int
 	modal              *modal.Modal
-	sessions           []kuucode.Session
+	sessions           []kuuzuki.Session
 	list               list.List[sessionItem]
 	app                *app.App
 	deleteConfirmation int // -1 means no confirmation, >= 0 means confirming deletion of session at this index
@@ -138,7 +138,7 @@ func (s *sessionDialog) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				)
 			}
 		case "n":
-			s.app.Session = &kuucode.Session{}
+			s.app.Session = &kuuzuki.Session{}
 			s.app.Messages = []app.Message{}
 			return s, tea.Sequence(
 				util.CmdHandler(modal.CloseModalMsg{}),
@@ -239,7 +239,7 @@ func (s *sessionDialog) Close() tea.Cmd {
 func NewSessionDialog(app *app.App) SessionDialog {
 	sessions, _ := app.ListSessions(context.Background())
 
-	var filteredSessions []kuucode.Session
+	var filteredSessions []kuuzuki.Session
 	var items []sessionItem
 	for _, sess := range sessions {
 		if sess.ParentID != nil && *sess.ParentID != "" {

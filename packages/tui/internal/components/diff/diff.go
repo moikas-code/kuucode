@@ -19,10 +19,10 @@ import (
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/charmbracelet/lipgloss/v2/compat"
 	"github.com/charmbracelet/x/ansi"
-	"github.com/sergi/go-diff/diffmatchpatch"
 	stylesi "github.com/moikas-code/kuuzuki/internal/styles"
 	"github.com/moikas-code/kuuzuki/internal/theme"
 	"github.com/moikas-code/kuuzuki/internal/util"
+	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 // -------------------------------------------------------------------------
@@ -323,7 +323,7 @@ func SyntaxHighlight(w io.Writer, source, fileName, formatter string, bg color.C
 
 	// Dynamic theme based on current theme values
 	syntaxThemeXml := fmt.Sprintf(`
-	<style name="kuucode-theme">
+	<style name="kuuzuki-theme">
 	<!-- Base colors -->
 	<entry type="Background" style="bg:%s"/>
 	<entry type="Text" style="%s"/>

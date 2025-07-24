@@ -11,7 +11,7 @@ class KuucodeWrapper {
   constructor() {
     this.terminalElement = document.getElementById("terminal")!
 
-    // Create xterm terminal that looks exactly like kuucode TUI
+    // Create xterm terminal that looks exactly like kuuzuki TUI
     this.terminal = new Terminal({
       theme: {
         background: "#000000",
@@ -64,12 +64,12 @@ class KuucodeWrapper {
       this.fitAddon.fit()
     })
 
-    // Listen for kuucode output
+    // Listen for kuuzuki output
     await listen("kuuzuki-output", (event: any) => {
       this.terminal.write(event.payload + "\r\n")
     })
 
-    // Listen for kuucode errors
+    // Listen for kuuzuki errors
     await listen("kuuzuki-error", (event: any) => {
       this.terminal.write("\x1b[31m" + event.payload + "\x1b[0m\r\n") // Red text for errors
     })
@@ -84,7 +84,7 @@ class KuucodeWrapper {
       this.startKuucode()
     })
 
-    // Start kuucode immediately if app is already ready
+    // Start kuuzuki immediately if app is already ready
     this.startKuucode()
   }
 
@@ -92,13 +92,13 @@ class KuucodeWrapper {
     try {
       this.terminal.writeln("\x1b[36m🚀 Starting Kuucode TUI...\x1b[0m\r\n")
 
-      // Start kuucode TUI process
+      // Start kuuzuki TUI process
       const result = await invoke("start_kuucode_tui")
       console.log("Kuucode started:", result)
     } catch (error) {
       this.terminal.writeln(`\x1b[31m❌ Failed to start Kuucode: ${error}\x1b[0m\r\n`)
-      this.terminal.writeln("\x1b[33mMake sure kuucode is installed and in your PATH.\x1b[0m\r\n")
-      this.terminal.writeln("\x1b[33mInstall with: npm install -g kuucode\x1b[0m\r\n")
+      this.terminal.writeln("\x1b[33mMake sure kuuzuki is installed and in your PATH.\x1b[0m\r\n")
+      this.terminal.writeln("\x1b[33mInstall with: npm install -g kuuzuki\x1b[0m\r\n")
     }
   }
 
@@ -106,7 +106,7 @@ class KuucodeWrapper {
     try {
       await invoke("send_input_to_kuucode", { input })
     } catch (error) {
-      console.error("Failed to send input to kuucode:", error)
+      console.error("Failed to send input to kuuzuki:", error)
     }
   }
 }

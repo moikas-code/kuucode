@@ -19,7 +19,7 @@ export const ServeCommand = cmd({
         describe: "hostname to listen on",
         default: "127.0.0.1",
       }),
-  describe: "starts a headless kuucode server",
+  describe: "starts a headless kuuzuki server",
   handler: async (args) => {
     const cwd = process.cwd()
     await bootstrap({ cwd }, async () => {
@@ -36,7 +36,7 @@ export const ServeCommand = cmd({
         hostname,
       })
 
-      console.log(`kuucode server listening on http://${server.hostname}:${server.port}`)
+      console.log(`kuuzuki server listening on http://${server.hostname}:${server.port}`)
 
       await new Promise(() => {})
 

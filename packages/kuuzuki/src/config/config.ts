@@ -15,7 +15,7 @@ export namespace Config {
 
   export const state = App.state("config", async (app) => {
     let result: any = await global()
-    for (const file of ["kuucode.jsonc", "kuucode.json"]) {
+    for (const file of ["kuuzuki.jsonc", "kuuzuki.json"]) {
       const found = await Filesystem.findUp(file, app.path.cwd, app.path.root)
       for (const resolved of found.toReversed()) {
         result = mergeDeep(result, await load(resolved))
@@ -230,7 +230,7 @@ export namespace Config {
     let result: any = pipe(
       {},
       mergeDeep(await load(path.join(Global.Path.config, "config.json"))),
-      mergeDeep(await load(path.join(Global.Path.config, "kuucode.json"))),
+      mergeDeep(await load(path.join(Global.Path.config, "kuuzuki.json"))),
     )
 
     await import(path.join(Global.Path.config, "config"), {

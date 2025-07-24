@@ -1,5 +1,5 @@
 {
-  "packageName": "kuucode",
+  "packageName": "kuuzuki",
   "packageVersion": "0.1.0",
   "gitUserId": "moikas-code",
   "gitRepoId": "kuuzuki-sdk-go",
@@ -7,6 +7,6 @@
   "generateInterfaces": true,
   "structPrefix": true,
   "enumClassPrefix": true,
-  "appName": "kuucode",
-  "appDescription": "kuucode api"
+  "appName": "kuuzuki",
+  "appDescription": "kuuzuki api"
 }

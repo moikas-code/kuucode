@@ -217,7 +217,7 @@ func (m *editorComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cursorCol := m.textarea.CursorColumn()
 			m.textarea.ReplaceRange(atIndex, cursorCol, "")
 
-			symbol := msg.Item.RawData.(kuucode.Symbol)
+			symbol := msg.Item.RawData.(kuuzuki.Symbol)
 			parts := strings.Split(symbol.Name, ".")
 			lastPart := parts[len(parts)-1]
 			attachment := &attachment.Attachment{

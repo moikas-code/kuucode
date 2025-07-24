@@ -26,7 +26,7 @@ const TOOL: Record<string, [string, string]> = {
 
 export const RunCommand = cmd({
   command: "run [message..]",
-  describe: "run kuucode with a message",
+  describe: "run kuuzuki with a message",
   builder: (yargs: Argv) => {
     return yargs
       .positional("message", {

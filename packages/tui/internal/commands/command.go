@@ -167,7 +167,7 @@ func parseBindings(bindings ...string) []Keybinding {
 	return parsedBindings
 }
 
-func LoadFromConfig(config *kuucode.Config) CommandRegistry {
+func LoadFromConfig(config *kuuzuki.Config) CommandRegistry {
 	defaults := []Command{
 		{
 			Name:        AppHelpCommand,

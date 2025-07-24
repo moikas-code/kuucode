@@ -1,5 +1,5 @@
-name: "kuucode GitHub Action"
-description: "Run kuucode in GitHub Actions workflows"
+name: "kuuzuki GitHub Action"
+description: "Run kuuzuki in GitHub Actions workflows"
 branding:
   icon: "code"
   color: "orange"
@@ -10,12 +10,12 @@ inputs:
     required: false
 
   share:
-    description: "Share the kuucode session (defaults to true for public repos)"
+    description: "Share the kuuzuki session (defaults to true for public repos)"
     required: false
 
 outputs:
   share_url:
-    description: "URL to share the kuucode execution"
+    description: "URL to share the kuuzuki execution"
     value: ${{ steps.run_kuucode.outputs.share_url }}
 
 runs:
@@ -37,11 +37,11 @@ runs:
         cd ${GITHUB_ACTION_PATH}
         bun install
 
-    - name: Install kuucode
+    - name: Install kuuzuki
       shell: bash
       run: curl -fsSL https://kuuzuki.ai/install | bash
 
-    - name: Run kuucode
+    - name: Run kuuzuki
       shell: bash
       id: run_kuucode
       run: |

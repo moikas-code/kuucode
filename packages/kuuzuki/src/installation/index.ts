@@ -49,7 +49,7 @@ export namespace Installation {
   }
 
   export async function method() {
-    if (process.execPath.includes(path.join(".kuucode", "bin"))) return "curl"
+    if (process.execPath.includes(path.join(".kuuzuki", "bin"))) return "curl"
     const exec = process.execPath.toLowerCase()
 
     const checks = [
@@ -115,7 +115,7 @@ export namespace Installation {
         case "bun":
           return $`bun install -g kuuzuki-ai@${target}`
         case "brew":
-          return $`brew install sst/tap/kuucode`.env({
+          return $`brew install sst/tap/kuuzuki`.env({
             HOMEBREW_NO_AUTO_UPDATE: "1",
           })
         default:
@@ -138,7 +138,7 @@ export namespace Installation {
   export const VERSION = typeof KUUZUKI_VERSION === "string" ? KUUZUKI_VERSION : "dev"
 
   export async function latest() {
-    return fetch("https://api.github.com/repos/sst/kuucode/releases/latest")
+    return fetch("https://api.github.com/repos/sst/kuuzuki/releases/latest")
       .then((res) => res.json())
       .then((data) => {
         if (typeof data.tag_name !== "string") {

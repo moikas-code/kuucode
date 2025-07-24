@@ -8,7 +8,7 @@
   "commits": {
     "12783536": {
       "status": "skipped",
-      "notes": "Documentation for 'opencode' branding - not applicable to kuucode fork which uses different branding and implementation",
+      "notes": "Documentation for 'opencode' branding - not applicable to kuuzuki fork which uses different branding and implementation",
       "timestamp": "2025-07-23T00:34:36.427Z"
     },
     "38ae7d60": {
@@ -19,13 +19,13 @@
         "tui"
       ],
       "decision_date": "2025-07-22",
-      "decision_reason": "Enhances CLI workflow, easy to adapt to kuucode",
+      "decision_reason": "Enhances CLI workflow, easy to adapt to kuuzuki",
       "effort_estimate": "small",
-      "adaptation_notes": "Added stdin detection and content merging, maintained kuucode branding",
-      "kb_reference": "active/kuucode-upstream-improvements-integrated.md",
+      "adaptation_notes": "Added stdin detection and content merging, maintained kuuzuki branding",
+      "kb_reference": "active/kuuzuki-upstream-improvements-integrated.md",
       "upstream_pr": "#1230",
       "conflicts": [],
-      "notes": "Implemented pipe support for TUI - allows piping input directly into kuucode TUI",
+      "notes": "Implemented pipe support for TUI - allows piping input directly into kuuzuki TUI",
       "timestamp": "2025-07-22T23:11:22.936Z"
     },
     "638ec7bc": {
@@ -39,8 +39,8 @@
       "decision_date": "2025-07-22",
       "decision_reason": "Simple fix that improves GitHub agent functionality",
       "effort_estimate": "small",
-      "adaptation_notes": "Updated regex pattern with /s flag, maintained kuucode branding",
-      "kb_reference": "active/kuucode-upstream-improvements-integrated.md",
+      "adaptation_notes": "Updated regex pattern with /s flag, maintained kuuzuki branding",
+      "kb_reference": "active/kuuzuki-upstream-improvements-integrated.md",
       "upstream_pr": "#1225",
       "conflicts": [],
       "notes": "Added multiline GitHub agent prompts support - fixed regex to handle multiline prompts",
@@ -48,12 +48,12 @@
     },
     "2d1f9fc3": {
       "status": "skipped",
-      "notes": "Documentation and branding changes (kuucode→opencode) - out of scope for kuucode desktop app. We maintain separate branding and documentation.",
+      "notes": "Documentation and branding changes (kuuzuki→opencode) - out of scope for kuuzuki desktop app. We maintain separate branding and documentation.",
       "timestamp": "2025-07-23T01:38:24.450Z"
     },
     "ee0c8132": {
       "status": "skipped",
-      "notes": "IDE documentation updates - out of scope for kuucode desktop app.",
+      "notes": "IDE documentation updates - out of scope for kuuzuki desktop app.",
       "timestamp": "2025-07-23T01:42:42.879Z"
     },
     "c2208fa1": {
@@ -63,27 +63,27 @@
     },
     "bf42d8b0": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:42:42.326Z"
     },
     "0deb85fa": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:42:46.874Z"
     },
     "da19b107": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:42:50.496Z"
     },
     "80b17dab": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:42:53.875Z"
     },
     "6d2ffa82": {
       "status": "integrated",
-      "notes": "AGENTS.md change already integrated in previous commit. opencode.json model addition not applicable to kuucode.json structure. Lock file changes are dependency updates.",
+      "notes": "AGENTS.md change already integrated in previous commit. opencode.json model addition not applicable to kuuzuki.json structure. Lock file changes are dependency updates.",
       "timestamp": "2025-07-23T02:43:14.044Z"
     },
     "7998c3b5": {
@@ -98,12 +98,12 @@
     },
     "26a40610": {
       "status": "skipped",
-      "notes": "VSCode extension changes - out of scope for kuucode desktop app. We're building standalone desktop application, not VSCode integration.",
+      "notes": "VSCode extension changes - out of scope for kuuzuki desktop app. We're building standalone desktop application, not VSCode integration.",
       "timestamp": "2025-07-23T01:33:37.878Z"
     },
     "db2fbed6": {
       "status": "skipped",
-      "notes": "VSCode extension development documentation - out of scope for kuucode desktop app. We're building standalone desktop application.",
+      "notes": "VSCode extension development documentation - out of scope for kuuzuki desktop app. We're building standalone desktop application.",
       "timestamp": "2025-07-23T01:36:18.927Z"
     },
     "3d4c1425": {
@@ -113,7 +113,7 @@
     },
     "10c8b495": {
       "status": "skipped",
-      "notes": "Stainless SDK generation - kuucode has migrated to OpenAPI Generator approach and documented this decision. Adding Stainless SDK would conflict with current architecture and create maintenance overhead.",
+      "notes": "Stainless SDK generation - kuuzuki has migrated to OpenAPI Generator approach and documented this decision. Adding Stainless SDK would conflict with current architecture and create maintenance overhead.",
       "timestamp": "2025-07-23T02:41:17.177Z"
     },
     "500cea5c": {
@@ -128,7 +128,7 @@
     },
     "01f8d3b0": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:43:43.549Z"
     },
     "99d6a282": {
@@ -138,7 +138,7 @@
     },
     "5eaf7ab5": {
       "status": "skipped",
-      "notes": "Automated download stats update - not applicable to kuucode fork",
+      "notes": "Automated download stats update - not applicable to kuuzuki fork",
       "timestamp": "2025-07-23T02:44:22.004Z"
     },
     "e4f754ee": {
@@ -148,12 +148,12 @@
     },
     "f20ef61b": {
       "status": "skipped",
-      "notes": "WIP TUI API integration - heavily involves opencode API system that doesn't exist in kuucode. Model naming improvement already applied. Waiting for finalization before integration.",
+      "notes": "WIP TUI API integration - heavily involves opencode API system that doesn't exist in kuuzuki. Model naming improvement already applied. Waiting for finalization before integration.",
       "timestamp": "2025-07-23T02:45:42.384Z"
     },
     "5611ef8b": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:45:51.419Z"
     },
     "bec796e3": {
@@ -163,22 +163,22 @@
     },
     "0bd8b2c7": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:45:55.269Z"
     },
     "5550ce47": {
       "status": "skipped",
-      "notes": "CI tweaks for opencode publish script - not applicable to kuucode fork which doesn't have packages/opencode",
+      "notes": "CI tweaks for opencode publish script - not applicable to kuuzuki fork which doesn't have packages/opencode",
       "timestamp": "2025-07-23T02:46:28.778Z"
     },
     "2d84dadc": {
       "status": "skipped",
-      "notes": "Attachment fix for opencode session handling - not applicable to kuucode fork which doesn't have packages/opencode",
+      "notes": "Attachment fix for opencode session handling - not applicable to kuuzuki fork which doesn't have packages/opencode",
       "timestamp": "2025-07-23T02:46:42.058Z"
     },
     "45c0578b": {
       "status": "skipped",
-      "notes": "Title generation bug fix for opencode session handling - not applicable to kuucode fork which doesn't have packages/opencode",
+      "notes": "Title generation bug fix for opencode session handling - not applicable to kuuzuki fork which doesn't have packages/opencode",
       "timestamp": "2025-07-23T02:46:55.091Z"
     },
     "1ded5351": {
@@ -218,7 +218,7 @@
     },
     "0aa0e740": {
       "status": "skipped",
-      "notes": "Documentation cleanup with trivial formatting change - not applicable to kuucode which doesn't have packages/web",
+      "notes": "Documentation cleanup with trivial formatting change - not applicable to kuuzuki which doesn't have packages/web",
       "timestamp": "2025-07-23T02:51:49.370Z"
     },
     "bb17d146": {
@@ -248,12 +248,12 @@
     },
     "cda0dbc1": {
       "status": "skipped",
-      "notes": "Stats update - not applicable to kuucode fork",
+      "notes": "Stats update - not applicable to kuuzuki fork",
       "timestamp": "2025-07-23T02:53:53.837Z"
     },
     "758425a8": {
       "status": "skipped",
-      "notes": "Trimmed selection UI - likely UI polish that may not align with kuucode's design",
+      "notes": "Trimmed selection UI - likely UI polish that may not align with kuuzuki's design",
       "timestamp": "2025-07-23T02:55:21.793Z"
     },
     "93446df3": {
@@ -268,17 +268,17 @@
     },
     "733c9903": {
       "status": "skipped",
-      "notes": "Non-git project snapshot handling - not applicable to kuucode's use case",
+      "notes": "Non-git project snapshot handling - not applicable to kuuzuki's use case",
       "timestamp": "2025-07-23T02:54:21.538Z"
     },
     "7306e203": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:25.576Z"
     },
     "b4c7042c": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:29.665Z"
     },
     "fd98c318": {
@@ -288,47 +288,47 @@
     },
     "6965787b": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:33.171Z"
     },
     "ce064b8b": {
       "status": "skipped",
-      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "notes": "GitHub Actions work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:37.450Z"
     },
     "0fc546fc": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:41.708Z"
     },
     "77ac9e5e": {
       "status": "skipped",
-      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "notes": "GitHub Actions work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:45.674Z"
     },
     "af2c0b36": {
       "status": "skipped",
-      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "notes": "GitHub Actions work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:49.491Z"
     },
     "811b2236": {
       "status": "skipped",
-      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "notes": "GitHub Actions work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:54.086Z"
     },
     "933d50e2": {
       "status": "skipped",
-      "notes": "GitHub Actions work - out of scope for kuucode desktop application",
+      "notes": "GitHub Actions work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:54:58.343Z"
     },
     "800bee27": {
       "status": "skipped",
-      "notes": "VSCode extension work - out of scope for kuucode desktop application",
+      "notes": "VSCode extension work - out of scope for kuuzuki desktop application",
       "timestamp": "2025-07-23T02:55:02.467Z"
     },
     "5b4fb96c": {
       "status": "skipped",
-      "notes": "WIP API logger improvements - debugging/profiling code not essential for kuucode functionality",
+      "notes": "WIP API logger improvements - debugging/profiling code not essential for kuuzuki functionality",
       "timestamp": "2025-07-23T02:55:17.254Z"
     },
     "b7b0cdbd": {

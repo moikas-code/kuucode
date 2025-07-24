@@ -46,7 +46,7 @@ npm run parity-notify security "CVE fix available upstream"
 
 ### Discord Webhook
 
-Currently configured for: `#kuucode-parity` channel
+Currently configured for: `#kuuzuki-parity` channel
 
 - **Local development**: Uses `DISCORD_WEBHOOK_URL` environment variable
 - **GitHub Actions**: Uses `DISCORD_WEBHOOK_URL` repository secret
@@ -74,7 +74,7 @@ Currently configured for: `#kuucode-parity` channel
 
 ```bash
 # Add to crontab for daily 9 AM checks
-0 9 * * * cd /path/to/kuucode && npm run parity-daily
+0 9 * * * cd /path/to/kuuzuki && npm run parity-daily
 ```
 
 ## Notification Examples

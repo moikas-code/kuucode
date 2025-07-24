@@ -23,7 +23,7 @@
 
 ### Current Blocker: Union Interface Architecture Problem 🚨
 
-**The Issue**: The codebase expects to use SDK types (like `kuucode.UserMessage`, `kuucode.AssistantMessage`) directly in union interfaces, but Go doesn't allow adding methods to non-local types.
+**The Issue**: The codebase expects to use SDK types (like `kuuzuki.UserMessage`, `kuuzuki.AssistantMessage`) directly in union interfaces, but Go doesn't allow adding methods to non-local types.
 
 **What We Have**:
 - ✅ Wrapper types with union interface methods (`UserMessageWrapper`, `AssistantMessageWrapper`, etc.)
@@ -32,17 +32,17 @@
 
 **The Problem**: ~30+ "impossible type assertion" errors because:
 ```go
-// This fails because kuucode.UserMessage doesn't implement MessageUnion
+// This fails because kuuzuki.UserMessage doesn't implement MessageUnion
 switch message.Info.(type) {
-case kuucode.UserMessage:  // ❌ Impossible type assertion
-case kuucode.AssistantMessage:  // ❌ Impossible type assertion
+case kuuzuki.UserMessage:  // ❌ Impossible type assertion
+case kuuzuki.AssistantMessage:  // ❌ Impossible type assertion
 }
 ```
 
 **Required Solution**: Choose one of these architectural approaches:
 
 ### Option A: Use Wrapper Types Throughout Codebase
-- **Change**: Replace all `kuucode.UserMessage` with `compat.UserMessageWrapper` throughout codebase
+- **Change**: Replace all `kuuzuki.UserMessage` with `compat.UserMessageWrapper` throughout codebase
 - **Pros**: Clean type system, proper union interfaces
 - **Cons**: Massive codebase changes (~100+ files), complex conversion logic
 - **Effort**: 8-12 hours

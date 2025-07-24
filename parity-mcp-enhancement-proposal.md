@@ -2,7 +2,7 @@
 
 ## Overview
 
-Based on kuucode's advanced parity tracking system, here are recommended enhancements for the base fork-parity MCP to make it more powerful for fork maintainers.
+Based on kuuzuki's advanced parity tracking system, here are recommended enhancements for the base fork-parity MCP to make it more powerful for fork maintainers.
 
 ## High-Priority Additions
 

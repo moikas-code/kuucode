@@ -3,12 +3,12 @@ package compat
 import (
 	"context"
 
-	kuucode "github.com/moikas-code/kuuzuki-sdk-go"
+	kuuzuki "github.com/moikas-code/kuuzuki-sdk-go"
 )
 
 // CompatClient wraps the new OpenAPI-generated APIClient to maintain the old interface
 type CompatClient struct {
-	apiClient *kuucode.APIClient
+	apiClient *kuuzuki.APIClient
 	baseURL   string
 
 	// Direct service access for compatibility
@@ -21,15 +21,15 @@ type CompatClient struct {
 
 // NewClient creates a new compatibility client that wraps the OpenAPI-generated client
 func NewClient(baseURL string) *CompatClient {
-	cfg := kuucode.NewConfiguration()
-	cfg.Servers = kuucode.ServerConfigurations{
+	cfg := kuuzuki.NewConfiguration()
+	cfg.Servers = kuuzuki.ServerConfigurations{
 		{
 			URL:         baseURL,
-			Description: "kuucode API server",
+			Description: "kuuzuki API server",
 		},
 	}
 
-	apiClient := kuucode.NewAPIClient(cfg)
+	apiClient := kuuzuki.NewAPIClient(cfg)
 
 	client := &CompatClient{
 		apiClient: apiClient,
@@ -107,7 +107,7 @@ func (a *AppService) Log(ctx context.Context, params AppLogParams) error {
 	req := a.client.apiClient.DefaultAPI.PostLog(ctx)
 
 	// Create the log request body
-	logRequest := kuucode.PostLogRequest{
+	logRequest := kuuzuki.PostLogRequest{
 		Level:   string(params.Level),
 		Service: params.Service,
 		Message: params.Message,
@@ -186,14 +186,14 @@ func (s *SessionService) Summarize() *SessionSummarizeService {
 }
 
 // New creates a new session
-func (s *SessionService) New(ctx context.Context) (*kuucode.Session, error) {
+func (s *SessionService) New(ctx context.Context) (*kuuzuki.Session, error) {
 	req := s.client.apiClient.DefaultAPI.PostSession(ctx)
 	session, _, err := req.Execute()
 	return session, err
 }
 
 // List lists sessions
-func (s *SessionService) List(ctx context.Context) ([]*kuucode.Session, error) {
+func (s *SessionService) List(ctx context.Context) ([]*kuuzuki.Session, error) {
 	req := s.client.apiClient.DefaultAPI.GetSession(ctx)
 	sessions, _, err := req.Execute()
 	if err != nil {
@@ -201,7 +201,7 @@ func (s *SessionService) List(ctx context.Context) ([]*kuucode.Session, error) {
 	}
 
 	// Convert []Session to []*Session for compatibility
-	result := make([]*kuucode.Session, len(sessions))
+	result := make([]*kuuzuki.Session, len(sessions))
 	for i := range sessions {
 		result[i] = &sessions[i]
 	}
@@ -216,7 +216,7 @@ func (s *SessionService) Delete(ctx context.Context, sessionID string) error {
 }
 
 // Messages gets session messages
-func (s *SessionService) Messages(ctx context.Context, sessionID string) ([]*kuucode.Message, error) {
+func (s *SessionService) Messages(ctx context.Context, sessionID string) ([]*kuuzuki.Message, error) {
 	req := s.client.apiClient.DefaultAPI.GetSessionByIdMessage(ctx, sessionID)
 	messages, _, err := req.Execute()
 	if err != nil {
@@ -224,7 +224,7 @@ func (s *SessionService) Messages(ctx context.Context, sessionID string) ([]*kuu
 	}
 
 	// Convert messages to the expected format
-	result := make([]*kuucode.Message, len(messages))
+	result := make([]*kuuzuki.Message, len(messages))
 	for i, msg := range messages {
 		// Extract the Message from the Info field
 		result[i] = &msg.Info
@@ -240,7 +240,7 @@ func (s *SessionService) Abort(ctx context.Context, sessionID string) error {
 }
 
 // Share shares a session
-func (s *SessionService) Share(ctx context.Context, sessionID string) (*kuucode.SessionShare, error) {
+func (s *SessionService) Share(ctx context.Context, sessionID string) (*kuuzuki.SessionShare, error) {
 	req := s.client.apiClient.DefaultAPI.PostSessionByIdShare(ctx, sessionID)
 	session, _, err := req.Execute()
 	if err != nil {
@@ -251,7 +251,7 @@ func (s *SessionService) Share(ctx context.Context, sessionID string) (*kuucode.
 	if session.Share != nil {
 		return session.Share, nil
 	}
-	return &kuucode.SessionShare{}, nil
+	return &kuuzuki.SessionShare{}, nil
 }
 
 // Unshare unshares a session
@@ -273,7 +273,7 @@ type FileService struct {
 }
 
 // Read reads a file with the given parameters
-func (f *FileService) Read(ctx context.Context, params FileReadParams) (*kuucode.GetFile200Response, error) {
+func (f *FileService) Read(ctx context.Context, params FileReadParams) (*kuuzuki.GetFile200Response, error) {
 	req := f.client.apiClient.DefaultAPI.GetFile(ctx)
 	req = req.Path(params.Path)
 	response, _, err := req.Execute()
@@ -286,9 +286,9 @@ type FileReadService struct {
 }
 
 // Post executes a POST request for the service
-func (f *FileService) Post(ctx context.Context, params interface{}) (*kuucode.File, error) {
+func (f *FileService) Post(ctx context.Context, params interface{}) (*kuuzuki.File, error) {
 	// TODO: Implement actual file reading via the new SDK
-	return &kuucode.File{}, nil
+	return &kuuzuki.File{}, nil
 }
 
 // Get performs a GET request (placeholder implementation)
@@ -312,10 +312,10 @@ func (f *FileService) FindFiles(ctx context.Context, params FindFilesParams) (*F
 		return nil, err
 	}
 
-	// Convert []string to []kuucode.File
-	result := make([]kuucode.File, len(files))
+	// Convert []string to []kuuzuki.File
+	result := make([]kuuzuki.File, len(files))
 	for i, filePath := range files {
-		result[i] = kuucode.File{Path: filePath}
+		result[i] = kuuzuki.File{Path: filePath}
 	}
 
 	return &FindFilesResponse{Files: result}, nil
@@ -339,7 +339,7 @@ type FindService struct {
 }
 
 // Symbols finds symbols
-func (f *FindService) Symbols(ctx context.Context, params FindSymbolsParams) (*[]kuucode.Symbol, error) {
+func (f *FindService) Symbols(ctx context.Context, params FindSymbolsParams) (*[]kuuzuki.Symbol, error) {
 	req := f.client.apiClient.DefaultAPI.GetFindSymbol(ctx)
 	req = req.Query(params.Query)
 	symbols, _, err := req.Execute()
@@ -351,7 +351,7 @@ func (f *FindService) Symbols(ctx context.Context, params FindSymbolsParams) (*[
 }
 
 // Files finds files
-func (f *FindService) Files(ctx context.Context, params FindFilesParams) (*[]kuucode.File, error) {
+func (f *FindService) Files(ctx context.Context, params FindFilesParams) (*[]kuuzuki.File, error) {
 	req := f.client.apiClient.DefaultAPI.GetFindFile(ctx)
 	req = req.Query(params.Query)
 	files, _, err := req.Execute()
@@ -359,10 +359,10 @@ func (f *FindService) Files(ctx context.Context, params FindFilesParams) (*[]kuu
 		return nil, err
 	}
 
-	// Convert []string to []kuucode.File
-	result := make([]kuucode.File, len(files))
+	// Convert []string to []kuuzuki.File
+	result := make([]kuuzuki.File, len(files))
 	for i, filePath := range files {
-		result[i] = kuucode.File{Path: filePath}
+		result[i] = kuuzuki.File{Path: filePath}
 	}
 
 	return &result, nil
@@ -384,7 +384,7 @@ type ConfigGetService struct {
 }
 
 // Execute gets the configuration
-func (c *ConfigGetService) Execute(ctx context.Context) (*kuucode.Config, error) {
+func (c *ConfigGetService) Execute(ctx context.Context) (*kuuzuki.Config, error) {
 	req := c.client.apiClient.DefaultAPI.GetConfig(ctx)
 	config, _, err := req.Execute()
 	return config, err
@@ -400,7 +400,7 @@ func (s *SessionInitService) Post(ctx context.Context, sessionID string, params 
 	req := s.client.apiClient.DefaultAPI.PostSessionByIdInit(ctx, sessionID)
 
 	// Create the init request body
-	initRequest := kuucode.PostSessionByIdInitRequest{
+	initRequest := kuuzuki.PostSessionByIdInitRequest{
 		MessageID:  params.MessageID,
 		ProviderID: params.ProviderID,
 		ModelID:    params.ModelID,
@@ -421,15 +421,15 @@ func (s *SessionChatService) Post(ctx context.Context, sessionID string, params 
 	req := s.client.apiClient.DefaultAPI.PostSessionByIdMessage(ctx, sessionID)
 
 	// Convert parts to the SDK format
-	parts := make([]kuucode.PostSessionByIdMessageRequestPartsInner, len(params.Parts))
+	parts := make([]kuuzuki.PostSessionByIdMessageRequestPartsInner, len(params.Parts))
 	for i, _ := range params.Parts {
 		// Convert SessionChatParamsPartUnion to PostSessionByIdMessageRequestPartsInner
 		// This is a simplified conversion - may need more sophisticated handling
-		parts[i] = kuucode.PostSessionByIdMessageRequestPartsInner{}
+		parts[i] = kuuzuki.PostSessionByIdMessageRequestPartsInner{}
 	}
 
 	// Create the chat request body
-	chatRequest := kuucode.PostSessionByIdMessageRequest{
+	chatRequest := kuuzuki.PostSessionByIdMessageRequest{
 		ProviderID: params.ProviderID,
 		ModelID:    params.ModelID,
 		Mode:       &params.Mode,
@@ -451,7 +451,7 @@ func (s *SessionSummarizeService) Post(ctx context.Context, sessionID string, pa
 	req := s.client.apiClient.DefaultAPI.PostSessionByIdSummarize(ctx, sessionID)
 
 	// Create the summarize request body
-	summarizeRequest := kuucode.PostSessionByIdSummarizeRequest{
+	summarizeRequest := kuuzuki.PostSessionByIdSummarizeRequest{
 		ProviderID: params.ProviderID,
 		ModelID:    params.ModelID,
 	}
