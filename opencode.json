@@ -1,9 +1,9 @@
 {
-  "$schema": "https://kuucode.ai/config.json",
+  "$schema": "https://kuuzuki.ai/config.json",
   "mcp": {
     "weather": {
       "type": "local",
-      "command": ["kuucode", "x", "@h1deya/mcp-server-weather"]
+      "command": ["kuuzuki", "x", "@h1deya/mcp-server-weather"]
     },
     "moidvk": {
       "type": "local",

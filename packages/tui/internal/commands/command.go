@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/moikas-code/kuucode-sdk-go"
+	"github.com/moikas-code/kuuzuki-sdk-go"
 )
 
 type ExecuteCommandMsg Command

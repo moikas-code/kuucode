@@ -6,7 +6,7 @@ import (
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/moikas-code/kuucode/internal/compat"
+	"github.com/moikas-code/kuuzuki/internal/compat"
 )
 
 type Request struct {

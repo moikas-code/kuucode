@@ -5,9 +5,9 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
-	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/util"
 )
 
 // InitDialogCmp is a component that asks the user if they want to initialize the project.

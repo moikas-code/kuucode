@@ -6,10 +6,10 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/moikas-code/kuucode/internal/app"
-	"github.com/moikas-code/kuucode/internal/compat"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/app"
+	"github.com/moikas-code/kuuzuki/internal/compat"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
 )
 
 type symbolsContextGroup struct {

@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+
+# Get the real path of this script, resolving any symlinks
+script_path="$0"
+while [ -L "$script_path" ]; do
+    link_target="$(readlink "$script_path")"
+    case "$link_target" in
+        /*) script_path="$link_target" ;;
+        *) script_path="$(dirname "$script_path")/$link_target" ;;
+    esac
+done
+script_dir="$(dirname "$script_path")"
+script_dir="$(cd "$script_dir" && pwd)"
+
+# For development, run the TypeScript source directly with bun
+src_file="$script_dir/../src/index.ts"
+
+if [ -f "$src_file" ]; then
+    # Development mode - run TypeScript source
+    exec bun run "$src_file" "$@"
+else
+    # Production mode - look for compiled binary
+    printf "kuuzuki source not found. Please ensure you're in a development environment.\n" >&2
+    exit 1
+fi

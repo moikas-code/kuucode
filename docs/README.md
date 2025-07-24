@@ -1,6 +1,6 @@
-# Kuucode Documentation
+# Kuuzuki Documentation
 
-Welcome to the Kuucode documentation! This directory contains comprehensive guides for developers working with Kuucode.
+Welcome to the Kuuzuki documentation! This directory contains comprehensive guides for developers working with Kuuzuki.
 
 ## 📚 Documentation Index
 
@@ -35,15 +35,15 @@ scripts/
 ### For Developers
 
 1. **Setup**: Follow the [Development Guide](DEVELOPMENT.md#setup)
-2. **Make Changes**: Edit code in `packages/kuucode/src/`
+2. **Make Changes**: Edit code in `packages/kuuzuki/src/`
 3. **Generate SDKs**: Run `./scripts/generate-sdks --dev`
 4. **Test**: Use the TUI or API directly
 
 ### For SDK Users
 
-1. **TypeScript**: `npm install @kuucode-ai/sdk`
-2. **Go**: `go get github.com/moikas-code/kuucode-sdk-go`
-3. **Python**: `pip install kuucode-ai`
+1. **TypeScript**: `npm install @kuuzuki-ai/sdk`
+2. **Go**: `go get github.com/moikas-code/kuuzuki-sdk-go`
+3. **Python**: `pip install kuuzuki-ai`
 
 See [API Documentation](API.md) for usage examples.
 
@@ -51,7 +51,7 @@ See [API Documentation](API.md) for usage examples.
 
 ### Architecture
 
-Kuucode uses a **client/server architecture**:
+Kuuzuki uses a **client/server architecture**:
 - **Server** (TypeScript): API and business logic
 - **TUI** (Go): Terminal user interface
 - **SDKs**: Generated client libraries
@@ -65,7 +65,7 @@ Kuucode uses a **client/server architecture**:
 
 ### Development Workflow
 
-1. **Edit** server code in `packages/kuucode/src/`
+1. **Edit** server code in `packages/kuuzuki/src/`
 2. **Regenerate** SDKs with `./scripts/generate-sdks --dev`
 3. **Test** changes locally
 4. **Commit** Go SDK changes (others are gitignored)
@@ -128,7 +128,7 @@ bun run dev
 
 1. **Check the guides** in this directory
 2. **Review troubleshooting** in [SDK_GENERATION.md](SDK_GENERATION.md#troubleshooting)
-3. **Open an issue** at [moikas-code/kuucode/issues](https://github.com/moikas-code/kuucode/issues)
+3. **Open an issue** at [moikas-code/kuuzuki/issues](https://github.com/moikas-code/kuuzuki/issues)
 4. **Check OpenAPI Generator docs** at [openapi-generator.tech](https://openapi-generator.tech/)
 
 ## 🔄 Recent Changes

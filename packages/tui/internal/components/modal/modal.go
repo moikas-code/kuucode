@@ -4,9 +4,9 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss/v2"
-	"github.com/moikas-code/kuucode/internal/layout"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/layout"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
 )
 
 // CloseModalMsg is a message to signal that the active modal should be closed.

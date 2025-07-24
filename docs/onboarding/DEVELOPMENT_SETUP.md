@@ -1,6 +1,6 @@
 # Development Setup
 
-This guide will get your development environment ready for working on Kuucode.
+This guide will get your development environment ready for working on Kuuzuki.
 
 ## 📋 Prerequisites
 
@@ -27,8 +27,8 @@ This guide will get your development environment ready for working on Kuucode.
 
 ```bash
 # Clone your fork
-git clone https://github.com/moikas-code/kuucode.git
-cd kuucode
+git clone https://github.com/moikas-code/kuuzuki.git
+cd kuuzuki
 
 # Install dependencies
 bun install
@@ -53,12 +53,12 @@ go run .
 
 ```bash
 # Link for global usage
-cd packages/kuucode
+cd packages/kuuzuki
 bun link
-bun link kuucode
+bun link kuuzuki
 
 # Test global installation
-kuucode --help
+kuuzuki --help
 ```
 
 ### **4. Verify Everything Works**
@@ -71,7 +71,7 @@ curl http://localhost:4096/app
 ./scripts/generate-sdks --dev
 
 # Test global CLI
-kuucode serve --port 4096
+kuuzuki serve --port 4096
 
 # Check TUI connection
 # The TUI should connect to the server automatically
@@ -85,11 +85,11 @@ Create a local config file:
 
 ```bash
 # Copy example config
-cp kuucode.json kuucode.local.json
+cp kuuzuki.json kuuzuki.local.json
 
 # Edit for your setup
 {
-  "$schema": "https://kuucode.ai/config.json",
+  "$schema": "https://kuuzuki.ai/config.json",
   "provider": {
     "anthropic": {
       "apiKey": "your-api-key-here"
@@ -120,7 +120,7 @@ curl http://localhost:4096/session
 
 ```bash
 # Navigate to server package
-cd packages/kuucode
+cd packages/kuuzuki
 
 # Install dependencies (if not done globally)
 bun install
@@ -154,7 +154,7 @@ go mod tidy
 go run .
 
 # Build binary
-go build -o kuucode-tui .
+go build -o kuuzuki-tui .
 
 # Run tests
 go test ./...
@@ -296,11 +296,11 @@ openapi-generator-cli version
 Add to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
-# Kuucode development aliases
-alias kdev="cd ~/path/to/kuucode && bun run dev"
-alias ktui="cd ~/path/to/kuucode/packages/tui && go run ."
-alias ksdk="cd ~/path/to/kuucode && ./scripts/generate-sdks --dev"
-alias ktest="cd ~/path/to/kuucode && bun run typecheck && cd packages/tui && go test ./..."
+# Kuuzuki development aliases
+alias kdev="cd ~/path/to/kuuzuki && bun run dev"
+alias ktui="cd ~/path/to/kuuzuki/packages/tui && go run ."
+alias ksdk="cd ~/path/to/kuuzuki && ./scripts/generate-sdks --dev"
+alias ktest="cd ~/path/to/kuuzuki && bun run typecheck && cd packages/tui && go test ./..."
 ```
 
 ### **Git Configuration**

@@ -1,14 +1,14 @@
-# Welcome to Kuucode! 🚀
+# Welcome to Kuuzuki! 🚀
 
-This onboarding documentation will help you understand the Kuucode project architecture, codebase, and development workflow.
+This onboarding documentation will help you understand the Kuuzuki project architecture, codebase, and development workflow.
 
 ## 📚 Documentation Overview
 
-This folder contains everything you need to get up to speed with Kuucode development:
+This folder contains everything you need to get up to speed with Kuuzuki development:
 
 ### 🎯 Start Here (Recommended Order)
 
-1. **[Project Overview](PROJECT_OVERVIEW.md)** - What Kuucode is and does
+1. **[Project Overview](PROJECT_OVERVIEW.md)** - What Kuuzuki is and does
 2. **[Development Setup](DEVELOPMENT_SETUP.md)** - Get your environment ready
 3. **[Architecture](ARCHITECTURE.md)** - Understand the system design
 4. **[Codebase Tour](CODEBASE_TOUR.md)** - Guided walkthrough of the code
@@ -52,7 +52,7 @@ This folder contains everything you need to get up to speed with Kuucode develop
 
 Before diving into the docs, make sure you have:
 
-- [ ] **Cloned the repository**: `git clone https://github.com/moikas-code/kuucode.git`
+- [ ] **Cloned the repository**: `git clone https://github.com/moikas-code/kuuzuki.git`
 - [ ] **Installed dependencies**: `bun install`
 - [ ] **Started the server**: `bun run dev`
 - [ ] **Tested the TUI**: `cd packages/tui && go run .`
@@ -81,7 +81,7 @@ If you get stuck:
 1. **Check the Debugging guide** for common issues
 2. **Search the Glossary** for unfamiliar terms
 3. **Look at Common Tasks** for development patterns
-4. **Create an issue** at [moikas-code/kuucode/issues](https://github.com/moikas-code/kuucode/issues)
+4. **Create an issue** at [moikas-code/kuuzuki/issues](https://github.com/moikas-code/kuuzuki/issues)
 
 ## 📝 Contributing to Documentation
 
@@ -110,9 +110,9 @@ Week 3: Specialization
 └── Start contributing!
 ```
 
-## 🌟 What Makes Kuucode Special
+## 🌟 What Makes Kuuzuki Special
 
-As you learn about Kuucode, you'll discover:
+As you learn about Kuuzuki, you'll discover:
 
 - **Clean Architecture**: Separation between TUI, server, and providers
 - **Modern Stack**: TypeScript server, Go TUI, OpenAPI Generator

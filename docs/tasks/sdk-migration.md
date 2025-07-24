@@ -15,7 +15,7 @@ Migrate the TUI codebase from the old custom SDK interface to the new OpenAPI-ge
 
 Approximately 15-20 files need updates:
 
-- `cmd/kuucode/main.go` - Client initialization
+- `cmd/kuuzuki/main.go` - Client initialization
 - `internal/api/api.go` - API service layer
 - `internal/app/app.go` - Core app logic
 - `internal/util/apilogger.go` - Logging integration
@@ -54,12 +54,12 @@ Approximately 15-20 files need updates:
 
 ```go
 // Old
-httpClient := kuucode.NewClient(option.WithBaseURL(url))
+httpClient := kuuzuki.NewClient(option.WithBaseURL(url))
 
 // New
-cfg := kuucode.NewConfiguration()
-cfg.Servers = kuucode.ServerConfigurations{{URL: url}}
-httpClient := kuucode.NewAPIClient(cfg)
+cfg := kuuzuki.NewConfiguration()
+cfg.Servers = kuuzuki.ServerConfigurations{{URL: url}}
+httpClient := kuuzuki.NewAPIClient(cfg)
 ```
 
 ### Field Names
@@ -70,8 +70,8 @@ httpClient := kuucode.NewAPIClient(cfg)
 
 ### Type System
 
-- `kuucode.MessageUnion` → New union handling
-- `kuucode.PartUnion` → New part types
+- `kuuzuki.MessageUnion` → New union handling
+- `kuuzuki.PartUnion` → New part types
 - Event types restructured
 - Parameter types changed
 
@@ -171,7 +171,7 @@ httpClient := kuucode.NewAPIClient(cfg)
 
 ### Phase 1: Core Infrastructure
 
-- [ ] Update `cmd/kuucode/main.go` client initialization
+- [ ] Update `cmd/kuuzuki/main.go` client initialization
 - [ ] Update `internal/api/api.go` service layer
 - [ ] Update `internal/util/apilogger.go` logging integration
 - [ ] Test basic compilation

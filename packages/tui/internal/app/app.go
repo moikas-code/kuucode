@@ -11,16 +11,16 @@ import (
 	"log/slog"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	kuucodesdk "github.com/moikas-code/kuucode-sdk-go"
-	"github.com/moikas-code/kuucode/internal/clipboard"
-	"github.com/moikas-code/kuucode/internal/commands"
-	"github.com/moikas-code/kuucode/internal/compat"
-	kuucode "github.com/moikas-code/kuucode/internal/compat"
-	"github.com/moikas-code/kuucode/internal/components/toast"
-	"github.com/moikas-code/kuucode/internal/id"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
-	"github.com/moikas-code/kuucode/internal/util"
+	kuucodesdk "github.com/moikas-code/kuuzuki-sdk-go"
+	"github.com/moikas-code/kuuzuki/internal/clipboard"
+	"github.com/moikas-code/kuuzuki/internal/commands"
+	"github.com/moikas-code/kuuzuki/internal/compat"
+	kuucode "github.com/moikas-code/kuuzuki/internal/compat"
+	"github.com/moikas-code/kuuzuki/internal/components/toast"
+	"github.com/moikas-code/kuuzuki/internal/id"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/util"
 )
 
 type Message struct {
@@ -114,7 +114,7 @@ func New(
 		appState.Theme = *configInfo.Theme
 	}
 
-	themeEnv := os.Getenv("KUUCODE_THEME")
+	themeEnv := os.Getenv("KUUZUKI_THEME")
 	if themeEnv != "" {
 		appState.Theme = themeEnv
 	}

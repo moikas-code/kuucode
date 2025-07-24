@@ -2,7 +2,7 @@
 
 > 📖 **Full Documentation**: See [`docs/SDK_GENERATION.md`](docs/SDK_GENERATION.md) for comprehensive documentation.
 
-This project uses [OpenAPI Generator](https://openapi-generator.tech/) to automatically generate client SDKs from the kuucode REST API.
+This project uses [OpenAPI Generator](https://openapi-generator.tech/) to automatically generate client SDKs from the kuuzuki REST API.
 
 ## Quick Start
 
@@ -21,13 +21,13 @@ This project uses [OpenAPI Generator](https://openapi-generator.tech/) to automa
 
 | Language   | Output Directory        | Package Name        | Usage                    |
 |------------|------------------------|--------------------|--------------------------| 
-| TypeScript | `./sdks/typescript/`   | `@kuucode-ai/sdk`  | Web and Node.js apps     |
-| Go         | `./packages/tui/sdk/`  | `kuucode`          | TUI component (committed)|
-| Python     | `./sdks/python/`       | `kuucode_ai`       | Python applications      |
+| TypeScript | `./sdks/typescript/`   | `@kuuzuki-ai/sdk`  | Web and Node.js apps     |
+| Go         | `./packages/tui/sdk/`  | `kuuzuki`          | TUI component (committed)|
+| Python     | `./sdks/python/`       | `kuuzuki_ai`       | Python applications      |
 
 ## Development Workflow
 
-1. **Make API changes** in `packages/kuucode/src/server/server.ts`
+1. **Make API changes** in `packages/kuuzuki/src/server/server.ts`
 2. **Regenerate SDKs**: `./scripts/generate-sdks --dev`
 3. **Test locally**: The Go TUI automatically uses the local SDK
 4. **Commit changes**: Only the Go SDK is committed to the repository

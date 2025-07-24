@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/styles"
 )
 
 // testItem is a simple test implementation of ListItem

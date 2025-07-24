@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/moikas-code/kuucode/internal/app"
-	"github.com/moikas-code/kuucode/internal/compat"
-	"github.com/moikas-code/kuucode/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/app"
+	"github.com/moikas-code/kuuzuki/internal/compat"
+	"github.com/moikas-code/kuuzuki/internal/styles"
 )
 
 type filesContextGroup struct {

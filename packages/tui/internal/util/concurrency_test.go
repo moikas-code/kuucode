@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/moikas-code/kuuzuki/internal/util"
 )
 
 func TestWriteStringsPar(t *testing.T) {

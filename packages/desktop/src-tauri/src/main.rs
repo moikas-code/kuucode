@@ -51,7 +51,7 @@ async fn start_kuucode_tui(
         let reader = BufReader::new(stdout);
         for line in reader.lines() {
             if let Ok(line) = line {
-                let _ = window_stdout.emit("kuucode-output", line);
+                let _ = window_stdout.emit("kuuzuki-output", line);
             }
         }
     });
@@ -61,7 +61,7 @@ async fn start_kuucode_tui(
         let reader = BufReader::new(stderr);
         for line in reader.lines() {
             if let Ok(line) = line {
-                let _ = window_stderr.emit("kuucode-error", line);
+                let _ = window_stderr.emit("kuuzuki-error", line);
             }
         }
     });

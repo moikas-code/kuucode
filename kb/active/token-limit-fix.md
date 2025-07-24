@@ -5,7 +5,7 @@ Users encountering `AI_APICallError: input length and max_tokens exceed context 
 
 ## Root Cause
 - The 200,000 token limit is enforced by AI providers (likely Anthropic Claude)
-- kuucode's existing 90% threshold wasn't aggressive enough
+- kuuzuki's existing 90% threshold wasn't aggressive enough
 - No fallback error handling for when the limit is still exceeded
 - Need more robust error pattern matching
 
@@ -46,7 +46,7 @@ const isTokenLimitError =
 ✅ Various token limit error formats
 
 ## Code Changes
-File: `packages/kuucode/src/session/index.ts`
+File: `packages/kuuzuki/src/session/index.ts`
 
 1. Reduced `HARD_CONTEXT_LIMIT` from 190k to 185k
 2. Changed threshold from 80% to 75%

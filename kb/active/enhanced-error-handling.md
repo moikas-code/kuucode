@@ -1,4 +1,4 @@
-# Enhanced Error Handling for kuucode
+# Enhanced Error Handling for kuuzuki
 
 ## Problems Addressed
 
@@ -75,4 +75,4 @@ const isEmptyMessagesError =
 ⏳ **Ready for Testing** - Should handle all reported error scenarios
 
 ## Files Modified
-- `packages/kuucode/src/session/index.ts` - Enhanced error handling logic
+- `packages/kuuzuki/src/session/index.ts` - Enhanced error handling logic

@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers the essential information for developing Kuucode locally.
+This guide covers the essential information for developing Kuuzuki locally.
 
 ## Table of Contents
 
@@ -23,8 +23,8 @@ This guide covers the essential information for developing Kuucode locally.
 
 ```bash
 # Clone the repository
-git clone https://github.com/moikas-code/kuucode.git
-cd kuucode
+git clone https://github.com/moikas-code/kuuzuki.git
+cd kuuzuki
 
 # Install dependencies
 bun install
@@ -35,7 +35,7 @@ bun run dev
 
 ## Architecture
 
-Kuucode uses a client/server architecture:
+Kuuzuki uses a client/server architecture:
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -48,7 +48,7 @@ Kuucode uses a client/server architecture:
 
 ### Key Components
 
-- **`packages/kuucode/`**: TypeScript server (API, business logic)
+- **`packages/kuuzuki/`**: TypeScript server (API, business logic)
 - **`packages/tui/`**: Go terminal user interface
 - **`packages/web/`**: Documentation website
 - **`sdks/`**: Generated client SDKs
@@ -64,7 +64,7 @@ Kuucode uses a client/server architecture:
 bun run dev
 
 # Or directly
-bun run packages/kuucode/src/index.ts
+bun run packages/kuuzuki/src/index.ts
 ```
 
 **TUI** (Go):
@@ -83,7 +83,7 @@ bun run dev
 
 #### Server API Changes
 
-1. Edit files in `packages/kuucode/src/server/`
+1. Edit files in `packages/kuuzuki/src/server/`
 2. The dev server will automatically restart
 3. Regenerate SDKs if you changed the API:
    ```bash
@@ -111,7 +111,7 @@ bun run dev
 bun run typecheck
 
 # Test the CLI directly
-bun run packages/kuucode/src/index.ts --help
+bun run packages/kuuzuki/src/index.ts --help
 
 # Test TUI with local server
 cd packages/tui && go run .
@@ -119,7 +119,7 @@ cd packages/tui && go run .
 
 ## SDK Generation
 
-Kuucode automatically generates client SDKs from the OpenAPI specification.
+Kuuzuki automatically generates client SDKs from the OpenAPI specification.
 
 ### Quick Commands
 
@@ -136,7 +136,7 @@ Kuucode automatically generates client SDKs from the OpenAPI specification.
 
 ### When to Regenerate
 
-- After changing API endpoints in `packages/kuucode/src/server/`
+- After changing API endpoints in `packages/kuuzuki/src/server/`
 - After modifying request/response types
 - Before committing API changes
 
@@ -159,8 +159,8 @@ Kuucode automatically generates client SDKs from the OpenAPI specification.
 bun run dev
 
 # In another terminal, test commands
-bun run packages/kuucode/src/index.ts auth login
-bun run packages/kuucode/src/index.ts --help
+bun run packages/kuuzuki/src/index.ts auth login
+bun run packages/kuuzuki/src/index.ts --help
 ```
 
 ### TUI Testing
@@ -224,15 +224,15 @@ git commit -m "Add user preferences API
 
 1. **Use `--dev` flag** for faster SDK generation during development
 2. **Keep the server running** in one terminal while developing
-3. **Check logs** in `~/.local/share/kuucode/log/` for debugging
-4. **Use the config file** `kuucode.json` for local settings
+3. **Check logs** in `~/.local/share/kuuzuki/log/` for debugging
+4. **Use the config file** `kuuzuki.json` for local settings
 5. **Test with different providers** to ensure compatibility
 
 ## Common Tasks
 
 ### Adding a New API Endpoint
 
-1. **Add endpoint** in `packages/kuucode/src/server/server.ts`:
+1. **Add endpoint** in `packages/kuuzuki/src/server/server.ts`:
    ```typescript
    app.get('/api/v1/new-endpoint', async (c) => {
      return c.json({ message: 'Hello World' })
@@ -256,7 +256,7 @@ git commit -m "Add user preferences API
 
 ### Adding a New Configuration Option
 
-1. **Add to config schema** in `packages/kuucode/src/config/`
+1. **Add to config schema** in `packages/kuuzuki/src/config/`
 2. **Update validation** and types
 3. **Document** in `packages/web/src/content/docs/config.mdx`
 4. **Test** with example config
@@ -265,7 +265,7 @@ git commit -m "Add user preferences API
 
 1. **Check server logs**:
    ```bash
-   tail -f ~/.local/share/kuucode/log/*.log
+   tail -f ~/.local/share/kuuzuki/log/*.log
    ```
 
 2. **Enable debug mode**:
@@ -289,7 +289,7 @@ git commit -m "Add user preferences API
 - **OpenAPI Generator**: [openapi-generator.tech](https://openapi-generator.tech/)
 - **Bun Documentation**: [bun.sh/docs](https://bun.sh/docs)
 - **Go Documentation**: [golang.org/doc](https://golang.org/doc/)
-- **Project Issues**: [github.com/moikas-code/kuucode/issues](https://github.com/moikas-code/kuucode/issues)
+- **Project Issues**: [github.com/moikas-code/kuuzuki/issues](https://github.com/moikas-code/kuuzuki/issues)
 
 ---
 

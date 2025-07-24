@@ -1,6 +1,6 @@
 # Architecture Deep Dive
 
-This document explains how Kuucode is architected, why certain decisions were made, and how the components work together.
+This document explains how Kuuzuki is architected, why certain decisions were made, and how the components work together.
 
 ## 🏗️ High-Level Architecture
 
@@ -19,7 +19,7 @@ This document explains how Kuucode is architected, why certain decisions were ma
 │                      API Gateway Layer                         │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────────────────────────────────────────────┐ │
-│  │              Kuucode Server (TypeScript)                   │ │
+│  │              Kuuzuki Server (TypeScript)                   │ │
 │  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐  │ │
 │  │  │   Router    │ │ Middleware  │ │   Authentication    │  │ │
 │  │  └─────────────┘ └─────────────┘ └─────────────────────┘  │ │
@@ -69,7 +69,7 @@ This document explains how Kuucode is architected, why certain decisions were ma
 
 ## 🔧 Component Architecture
 
-### **TypeScript Server (`packages/kuucode/`)**
+### **TypeScript Server (`packages/kuuzuki/`)**
 
 ```
 src/
@@ -239,9 +239,9 @@ Message {
 ```
 1. Default Config (built-in)
    ↓
-2. Global Config (~/.config/kuucode/config.json)
+2. Global Config (~/.config/kuuzuki/config.json)
    ↓
-3. Project Config (./kuucode.json)
+3. Project Config (./kuuzuki.json)
    ↓
 4. Environment Variables
    ↓
@@ -266,7 +266,7 @@ interface Provider {
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Kuucode TUI   │───▶│  LSP Manager    │───▶│  Language       │
+│   Kuuzuki TUI   │───▶│  LSP Manager    │───▶│  Language       │
 │                 │    │                 │    │  Servers        │
 │ • Code context  │    │ • Auto-detect   │    │                 │
 │ • Diagnostics   │    │ • Lifecycle     │    │ • TypeScript    │

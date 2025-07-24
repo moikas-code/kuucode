@@ -15,23 +15,23 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
 
-	"github.com/moikas-code/kuucode-sdk-go"
-	"github.com/moikas-code/kuucode/internal/api"
-	"github.com/moikas-code/kuucode/internal/app"
-	"github.com/moikas-code/kuucode/internal/commands"
-	"github.com/moikas-code/kuucode/internal/compat"
-	"github.com/moikas-code/kuucode/internal/completions"
-	"github.com/moikas-code/kuucode/internal/components/chat"
-	cmdcomp "github.com/moikas-code/kuucode/internal/components/commands"
-	"github.com/moikas-code/kuucode/internal/components/dialog"
-	"github.com/moikas-code/kuucode/internal/components/fileviewer"
-	"github.com/moikas-code/kuucode/internal/components/modal"
-	"github.com/moikas-code/kuucode/internal/components/status"
-	"github.com/moikas-code/kuucode/internal/components/toast"
-	"github.com/moikas-code/kuucode/internal/layout"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
-	"github.com/moikas-code/kuucode/internal/util"
+	"github.com/moikas-code/kuuzuki-sdk-go"
+	"github.com/moikas-code/kuuzuki/internal/api"
+	"github.com/moikas-code/kuuzuki/internal/app"
+	"github.com/moikas-code/kuuzuki/internal/commands"
+	"github.com/moikas-code/kuuzuki/internal/compat"
+	"github.com/moikas-code/kuuzuki/internal/completions"
+	"github.com/moikas-code/kuuzuki/internal/components/chat"
+	cmdcomp "github.com/moikas-code/kuuzuki/internal/components/commands"
+	"github.com/moikas-code/kuuzuki/internal/components/dialog"
+	"github.com/moikas-code/kuuzuki/internal/components/fileviewer"
+	"github.com/moikas-code/kuuzuki/internal/components/modal"
+	"github.com/moikas-code/kuuzuki/internal/components/status"
+	"github.com/moikas-code/kuuzuki/internal/components/toast"
+	"github.com/moikas-code/kuuzuki/internal/layout"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/util"
 )
 
 // InterruptDebounceTimeoutMsg is sent when the interrupt key debounce timeout expires
@@ -83,7 +83,7 @@ type Model struct {
 func (a Model) Init() tea.Cmd {
 	var cmds []tea.Cmd
 	// https://github.com/charmbracelet/bubbletea/issues/1440
-	// https://github.com/moikas-code/kuucode/issues/127
+	// https://github.com/moikas-code/kuuzuki/issues/127
 	if !util.IsWsl() {
 		cmds = append(cmds, tea.RequestBackgroundColor)
 	}

@@ -1,9 +1,9 @@
 {
-  "packageName": "kuucode_ai",
-  "projectName": "kuucode-ai",
+  "packageName": "kuuzuki_ai",
+  "projectName": "kuuzuki-ai",
   "packageVersion": "0.1.0",
   "gitUserId": "moikas-code",
-  "gitRepoId": "kuucode-sdk-python",
-  "packageUrl": "https://github.com/moikas-code/kuucode-sdk-python",
+  "gitRepoId": "kuuzuki-sdk-python",
+  "packageUrl": "https://github.com/moikas-code/kuuzuki-sdk-python",
   "generateSourceCodeOnly": false
 }

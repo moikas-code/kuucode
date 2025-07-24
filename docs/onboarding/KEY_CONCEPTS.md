@@ -1,6 +1,6 @@
 # Key Concepts
 
-This document explains the core concepts and patterns you need to understand to work effectively with Kuucode.
+This document explains the core concepts and patterns you need to understand to work effectively with Kuuzuki.
 
 ## 🎯 Core Concepts
 
@@ -110,7 +110,7 @@ AI decides to use tool → Tool parameters generated → Tool executed → Resul
 
 ### **5. Context**
 
-**Context** is the project awareness that makes Kuucode intelligent about your codebase.
+**Context** is the project awareness that makes Kuuzuki intelligent about your codebase.
 
 ```typescript
 interface ProjectContext {
@@ -132,7 +132,7 @@ interface ProjectContext {
 
 ### **1. Streaming Responses**
 
-Kuucode uses **streaming** for real-time AI responses.
+Kuuzuki uses **streaming** for real-time AI responses.
 
 ```typescript
 // Server: Stream AI response
@@ -194,9 +194,9 @@ Configuration follows a **hierarchy** from general to specific.
 ```
 1. Built-in defaults
    ↓
-2. Global config (~/.config/kuucode/)
+2. Global config (~/.config/kuuzuki/)
    ↓  
-3. Project config (./kuucode.json)
+3. Project config (./kuuzuki.json)
    ↓
 4. Session config (per-session settings)
    ↓
@@ -265,7 +265,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 ### **1. Client-Server Separation**
 
-Think of Kuucode as **two separate applications** that communicate:
+Think of Kuuzuki as **two separate applications** that communicate:
 
 ```
 TUI (Client)                    Server
@@ -321,7 +321,7 @@ AI: Fixed! The issue was...
 
 ### **4. Context-Aware Conversations**
 
-Unlike web-based AI chats, Kuucode is **aware of your project**:
+Unlike web-based AI chats, Kuuzuki is **aware of your project**:
 
 ```
 Project Context

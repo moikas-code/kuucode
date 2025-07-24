@@ -65,12 +65,12 @@ class KuucodeWrapper {
     })
 
     // Listen for kuucode output
-    await listen("kuucode-output", (event: any) => {
+    await listen("kuuzuki-output", (event: any) => {
       this.terminal.write(event.payload + "\r\n")
     })
 
     // Listen for kuucode errors
-    await listen("kuucode-error", (event: any) => {
+    await listen("kuuzuki-error", (event: any) => {
       this.terminal.write("\x1b[31m" + event.payload + "\x1b[0m\r\n") // Red text for errors
     })
 

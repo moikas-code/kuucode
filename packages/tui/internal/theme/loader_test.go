@@ -21,7 +21,7 @@ func TestLoadThemesFromJSON(t *testing.T) {
 	}
 
 	// Check for expected themes
-	expectedThemes := []string{"tokyonight", "kuucode", "everforest", "ayu"}
+	expectedThemes := []string{"tokyonight", "kuuzuki", "everforest", "ayu"}
 	for _, expected := range expectedThemes {
 		found := slices.Contains(themes, expected)
 		if !found {
@@ -77,9 +77,9 @@ func TestLoadThemesFromDirectories(t *testing.T) {
 	cwd := filepath.Join(tempDir, "cwd")
 
 	// Create theme directories
-	os.MkdirAll(filepath.Join(userConfig, "kuucode", "themes"), 0755)
-	os.MkdirAll(filepath.Join(projectRoot, ".kuucode", "themes"), 0755)
-	os.MkdirAll(filepath.Join(cwd, ".kuucode", "themes"), 0755)
+	os.MkdirAll(filepath.Join(userConfig, "kuuzuki", "themes"), 0755)
+	os.MkdirAll(filepath.Join(projectRoot, ".kuuzuki", "themes"), 0755)
+	os.MkdirAll(filepath.Join(cwd, ".kuuzuki", "themes"), 0755)
 
 	// Create test themes with same name to test override behavior
 	testTheme1 := `{
@@ -116,9 +116,9 @@ func TestLoadThemesFromDirectories(t *testing.T) {
 	}`
 
 	// Write themes to different directories
-	os.WriteFile(filepath.Join(userConfig, "kuucode", "themes", "override-test.json"), []byte(testTheme1), 0644)
-	os.WriteFile(filepath.Join(projectRoot, ".kuucode", "themes", "override-test.json"), []byte(testTheme2), 0644)
-	os.WriteFile(filepath.Join(cwd, ".kuucode", "themes", "override-test.json"), []byte(testTheme3), 0644)
+	os.WriteFile(filepath.Join(userConfig, "kuuzuki", "themes", "override-test.json"), []byte(testTheme1), 0644)
+	os.WriteFile(filepath.Join(projectRoot, ".kuuzuki", "themes", "override-test.json"), []byte(testTheme2), 0644)
+	os.WriteFile(filepath.Join(cwd, ".kuuzuki", "themes", "override-test.json"), []byte(testTheme3), 0644)
 
 	// Load themes
 	err := LoadThemesFromDirectories(userConfig, projectRoot, cwd)

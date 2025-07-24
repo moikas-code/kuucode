@@ -6,10 +6,10 @@ import (
 
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/lithammer/fuzzysearch/fuzzy"
-	"github.com/moikas-code/kuucode/internal/app"
-	"github.com/moikas-code/kuucode/internal/commands"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/app"
+	"github.com/moikas-code/kuuzuki/internal/commands"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
 )
 
 type CommandCompletionProvider struct {

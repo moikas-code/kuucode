@@ -1,12 +1,12 @@
 # Project Overview
 
-## What is Kuucode?
+## What is Kuuzuki?
 
-Kuucode is an **AI coding agent built for the terminal**. It's a fork of the original OpenCode project, redesigned to be independent, cost-effective, and fully customizable.
+Kuuzuki is an **AI coding agent built for the terminal**. It's a fork of the original project (formerly OpenCode by SST), redesigned to be independent, cost-effective, and fully customizable.
 
 ## 🎯 Core Purpose
 
-Kuucode helps developers by:
+Kuuzuki helps developers by:
 - **Writing and editing code** based on natural language instructions
 - **Understanding codebases** through intelligent analysis
 - **Debugging issues** with AI-powered insights
@@ -17,7 +17,7 @@ Kuucode helps developers by:
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Terminal UI   │───▶│  Kuucode Server │───▶│  AI Providers   │
+│   Terminal UI   │───▶│  Kuuzuki Server │───▶│  AI Providers   │
 │     (Go TUI)    │    │   (TypeScript)  │    │ (Claude, GPT,   │
 │                 │    │                 │    │  Local models)  │
 │ • Chat interface│    │ • API endpoints │    │                 │
@@ -58,7 +58,7 @@ Kuucode helps developers by:
 - **Message history** and search
 - **Multiple concurrent sessions**
 
-## 🎨 What Makes Kuucode Different
+## 🎨 What Makes Kuuzuki Different
 
 ### **vs. GitHub Copilot**
 - **Terminal-based** instead of editor-integrated
@@ -72,7 +72,7 @@ Kuucode helps developers by:
 - **Terminal workflow** integration
 - **Offline capable** with local models
 
-### **vs. Original OpenCode**
+### **vs. Original Project**
 - **Independent** - no external service dependencies
 - **Cost-effective** - free SDK generation (was $99/month)
 - **Customizable** - full control over features and providers
@@ -106,9 +106,9 @@ Kuucode helps developers by:
 ## 📊 Project Structure
 
 ```
-kuucode/
+kuuzuki/
 ├── packages/
-│   ├── kuucode/          # TypeScript server
+│   ├── kuuzuki/          # TypeScript server
 │   │   ├── src/
 │   │   │   ├── server/   # API endpoints
 │   │   │   ├── provider/ # AI provider integrations
@@ -165,14 +165,14 @@ kuucode/
 ## 🔄 Project History
 
 ### **Fork Context**
-Kuucode is a fork of OpenCode (by SST), created to:
+Kuuzuki is a fork of the original project (OpenCode by SST), created to:
 - **Remove external dependencies** (Stainless SDK generation)
 - **Reduce costs** (eliminate $99/month subscription)
 - **Enable customization** (full control over features)
 - **Foster independence** (no reliance on external services)
 
 ### **Key Changes Made**
-- **Rebranded** from OpenCode to Kuucode
+- **Rebranded** to Kuuzuki
 - **Migrated** from Stainless to OpenAPI Generator
 - **Updated** repository references to moikas-code organization
 - **Improved** documentation and onboarding

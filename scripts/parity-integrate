@@ -67,7 +67,7 @@ const INTEGRATION_RULES: IntegrationRule[] = [
     transformations: [
       { find: /opencode/g, replace: "kuucode" },
       { find: /packages\/opencode/g, replace: "packages/kuucode" },
-      { find: /OPENCODE_/g, replace: "KUUCODE_" }
+      { find: /OPENCODE_/g, replace: "KUUZUKI_" }
     ]
   },
   {

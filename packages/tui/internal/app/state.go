@@ -35,7 +35,7 @@ type State struct {
 
 func NewState() *State {
 	return &State{
-		Theme:              "kuucode",
+		Theme:              "kuuzuki",
 		Mode:               "build",
 		ModeModel:          make(map[string]ModeModel),
 		RecentlyUsedModels: make([]ModelUsage, 0),

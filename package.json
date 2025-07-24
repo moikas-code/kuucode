@@ -1,16 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "kuucode",
+  "name": "kuuzuki",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.2.14",
   "bin": {
-    "kuucode": "./packages/kuucode/bin/kuucode"
+    "kuuzuki": "./packages/kuuzuki/bin/kuuzuki"
   },
   "scripts": {
-    "start": "kuucode",
-    "dev": "bun run packages/kuucode/src/index.ts",
-    "typecheck": "npm run --workspace=packages/kuucode typecheck && npm run --workspace=packages/desktop typecheck",
+    "start": "kuuzuki",
+    "dev": "bun run packages/kuuzuki/src/index.ts",
+    "typecheck": "npm run --workspace=packages/kuuzuki typecheck && npm run --workspace=packages/desktop typecheck",
     "generate-sdks": "./scripts/generate-sdks",
     "postinstall": "./scripts/hooks",
     "desktop": "./scripts/desktop",
@@ -40,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/moikas-code/kuucode"
+    "url": "https://github.com/moikas-code/kuuzuki"
   },
   "license": "MIT",
   "prettier": {

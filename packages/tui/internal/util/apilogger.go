@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/moikas-code/kuucode/internal/compat"
+	"github.com/moikas-code/kuuzuki/internal/compat"
 )
 
 type APILogHandler struct {

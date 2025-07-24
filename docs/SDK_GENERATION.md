@@ -1,6 +1,6 @@
 # SDK Generation Documentation
 
-This document provides comprehensive information about generating client SDKs for the Kuucode API using OpenAPI Generator.
+This document provides comprehensive information about generating client SDKs for the Kuuzuki API using OpenAPI Generator.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ This document provides comprehensive information about generating client SDKs fo
 
 ## Overview
 
-Kuucode uses [OpenAPI Generator](https://openapi-generator.tech/) to automatically generate client SDKs from the REST API specification. This provides:
+Kuuzuki uses [OpenAPI Generator](https://openapi-generator.tech/) to automatically generate client SDKs from the REST API specification. This provides:
 
 - **Free and open source** solution
 - **Full local control** over SDK generation
@@ -28,9 +28,9 @@ Kuucode uses [OpenAPI Generator](https://openapi-generator.tech/) to automatical
 
 | Language   | Output Directory        | Package Name        | Repository                              |
 |------------|------------------------|--------------------|-----------------------------------------|
-| TypeScript | `./sdks/typescript/`   | `@kuucode-ai/sdk`  | `moikas-code/kuucode-sdk-js`           |
-| Go         | `./packages/tui/sdk/`  | `kuucode`          | `moikas-code/kuucode-sdk-go`           |
-| Python     | `./sdks/python/`       | `kuucode_ai`       | `moikas-code/kuucode-sdk-python`       |
+| TypeScript | `./sdks/typescript/`   | `@kuuzuki-ai/sdk`  | `moikas-code/kuuzuki-sdk-js`           |
+| Go         | `./packages/tui/sdk/`  | `kuuzuki`          | `moikas-code/kuuzuki-sdk-go`           |
+| Python     | `./sdks/python/`       | `kuuzuki_ai`       | `moikas-code/kuuzuki-sdk-python`       |
 
 ## Quick Start
 
@@ -45,8 +45,8 @@ Kuucode uses [OpenAPI Generator](https://openapi-generator.tech/) to automatical
 
 ```bash
 # Clone and setup
-git clone https://github.com/moikas-code/kuucode.git
-cd kuucode
+git clone https://github.com/moikas-code/kuuzuki.git
+cd kuuzuki
 bun install
 
 # Generate all SDKs
@@ -73,7 +73,7 @@ bun install
 
 ```mermaid
 graph TD
-    A[Start kuucode server] --> B[Fetch OpenAPI spec]
+    A[Start kuuzuki server] --> B[Fetch OpenAPI spec]
     B --> C[Validate specification]
     C --> D[Generate TypeScript SDK]
     D --> E[Generate Go SDK]
@@ -85,7 +85,7 @@ graph TD
 ### File Structure
 
 ```
-kuucode/
+kuuzuki/
 ├── scripts/
 │   └── generate-sdks              # Main generation script
 ├── config/
@@ -109,9 +109,9 @@ kuucode/
 
 ```json
 {
-  "npmName": "@kuucode-ai/sdk",
+  "npmName": "@kuuzuki-ai/sdk",
   "npmVersion": "0.1.0",
-  "npmRepository": "https://github.com/moikas-code/kuucode-sdk-js",
+  "npmRepository": "https://github.com/moikas-code/kuuzuki-sdk-js",
   "supportsES6": true,
   "withInterfaces": true,
   "typescriptThreePlus": true,
@@ -132,11 +132,11 @@ kuucode/
 
 ```json
 {
-  "packageName": "kuucode",
+  "packageName": "kuuzuki",
   "packageVersion": "0.1.0",
   "gitUserId": "moikas-code",
-  "gitRepoId": "kuucode-sdk-go",
-  "moduleName": "github.com/moikas-code/kuucode-sdk-go",
+  "gitRepoId": "kuuzuki-sdk-go",
+  "moduleName": "github.com/moikas-code/kuuzuki-sdk-go",
   "generateInterfaces": true,
   "structPrefix": true,
   "enumClassPrefix": true
@@ -155,12 +155,12 @@ kuucode/
 
 ```json
 {
-  "packageName": "kuucode_ai",
-  "projectName": "kuucode-ai",
+  "packageName": "kuuzuki_ai",
+  "projectName": "kuuzuki-ai",
   "packageVersion": "0.1.0",
   "gitUserId": "moikas-code",
-  "gitRepoId": "kuucode-sdk-python",
-  "packageUrl": "https://github.com/moikas-code/kuucode-sdk-python",
+  "gitRepoId": "kuuzuki-sdk-python",
+  "packageUrl": "https://github.com/moikas-code/kuuzuki-sdk-python",
   "generateSourceCodeOnly": false
 }
 ```
@@ -178,7 +178,7 @@ kuucode/
 
 **Usage Example**:
 ```typescript
-import { Configuration, DefaultApi } from '@kuucode-ai/sdk';
+import { Configuration, DefaultApi } from '@kuuzuki-ai/sdk';
 
 const config = new Configuration({
   basePath: 'http://localhost:4096'
@@ -200,9 +200,9 @@ const sessions = await api.sessionList();
 
 **Usage Example**:
 ```go
-import "github.com/moikas-code/kuucode-sdk-go"
+import "github.com/moikas-code/kuuzuki-sdk-go"
 
-client := kuucode.NewClient()
+client := kuuzuki.NewClient()
 sessions, err := client.Session.List(context.TODO())
 if err != nil {
     log.Fatal(err)
@@ -221,15 +221,15 @@ if err != nil {
 
 **Usage Example**:
 ```python
-import kuucode_ai
-from kuucode_ai.rest import ApiException
+import kuuzuki_ai
+from kuuzuki_ai.rest import ApiException
 
-configuration = kuucode_ai.Configuration(
+configuration = kuuzuki_ai.Configuration(
     host = "http://localhost:4096"
 )
 
-with kuucode_ai.ApiClient(configuration) as api_client:
-    api_instance = kuucode_ai.DefaultApi(api_client)
+with kuuzuki_ai.ApiClient(configuration) as api_client:
+    api_instance = kuuzuki_ai.DefaultApi(api_client)
     sessions = api_instance.session_list()
 ```
 
@@ -243,7 +243,7 @@ with kuucode_ai.ApiClient(configuration) as api_client:
 
 ### 1. Making API Changes
 
-When modifying the API in `packages/kuucode/src/server/server.ts`:
+When modifying the API in `packages/kuuzuki/src/server/server.ts`:
 
 ```typescript
 // Example: Adding a new endpoint
@@ -274,14 +274,14 @@ go run . # Uses local SDK
 ```bash
 cd sdks/typescript
 npm link
-# Use in your project with: npm link @kuucode-ai/sdk
+# Use in your project with: npm link @kuuzuki-ai/sdk
 ```
 
 **Python SDK**:
 ```bash
 cd sdks/python
 pip install -e .
-# Now available as: import kuucode_ai
+# Now available as: import kuuzuki_ai
 ```
 
 ### 4. Validation
@@ -316,8 +316,8 @@ git add packages/tui/sdk/
 git commit -m "Update Go SDK"
 
 # For separate repository:
-cd /path/to/kuucode-sdk-go
-cp -r /path/to/kuucode/packages/tui/sdk/* .
+cd /path/to/kuuzuki-sdk-go
+cp -r /path/to/kuuzuki/packages/tui/sdk/* .
 git add .
 git commit -m "Update SDK"
 git tag v0.1.0
@@ -379,17 +379,17 @@ cat openapi.json | jq .
 openapi-generator-cli validate -i openapi.json
 
 # Check server logs
-bun run packages/kuucode/src/index.ts serve --port 4096
+bun run packages/kuuzuki/src/index.ts serve --port 4096
 ```
 
 #### 4. Go Module Issues
 
-**Error**: `go: module github.com/moikas-code/kuucode-sdk-go: not found`
+**Error**: `go: module github.com/moikas-code/kuuzuki-sdk-go: not found`
 
 **Solution**:
 ```bash
 cd packages/tui/sdk
-go mod init github.com/moikas-code/kuucode-sdk-go
+go mod init github.com/moikas-code/kuuzuki-sdk-go
 go mod tidy
 ```
 
@@ -514,7 +514,7 @@ openapi-generator-cli generate \
   -i openapi.json \
   -g rust \
   -o ./sdks/rust \
-  --package-name kuucode_rs
+  --package-name kuuzuki_rs
 ```
 
 ### CI/CD Integration
@@ -525,7 +525,7 @@ Example GitHub Actions workflow:
 name: Generate SDKs
 on:
   push:
-    paths: ['packages/kuucode/src/server/**']
+    paths: ['packages/kuuzuki/src/server/**']
 
 jobs:
   generate-sdks:
@@ -550,7 +550,7 @@ For issues with SDK generation:
 
 1. **Check this documentation** for common solutions
 2. **Review the troubleshooting section** above
-3. **Open an issue** at [moikas-code/kuucode/issues](https://github.com/moikas-code/kuucode/issues)
+3. **Open an issue** at [moikas-code/kuuzuki/issues](https://github.com/moikas-code/kuuzuki/issues)
 4. **Check OpenAPI Generator docs** at [openapi-generator.tech](https://openapi-generator.tech/)
 
 ---

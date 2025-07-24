@@ -3,7 +3,7 @@ package compat
 import (
 	"context"
 
-	kuucode "github.com/moikas-code/kuucode-sdk-go"
+	kuucode "github.com/moikas-code/kuuzuki-sdk-go"
 )
 
 // CompatClient wraps the new OpenAPI-generated APIClient to maintain the old interface

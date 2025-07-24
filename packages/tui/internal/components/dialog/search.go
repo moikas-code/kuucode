@@ -5,9 +5,9 @@ import (
 	"github.com/charmbracelet/bubbles/v2/textinput"
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
-	"github.com/moikas-code/kuucode/internal/components/list"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/components/list"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
 )
 
 // SearchQueryChangedMsg is emitted when the search query changes

@@ -1,6 +1,6 @@
 package completions
 
-import "github.com/moikas-code/kuucode/internal/styles"
+import "github.com/moikas-code/kuuzuki/internal/styles"
 
 // CompletionSuggestion represents a data-only completion suggestion
 // with no styling or rendering logic

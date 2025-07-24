@@ -1,7 +1,7 @@
 {
-  "productName": "Kuucode Desktop",
+  "productName": "Kuuzuki Desktop",
   "version": "0.1.0",
-  "identifier": "com.kuucode.desktop",
+  "identifier": "com.kuuzuki.desktop",
   "build": {
     "beforeDevCommand": "npm run dev:web",
     "beforeBuildCommand": "npm run build:web",
@@ -15,7 +15,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Kuucode",
+        "title": "Kuuzuki",
         "width": 1200,
         "height": 800,
         "minWidth": 800,

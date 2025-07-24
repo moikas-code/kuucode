@@ -1,28 +1,28 @@
 # Glossary
 
-This glossary defines key terms and concepts used throughout the Kuucode project.
+This glossary defines key terms and concepts used throughout the Kuuzuki project.
 
 ## 🎯 Core Terms
 
 ### **Agent**
 
-An AI-powered assistant that can understand natural language instructions and perform coding tasks. Kuucode is an AI coding agent.
+An AI-powered assistant that can understand natural language instructions and perform coding tasks. Kuuzuki is an AI coding agent.
 
 ### **API**
 
-Application Programming Interface. In Kuucode, refers to the REST API provided by the TypeScript server that clients (like the TUI) use to communicate.
+Application Programming Interface. In Kuuzuki, refers to the REST API provided by the TypeScript server that clients (like the TUI) use to communicate.
 
 ### **Bubble Tea**
 
-A Go framework for building terminal user interfaces. Used by Kuucode's TUI component for creating the interactive terminal experience.
+A Go framework for building terminal user interfaces. Used by Kuuzuki's TUI component for creating the interactive terminal experience.
 
 ### **Bun**
 
-A fast JavaScript runtime and package manager. Kuucode uses Bun instead of Node.js for better performance and developer experience.
+A fast JavaScript runtime and package manager. Kuuzuki uses Bun instead of Node.js for better performance and developer experience.
 
 ### **Client**
 
-Any application that connects to the Kuucode server. Examples include the TUI, VS Code extension, or web clients.
+Any application that connects to the Kuuzuki server. Examples include the TUI, VS Code extension, or web clients.
 
 ### **Context**
 
@@ -32,15 +32,15 @@ Information about the current project, files, and environment that helps the AI 
 
 ### **Hono**
 
-A lightweight web framework for TypeScript/JavaScript. Kuucode uses Hono for its HTTP server instead of Express.
+A lightweight web framework for TypeScript/JavaScript. Kuuzuki uses Hono for its HTTP server instead of Express.
 
 ### **LSP (Language Server Protocol)**
 
-A protocol that provides language features like autocomplete, diagnostics, and hover information. Kuucode integrates with LSPs to understand code better.
+A protocol that provides language features like autocomplete, diagnostics, and hover information. Kuuzuki integrates with LSPs to understand code better.
 
 ### **OpenAPI Generator**
 
-An open-source tool that generates client SDKs from OpenAPI specifications. Replaced Stainless in Kuucode for cost savings and independence.
+An open-source tool that generates client SDKs from OpenAPI specifications. Replaced Stainless in Kuuzuki for cost savings and independence.
 
 ### **Provider**
 
@@ -48,7 +48,7 @@ An AI service integration (like Anthropic Claude, OpenAI GPT, or local models). 
 
 ### **SDK (Software Development Kit)**
 
-Client libraries generated from the API specification. Kuucode generates TypeScript, Go, and Python SDKs.
+Client libraries generated from the API specification. Kuuzuki generates TypeScript, Go, and Python SDKs.
 
 ### **Server-Sent Events (SSE)**
 
@@ -56,7 +56,7 @@ A web standard for streaming real-time data from server to client. Used for stre
 
 ### **Stainless**
 
-A commercial service for generating SDKs from API specifications. Previously used by Kuucode but replaced with OpenAPI Generator.
+A commercial service for generating SDKs from API specifications. Previously used by Kuuzuki but replaced with OpenAPI Generator.
 
 ### **Streaming**
 
@@ -64,7 +64,7 @@ The process of sending data in chunks as it becomes available, rather than waiti
 
 ### **TUI (Terminal User Interface)**
 
-A text-based user interface that runs in a terminal. Kuucode's primary interface is a TUI built with Go and Bubble Tea.
+A text-based user interface that runs in a terminal. Kuuzuki's primary interface is a TUI built with Go and Bubble Tea.
 
 ## 🎨 UI Terms
 
@@ -118,7 +118,7 @@ A capability that the AI can use to interact with the system. Examples include f
 
 ### **Configuration**
 
-Settings that control how Kuucode behaves. Can be global, project-specific, or session-specific.
+Settings that control how Kuuzuki behaves. Can be global, project-specific, or session-specific.
 
 ### **Credentials**
 
@@ -144,7 +144,7 @@ The process of verifying identity, typically using API keys or OAuth tokens for 
 
 ### **Git Integration**
 
-Features that make Kuucode aware of Git repository status, changes, and history.
+Features that make Kuuzuki aware of Git repository status, changes, and history.
 
 ### **Model**
 
@@ -188,11 +188,11 @@ Automatically restarting the application when code changes are detected during d
 
 ### **Monorepo**
 
-A repository containing multiple related packages. Kuucode uses a monorepo structure with packages for server, TUI, web, etc.
+A repository containing multiple related packages. Kuuzuki uses a monorepo structure with packages for server, TUI, web, etc.
 
 ### **Package Manager**
 
-A tool for managing dependencies. Kuucode uses Bun as its package manager.
+A tool for managing dependencies. Kuuzuki uses Bun as its package manager.
 
 ### **Type Checking**
 
@@ -259,23 +259,23 @@ YAML configuration files. Used for various configuration purposes.
 | **UI**       | User Interface                    | The means by which users interact with software                                |
 | **UX**       | User Experience                   | Overall experience of using a product                                          |
 
-## 🎯 Kuucode-Specific Terms
+## 🎯 Kuuzuki-Specific Terms
 
-### **Kuucode**
+### **Kuuzuki**
 
-The name of this AI coding agent project. A fork of the original OpenCode project.
+The name of this AI coding agent project. A fork of the original OpenCode project by SST.
 
 ### **KuuCode (Original)**
 
-The original project that this Kuucode was forked from, created by SST.
+The original project that this Kuuzuki was forked from, created by SST.
 
 ### **moikas-code**
 
-The GitHub organization that owns the Kuucode fork.
+The GitHub organization that owns the Kuuzuki fork.
 
 ### **Fork**
 
-A copy of a repository that allows independent development. Kuucode is a fork of OpenCode.
+A copy of a repository that allows independent development. Kuuzuki is a fork of the upstream project (originally OpenCode by SST).
 
 ### **Migration**
 

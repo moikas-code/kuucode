@@ -20,9 +20,9 @@ import (
 	"github.com/charmbracelet/lipgloss/v2/compat"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/sergi/go-diff/diffmatchpatch"
-	stylesi "github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
-	"github.com/moikas-code/kuucode/internal/util"
+	stylesi "github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/util"
 )
 
 // -------------------------------------------------------------------------

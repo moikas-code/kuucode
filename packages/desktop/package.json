@@ -1,7 +1,7 @@
 {
-  "name": "kuucode-desktop",
+  "name": "kuuzuki-desktop",
   "version": "0.1.0",
-  "description": "Kuucode Desktop App",
+  "description": "Kuuzuki Desktop App",
   "type": "module",
   "scripts": {
     "dev": "tauri dev",

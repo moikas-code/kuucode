@@ -39,7 +39,7 @@ runs:
 
     - name: Install kuucode
       shell: bash
-      run: curl -fsSL https://kuucode.ai/install | bash
+      run: curl -fsSL https://kuuzuki.ai/install | bash
 
     - name: Run kuucode
       shell: bash

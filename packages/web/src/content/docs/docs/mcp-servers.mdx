@@ -3,7 +3,7 @@ title: MCP servers
 description: Add local and remote MCP tools.
 ---
 
-You can add external tools to kuucode using the _Model Context Protocol_, or MCP. kuucode supports both:
+You can add external tools to kuuzuki using the _Model Context Protocol_, or MCP. kuuzuki supports both:
 
 - Local servers
 - And remote servers
@@ -14,15 +14,15 @@ Once added, MCP tools are automatically available to the LLM alongside built-in 
 
 ## Configure
 
-You can define MCP servers in your kuucode config under `mcp`.
+You can define MCP servers in your kuuzuki config under `mcp`.
 
 ### Local
 
 Add local MCP servers under `mcp` with `"type": "local"`.
 
-```json title="kuucode.json"
+```json title="kuuzuki.json"
 {
-  "$schema": "https://kuucode.ai/config.json",
+  "$schema": "https://kuuzuki.ai/config.json",
   "mcp": {
     "my-local-mcp-server": {
       "type": "local",
@@ -47,9 +47,9 @@ You can also disable a server by setting `enabled` to `false`. This is useful if
 
 Add remote MCP servers under `mcp` with `"type": "remote"`.
 
-```json title="kuucode.json"
+```json title="kuuzuki.json"
 {
-  "$schema": "https://kuucode.ai/config.json",
+  "$schema": "https://kuuzuki.ai/config.json",
   "mcp": {
     "my-remote-mcp": {
       "type": "remote",

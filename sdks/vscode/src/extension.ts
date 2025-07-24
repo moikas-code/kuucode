@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
     })
 
     terminal.show()
-    terminal.sendText("KUUCODE_THEME=system KUUCODE_CALLER=vscode kuucode")
+    terminal.sendText("KUUZUKI_THEME=system KUUZUKI_CALLER=vscode kuucode")
   })
 
   // Register command to add filepath to terminal

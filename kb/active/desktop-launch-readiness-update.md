@@ -5,7 +5,7 @@
 ### ✅ **Issue 1: TUI Package Restored**
 - **Problem**: `go build` failed with "no Go files in /packages/tui"
 - **Root Cause**: Command run from wrong directory
-- **Solution**: Build from correct path: `cd packages/tui && go build -o kuucode-tui ./cmd/kuucode`
+- **Solution**: Build from correct path: `cd packages/tui && go build -o kuuzuki-tui ./cmd/kuuzuki`
 - **Status**: ✅ **FIXED** - TUI builds and runs successfully
 
 ### ✅ **Issue 2: Desktop Build System Fixed**
@@ -27,7 +27,7 @@
 ## 🚀 **CURRENT STATUS**
 
 ### **Working Components**
-- ✅ **TUI Binary**: Builds and runs (`./kuucode-tui --help` works)
+- ✅ **TUI Binary**: Builds and runs (`./kuuzuki-tui --help` works)
 - ✅ **Web Frontend**: Vite build completes successfully
 - ✅ **Dev Server**: Starts on `http://localhost:5173`
 - ✅ **Tauri Build**: Starts compiling (no more loops or errors)
@@ -35,7 +35,7 @@
 ### **Remaining Work for 0.1.0**
 1. **Complete Rust compilation** - Build was interrupted by timeout, but progressing normally
 2. **Test desktop app launch** - Verify the built app actually opens and works
-3. **Basic functionality testing** - Ensure kuucode integration works in desktop wrapper
+3. **Basic functionality testing** - Ensure kuuzuki integration works in desktop wrapper
 4. **Cross-platform builds** - Test on macOS, Windows, Linux
 
 ## 📊 **Launch Readiness Assessment**
@@ -52,7 +52,7 @@
 ### **Immediate (Today)**
 1. Complete full desktop build (allow longer compile time)
 2. Test desktop app launch and basic functionality
-3. Verify kuucode TUI integration works in desktop wrapper
+3. Verify kuuzuki TUI integration works in desktop wrapper
 
 ### **Short-term (This Week)**
 1. Add proper app icons and branding

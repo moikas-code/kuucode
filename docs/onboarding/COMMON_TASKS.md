@@ -1,17 +1,17 @@
 # Common Development Tasks
 
-This guide covers the most frequent development tasks you'll encounter when working on Kuucode.
+This guide covers the most frequent development tasks you'll encounter when working on Kuuzuki.
 
 ## 🚀 Getting Started Tasks
 
 ### **Start Development Environment**
 
 ```bash
-# Option 1: Using global kuucode command
-kuucode serve
+# Option 1: Using global kuuzuki command
+kuuzuki serve
 
 # Option 2: Using development script
-cd kuucode
+cd kuuzuki
 bun run dev
 
 # Terminal 2: Start the TUI  
@@ -43,7 +43,7 @@ curl http://localhost:4096/session
 
 ### **Add a New API Endpoint**
 
-1. **Define the endpoint** in `packages/kuucode/src/server/server.ts`:
+1. **Define the endpoint** in `packages/kuuzuki/src/server/server.ts`:
 
 ```typescript
 // Add to the Hono app
@@ -59,7 +59,7 @@ app.post('/my-endpoint', async (c) => {
 })
 ```
 
-2. **Add types** if needed in `packages/kuucode/src/types.ts`:
+2. **Add types** if needed in `packages/kuuzuki/src/types.ts`:
 
 ```typescript
 export interface MyEndpointRequest {
@@ -140,7 +140,7 @@ app.post('/stream-endpoint', async (c) => {
 
 ### **Create a New Tool**
 
-1. **Create tool file** `packages/kuucode/src/tool/my-tool.ts`:
+1. **Create tool file** `packages/kuuzuki/src/tool/my-tool.ts`:
 
 ```typescript
 export const myTool = {
@@ -179,7 +179,7 @@ export const myTool = {
 }
 ```
 
-2. **Register the tool** in `packages/kuucode/src/tool/index.ts`:
+2. **Register the tool** in `packages/kuuzuki/src/tool/index.ts`:
 
 ```typescript
 import { myTool } from "./my-tool.js"
@@ -338,7 +338,7 @@ func (m Model) handleSelection() tea.Cmd {
 2. **Integrate with main TUI** in `packages/tui/internal/tui/tui.go`:
 
 ```go
-import "github.com/moikas-code/kuucode/internal/components/mycomponent"
+import "github.com/moikas-code/kuuzuki/internal/components/mycomponent"
 
 type Model struct {
     // ... existing components
@@ -418,7 +418,7 @@ func (m Model) showConfirmDialog(message string) tea.Cmd {
 
 ### **Add a New AI Provider**
 
-1. **Create provider** `packages/kuucode/src/provider/my-provider.ts`:
+1. **Create provider** `packages/kuuzuki/src/provider/my-provider.ts`:
 
 ```typescript
 import { Provider, GenerateRequest, Model } from './types.js'
@@ -482,7 +482,7 @@ export class MyProvider implements Provider {
 }
 ```
 
-2. **Register provider** in `packages/kuucode/src/provider/manager.ts`:
+2. **Register provider** in `packages/kuuzuki/src/provider/manager.ts`:
 
 ```typescript
 import { MyProvider } from './my-provider.js'
@@ -520,7 +520,7 @@ interface MyProviderConfig {
 
 ### **Add New Configuration Option**
 
-1. **Update config types** in `packages/kuucode/src/config/types.ts`:
+1. **Update config types** in `packages/kuuzuki/src/config/types.ts`:
 
 ```typescript
 export interface Config {
@@ -537,7 +537,7 @@ export interface MyFeatureConfig {
 }
 ```
 
-2. **Add default values** in `packages/kuucode/src/config/defaults.ts`:
+2. **Add default values** in `packages/kuuzuki/src/config/defaults.ts`:
 
 ```typescript
 export const defaultConfig: Config = {
@@ -552,7 +552,7 @@ export const defaultConfig: Config = {
 }
 ```
 
-3. **Add validation** in `packages/kuucode/src/config/schema.ts`:
+3. **Add validation** in `packages/kuuzuki/src/config/schema.ts`:
 
 ```typescript
 import { z } from 'zod'
@@ -667,12 +667,12 @@ ls -la packages/tui/sdk/
 cd packages/tui
 
 # Build for current platform
-go build -o kuucode-tui .
+go build -o kuuzuki-tui .
 
 # Build for multiple platforms
-GOOS=linux GOARCH=amd64 go build -o kuucode-tui-linux .
-GOOS=darwin GOARCH=amd64 go build -o kuucode-tui-darwin .
-GOOS=windows GOARCH=amd64 go build -o kuucode-tui-windows.exe .
+GOOS=linux GOARCH=amd64 go build -o kuuzuki-tui-linux .
+GOOS=darwin GOARCH=amd64 go build -o kuuzuki-tui-darwin .
+GOOS=windows GOARCH=amd64 go build -o kuuzuki-tui-windows.exe .
 ```
 
 ### **Type Check Everything**
@@ -700,7 +700,7 @@ DEBUG=1 bun run dev
 curl -v http://localhost:4096/app
 
 # Monitor logs
-tail -f ~/.local/share/kuucode/log/*.log
+tail -f ~/.local/share/kuuzuki/log/*.log
 ```
 
 ### **Debug TUI Issues**

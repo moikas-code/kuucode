@@ -1,13 +1,13 @@
-# Kuucode Desktop - TUI Wrapper
+# Kuuzuki Desktop - TUI Wrapper
 
-A simple desktop wrapper around the kuucode TUI. This gives you the exact same kuucode experience but in a standalone desktop window.
+A simple desktop wrapper around the kuuzuki TUI. This gives you the exact same kuuzuki experience but in a standalone desktop window.
 
 ## 🎯 What This Is
 
 This is **NOT** a custom UI. It's a simple wrapper that:
 
-- Runs the actual kuucode TUI inside a desktop window
-- Provides the exact same interface as `kuucode` in terminal
+- Runs the actual kuuzuki TUI inside a desktop window
+- Provides the exact same interface as `kuuzuki` in terminal
 - Adds basic desktop integration (menubar, window management)
 - No custom components, no Monaco editor, no fancy UI
 
@@ -24,34 +24,34 @@ bun run dev
 
 ## 🖥️ What You Get
 
-- **Pure kuucode TUI** - Exactly the same as running `kuucode` in terminal
+- **Pure kuuzuki TUI** - Exactly the same as running `kuuzuki` in terminal
 - **Desktop window** - Standalone app, no need for terminal
-- **Basic menubar** - Restart kuucode, copy/paste, fullscreen
-- **Auto-start** - Kuucode starts automatically when you open the app
+- **Basic menubar** - Restart kuuzuki, copy/paste, fullscreen
+- **Auto-start** - Kuuzuki starts automatically when you open the app
 
 ## 📋 Requirements
 
-- **Kuucode installed** - The app runs the actual `kuucode` command
+- **Kuuzuki installed** - The app runs the actual `kuuzuki` command
 - **Bun** - For running the wrapper
 - **Rust** (optional) - For native desktop app
 
 ## 🔧 How It Works
 
 1. Opens a terminal emulator (xterm.js) in a desktop window
-2. Spawns the actual `kuucode` process
-3. Pipes all input/output between the terminal and kuucode
-4. You get the real kuucode TUI, just in a desktop window
+2. Spawns the actual `kuuzuki` process
+3. Pipes all input/output between the terminal and kuuzuki
+4. You get the real kuuzuki TUI, just in a desktop window
 
 ## 🎨 Interface
 
 ```
 ┌─────────────────────────────────────────┐
-│ Kuucode | Edit | View                   │ ← Basic menubar
+│ Kuuzuki | Edit | View                   │ ← Basic menubar
 ├─────────────────────────────────────────┤
 │                                         │
-│  [Actual Kuucode TUI runs here]         │ ← Real kuucode interface
+│  [Actual Kuuzuki TUI runs here]         │ ← Real kuuzuki interface
 │                                         │
-│  Same as running `kuucode` in terminal  │
+│  Same as running `kuuzuki` in terminal  │
 │                                         │
 └─────────────────────────────────────────┘
 ```
@@ -66,8 +66,8 @@ bun run dev
 
 ## ✅ What This IS
 
-- ✅ Pure kuucode TUI wrapper
-- ✅ Desktop window for kuucode
+- ✅ Pure kuuzuki TUI wrapper
+- ✅ Desktop window for kuuzuki
 - ✅ Exact same experience as terminal
 - ✅ Simple and minimal
 
@@ -81,9 +81,9 @@ The app has only 3 files:
 
 ## 🎯 Perfect For
 
-- Running kuucode without opening a terminal
-- Having kuucode in its own dedicated window
+- Running kuuzuki without opening a terminal
+- Having kuuzuki in its own dedicated window
 - Desktop integration while keeping the pure TUI experience
-- Users who love the kuucode TUI but want it as a desktop app
+- Users who love the kuuzuki TUI but want it as a desktop app
 
-This is kuucode, unchanged, just wrapped in a desktop window. 🎯
+This is kuuzuki, unchanged, just wrapped in a desktop window. 🎯

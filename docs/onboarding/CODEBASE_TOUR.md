@@ -1,13 +1,13 @@
 # Codebase Tour
 
-Welcome to the guided tour of the Kuucode codebase! This document will walk you through the key files and directories, explaining what each does and how they fit together.
+Welcome to the guided tour of the Kuuzuki codebase! This document will walk you through the key files and directories, explaining what each does and how they fit together.
 
 ## 🗺️ Project Structure Overview
 
 ```
-kuucode/
+kuuzuki/
 ├── 📁 packages/           # Main application packages
-│   ├── 📁 kuucode/        # TypeScript server (core logic)
+│   ├── 📁 kuuzuki/        # TypeScript server (core logic)
 │   ├── 📁 tui/            # Go terminal interface
 │   ├── 📁 web/            # Documentation website
 │   └── 📁 function/       # Serverless functions
@@ -23,7 +23,7 @@ kuucode/
 ## 🎯 Entry Points - Start Here
 
 ### **Main Server Entry Point**
-📄 `packages/kuucode/src/index.ts`
+📄 `packages/kuuzuki/src/index.ts`
 
 ```typescript
 #!/usr/bin/env bun
@@ -50,7 +50,7 @@ import { run } from "./cli/run.js"
 package main
 
 import (
-    "github.com/moikas-code/kuucode/internal/tui"
+    "github.com/moikas-code/kuuzuki/internal/tui"
 )
 
 func main() {
@@ -67,7 +67,7 @@ func main() {
 ## 🖥️ Server Package Deep Dive
 
 ### **Core Server Logic**
-📄 `packages/kuucode/src/server/server.ts`
+📄 `packages/kuuzuki/src/server/server.ts`
 
 ```typescript
 import { Hono } from "hono"
@@ -94,7 +94,7 @@ export { app }
 - `/event` - Real-time event streaming
 
 ### **Provider System**
-📁 `packages/kuucode/src/provider/`
+📁 `packages/kuuzuki/src/provider/`
 
 ```
 provider/
@@ -116,7 +116,7 @@ export interface Provider {
 ```
 
 ### **Session Management**
-📁 `packages/kuucode/src/session/`
+📁 `packages/kuuzuki/src/session/`
 
 ```
 session/
@@ -138,7 +138,7 @@ export class SessionManager {
 ```
 
 ### **Tool System**
-📁 `packages/kuucode/src/tool/`
+📁 `packages/kuuzuki/src/tool/`
 
 ```
 tool/
@@ -167,7 +167,7 @@ export const editTool = {
 ```
 
 ### **Configuration System**
-📁 `packages/kuucode/src/config/`
+📁 `packages/kuuzuki/src/config/`
 
 ```
 config/
@@ -322,7 +322,7 @@ web/
 ```
 onboarding/
 ├── 📄 README.md           # Start here
-├── 📄 PROJECT_OVERVIEW.md # What Kuucode is
+├── 📄 PROJECT_OVERVIEW.md # What Kuuzuki is
 ├── 📄 ARCHITECTURE.md     # System design
 ├── 📄 CODEBASE_TOUR.md    # This file!
 └── 📄 ...                 # More guides
@@ -360,13 +360,13 @@ github/
 | File | Purpose | Key Contents |
 |------|---------|--------------|
 | `package.json` | Root package config | Scripts, dependencies, workspaces |
-| `kuucode.json` | App configuration | Provider settings, preferences |
+| `kuuzuki.json` | App configuration | Provider settings, preferences |
 | `tsconfig.json` | TypeScript config | Compilation settings |
 | `go.mod` | Go module config | Dependencies, module path |
 
 ### **Important Constants and Types**
 
-📄 `packages/kuucode/src/types.ts`
+📄 `packages/kuuzuki/src/types.ts`
 ```typescript
 export interface Session {
   id: string
@@ -401,31 +401,31 @@ type AppState struct {
 
 1. **User Input** → `packages/tui/internal/components/chat/input.go`
 2. **HTTP Request** → `packages/tui/internal/api/client.go`
-3. **Server Routing** → `packages/kuucode/src/server/server.ts`
-4. **Provider Call** → `packages/kuucode/src/provider/anthropic.ts`
-5. **Streaming Response** → `packages/kuucode/src/server/streaming.ts`
+3. **Server Routing** → `packages/kuuzuki/src/server/server.ts`
+4. **Provider Call** → `packages/kuuzuki/src/provider/anthropic.ts`
+5. **Streaming Response** → `packages/kuuzuki/src/server/streaming.ts`
 6. **TUI Update** → `packages/tui/internal/components/chat/messages.go`
 
 ### **File Operation Flow**
 
 1. **File Request** → `packages/tui/internal/components/fileviewer/fileviewer.go`
-2. **API Call** → `packages/kuucode/src/server/server.ts` (`/file` endpoint)
-3. **Tool Execution** → `packages/kuucode/src/tool/read.ts`
+2. **API Call** → `packages/kuuzuki/src/server/server.ts` (`/file` endpoint)
+3. **Tool Execution** → `packages/kuuzuki/src/tool/read.ts`
 4. **File System** → Native file operations
 5. **Response** → Back through the chain
 
 ## 🎯 Where to Start Coding
 
 ### **Adding a New Tool**
-1. Create `packages/kuucode/src/tool/your-tool.ts`
+1. Create `packages/kuuzuki/src/tool/your-tool.ts`
 2. Implement the tool interface
-3. Register in `packages/kuucode/src/tool/index.ts`
+3. Register in `packages/kuuzuki/src/tool/index.ts`
 4. Regenerate SDKs: `./scripts/generate-sdks --dev`
 
 ### **Adding a New Provider**
-1. Create `packages/kuucode/src/provider/your-provider.ts`
+1. Create `packages/kuuzuki/src/provider/your-provider.ts`
 2. Implement the Provider interface
-3. Register in `packages/kuucode/src/provider/manager.ts`
+3. Register in `packages/kuuzuki/src/provider/manager.ts`
 4. Add configuration schema
 
 ### **Adding TUI Features**
@@ -435,7 +435,7 @@ type AppState struct {
 4. Render in the View function
 
 ### **Modifying the API**
-1. Edit routes in `packages/kuucode/src/server/server.ts`
+1. Edit routes in `packages/kuuzuki/src/server/server.ts`
 2. Update types if needed
 3. Regenerate SDKs: `./scripts/generate-sdks --dev`
 4. Update TUI client code if needed
@@ -443,8 +443,8 @@ type AppState struct {
 ## 🔍 Debugging Entry Points
 
 ### **Server Issues**
-- Check `packages/kuucode/src/index.ts` for startup issues
-- Look at `packages/kuucode/src/server/server.ts` for API problems
+- Check `packages/kuuzuki/src/index.ts` for startup issues
+- Look at `packages/kuuzuki/src/server/server.ts` for API problems
 - Examine provider files for AI integration issues
 
 ### **TUI Issues**

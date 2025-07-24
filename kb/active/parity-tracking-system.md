@@ -1,4 +1,4 @@
-# Kuucode Parity Tracking System
+# Kuuzuki Parity Tracking System
 
 ## Overview
 Comprehensive system for tracking and managing parity between kuucode (our fork) and opencode (upstream).

@@ -1,40 +1,40 @@
 ---
 title: CLI
-description: The kuucode CLI options and commands.
+description: The kuuzuki CLI options and commands.
 ---
 
-Running the kuucode CLI starts it for the current directory.
+Running the kuuzuki CLI starts it for the current directory.
 
 ```bash
-kuucode
+kuuzuki
 ```
 
 Or you can start it for a specific working directory.
 
 ```bash
-kuucode /path/to/project
+kuuzuki /path/to/project
 ```
 
 ---
 
 ## Commands
 
-The kuucode CLI also has the following commands.
+The kuuzuki CLI also has the following commands.
 
 ---
 
 ### run
 
-Run kuucode in non-interactive mode by passing a prompt directly.
+Run kuuzuki in non-interactive mode by passing a prompt directly.
 
 ```bash
-kuucode run [message..]
+kuuzuki run [message..]
 ```
 
 This is useful for scripting, automation, or when you want a quick answer without launching the full TUI. For example.
 
-```bash "kuucode run"
-kuucode run Explain the use of context in Go
+```bash "kuuzuki run"
+kuuzuki run Explain the use of context in Go
 ```
 
 #### Flags
@@ -53,20 +53,20 @@ kuucode run Explain the use of context in Go
 Command to manage credentials and login for providers.
 
 ```bash
-kuucode auth [command]
+kuuzuki auth [command]
 ```
 
 ---
 
 #### login
 
-Logs you into a provider and saves them in the credentials file in `~/.local/share/kuucode/auth.json`.
+Logs you into a provider and saves them in the credentials file in `~/.local/share/kuuzuki/auth.json`.
 
 ```bash
-kuucode auth login
+kuuzuki auth login
 ```
 
-When kuucode starts up it loads the providers from the credentials file. And if there are any keys defined in your environments or a `.env` file in your project.
+When kuuzuki starts up it loads the providers from the credentials file. And if there are any keys defined in your environments or a `.env` file in your project.
 
 ---
 
@@ -75,13 +75,13 @@ When kuucode starts up it loads the providers from the credentials file. And if 
 Lists all the authenticated providers as stored in the credentials file.
 
 ```bash
-kuucode auth list
+kuuzuki auth list
 ```
 
 Or the short version.
 
 ```bash
-kuucode auth ls
+kuuzuki auth ls
 ```
 
 ---
@@ -91,36 +91,36 @@ kuucode auth ls
 Logs you out of a provider by clearing it from the credentials file.
 
 ```bash
-kuucode auth logout
+kuuzuki auth logout
 ```
 
 ---
 
 ### upgrade
 
-Updates kuucode to the latest version or a specific version.
+Updates kuuzuki to the latest version or a specific version.
 
 ```bash
-kuucode upgrade [target]
+kuuzuki upgrade [target]
 ```
 
 To upgrade to the latest version.
 
 ```bash
-kuucode upgrade
+kuuzuki upgrade
 ```
 
 To upgrade to a specific version.
 
 ```bash
-kuucode upgrade v0.1.48
+kuuzuki upgrade v0.1.48
 ```
 
 ---
 
 ## Flags
 
-The kuucode CLI takes the following flags.
+The kuuzuki CLI takes the following flags.
 
 | Flag           | Short | Description          |
 | -------------- | ----- | -------------------- |

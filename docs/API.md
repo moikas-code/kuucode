@@ -1,11 +1,11 @@
-# Kuucode API Documentation
+# Kuuzuki API Documentation
 
-This document describes the Kuucode REST API that powers the client SDKs and TUI.
+This document describes the Kuuzuki REST API that powers the client SDKs and TUI.
 
 ## Base URL
 
 - **Development**: `http://localhost:4096`
-- **Production**: `https://api.kuucode.ai`
+- **Production**: `https://api.kuuzuki.ai`
 
 ## Authentication
 
@@ -117,7 +117,7 @@ Stream real-time events.
 ### TypeScript
 
 ```typescript
-import { Configuration, DefaultApi } from '@kuucode-ai/sdk';
+import { Configuration, DefaultApi } from '@kuuzuki-ai/sdk';
 
 const config = new Configuration({
   basePath: 'http://localhost:4096',
@@ -137,7 +137,7 @@ const newSession = await api.sessionCreate({
 // Send a message
 const response = await api.sessionChat({
   id: newSession.id,
-  message: 'Hello, Kuucode!'
+  message: 'Hello, Kuuzuki!'
 });
 ```
 
@@ -150,11 +150,11 @@ import (
     "context"
     "log"
     
-    "github.com/moikas-code/kuucode-sdk-go"
+    "github.com/moikas-code/kuuzuki-sdk-go"
 )
 
 func main() {
-    client := kuucode.NewClient()
+    client := kuuzuki.NewClient()
     
     // List sessions
     sessions, err := client.Session.List(context.TODO())
@@ -163,16 +163,16 @@ func main() {
     }
     
     // Create a session
-    session, err := client.Session.Create(context.TODO(), kuucode.SessionCreateParams{
-        Name: kuucode.F("My Session"),
+    session, err := client.Session.Create(context.TODO(), kuuzuki.SessionCreateParams{
+        Name: kuuzuki.F("My Session"),
     })
     if err != nil {
         log.Fatal(err)
     }
     
     // Send a message
-    response, err := client.Session.Chat(context.TODO(), session.ID, kuucode.SessionChatParams{
-        Message: kuucode.F("Hello, Kuucode!"),
+    response, err := client.Session.Chat(context.TODO(), session.ID, kuuzuki.SessionChatParams{
+        Message: kuuzuki.F("Hello, Kuuzuki!"),
     })
     if err != nil {
         log.Fatal(err)
@@ -183,16 +183,16 @@ func main() {
 ### Python
 
 ```python
-import kuucode_ai
-from kuucode_ai.rest import ApiException
+import kuuzuki_ai
+from kuuzuki_ai.rest import ApiException
 
-configuration = kuucode_ai.Configuration(
+configuration = kuuzuki_ai.Configuration(
     host="http://localhost:4096",
     access_token="your-token"
 )
 
-with kuucode_ai.ApiClient(configuration) as api_client:
-    api_instance = kuucode_ai.DefaultApi(api_client)
+with kuuzuki_ai.ApiClient(configuration) as api_client:
+    api_instance = kuuzuki_ai.DefaultApi(api_client)
     
     try:
         # List sessions
@@ -200,7 +200,7 @@ with kuucode_ai.ApiClient(configuration) as api_client:
         
         # Create a session
         new_session = api_instance.session_create(
-            session_create_request=kuucode_ai.SessionCreateRequest(
+            session_create_request=kuuzuki_ai.SessionCreateRequest(
                 name="My Session"
             )
         )
@@ -208,8 +208,8 @@ with kuucode_ai.ApiClient(configuration) as api_client:
         # Send a message
         response = api_instance.session_chat(
             id=new_session.id,
-            session_chat_request=kuucode_ai.SessionChatRequest(
-                message="Hello, Kuucode!"
+            session_chat_request=kuuzuki_ai.SessionChatRequest(
+                message="Hello, Kuuzuki!"
             )
         )
         
@@ -283,7 +283,7 @@ curl -H "Authorization: Bearer token" http://localhost:4096/session
 
 The OpenAPI specification is automatically generated from the server code. To update:
 
-1. Modify endpoints in `packages/kuucode/src/server/server.ts`
+1. Modify endpoints in `packages/kuuzuki/src/server/server.ts`
 2. Restart the server: `bun run dev`
 3. Fetch updated spec: `curl http://localhost:4096/doc > openapi.json`
 4. Regenerate SDKs: `./scripts/generate-sdks`

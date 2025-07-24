@@ -4,19 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**ParentID** | Pointer to **string** |  | [optional] 
-**Share** | Pointer to [**SessionShare**](SessionShare.md) |  | [optional] 
-**Title** | **string** |  | 
-**Version** | **string** |  | 
-**Time** | [**SessionTime**](SessionTime.md) |  | 
-**Revert** | Pointer to [**SessionRevert**](SessionRevert.md) |  | [optional] 
+**Id** | Pointer to **string** |  | [optional] 
+**ProviderID** | Pointer to **string** |  | [optional] 
+**Model** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
 ### NewSession
 
-`func NewSession(id string, title string, version string, time SessionTime, ) *Session`
+`func NewSession() *Session`
 
 NewSession instantiates a new Session object
 This constructor will assign default values to properties that have it defined,
@@ -50,141 +46,61 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
 
-### GetParentID
+`func (o *Session) HasId() bool`
 
-`func (o *Session) GetParentID() string`
+HasId returns a boolean if a field has been set.
 
-GetParentID returns the ParentID field if non-nil, zero value otherwise.
+### GetProviderID
 
-### GetParentIDOk
+`func (o *Session) GetProviderID() string`
 
-`func (o *Session) GetParentIDOk() (*string, bool)`
+GetProviderID returns the ProviderID field if non-nil, zero value otherwise.
 
-GetParentIDOk returns a tuple with the ParentID field if it's non-nil, zero value otherwise
+### GetProviderIDOk
+
+`func (o *Session) GetProviderIDOk() (*string, bool)`
+
+GetProviderIDOk returns a tuple with the ProviderID field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetParentID
+### SetProviderID
 
-`func (o *Session) SetParentID(v string)`
+`func (o *Session) SetProviderID(v string)`
 
-SetParentID sets ParentID field to given value.
+SetProviderID sets ProviderID field to given value.
 
-### HasParentID
+### HasProviderID
 
-`func (o *Session) HasParentID() bool`
+`func (o *Session) HasProviderID() bool`
 
-HasParentID returns a boolean if a field has been set.
+HasProviderID returns a boolean if a field has been set.
 
-### GetShare
+### GetModel
 
-`func (o *Session) GetShare() SessionShare`
+`func (o *Session) GetModel() string`
 
-GetShare returns the Share field if non-nil, zero value otherwise.
+GetModel returns the Model field if non-nil, zero value otherwise.
 
-### GetShareOk
+### GetModelOk
 
-`func (o *Session) GetShareOk() (*SessionShare, bool)`
+`func (o *Session) GetModelOk() (*string, bool)`
 
-GetShareOk returns a tuple with the Share field if it's non-nil, zero value otherwise
+GetModelOk returns a tuple with the Model field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetShare
+### SetModel
 
-`func (o *Session) SetShare(v SessionShare)`
+`func (o *Session) SetModel(v string)`
 
-SetShare sets Share field to given value.
+SetModel sets Model field to given value.
 
-### HasShare
+### HasModel
 
-`func (o *Session) HasShare() bool`
+`func (o *Session) HasModel() bool`
 
-HasShare returns a boolean if a field has been set.
-
-### GetTitle
-
-`func (o *Session) GetTitle() string`
-
-GetTitle returns the Title field if non-nil, zero value otherwise.
-
-### GetTitleOk
-
-`func (o *Session) GetTitleOk() (*string, bool)`
-
-GetTitleOk returns a tuple with the Title field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTitle
-
-`func (o *Session) SetTitle(v string)`
-
-SetTitle sets Title field to given value.
-
-
-### GetVersion
-
-`func (o *Session) GetVersion() string`
-
-GetVersion returns the Version field if non-nil, zero value otherwise.
-
-### GetVersionOk
-
-`func (o *Session) GetVersionOk() (*string, bool)`
-
-GetVersionOk returns a tuple with the Version field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetVersion
-
-`func (o *Session) SetVersion(v string)`
-
-SetVersion sets Version field to given value.
-
-
-### GetTime
-
-`func (o *Session) GetTime() SessionTime`
-
-GetTime returns the Time field if non-nil, zero value otherwise.
-
-### GetTimeOk
-
-`func (o *Session) GetTimeOk() (*SessionTime, bool)`
-
-GetTimeOk returns a tuple with the Time field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTime
-
-`func (o *Session) SetTime(v SessionTime)`
-
-SetTime sets Time field to given value.
-
-
-### GetRevert
-
-`func (o *Session) GetRevert() SessionRevert`
-
-GetRevert returns the Revert field if non-nil, zero value otherwise.
-
-### GetRevertOk
-
-`func (o *Session) GetRevertOk() (*SessionRevert, bool)`
-
-GetRevertOk returns a tuple with the Revert field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetRevert
-
-`func (o *Session) SetRevert(v SessionRevert)`
-
-SetRevert sets Revert field to given value.
-
-### HasRevert
-
-`func (o *Session) HasRevert() bool`
-
-HasRevert returns a boolean if a field has been set.
+HasModel returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

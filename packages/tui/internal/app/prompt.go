@@ -3,9 +3,9 @@ package app
 import (
 	"time"
 
-	"github.com/moikas-code/kuucode-sdk-go"
-	"github.com/moikas-code/kuucode/internal/attachment"
-	"github.com/moikas-code/kuucode/internal/compat"
+	"github.com/moikas-code/kuuzuki-sdk-go"
+	"github.com/moikas-code/kuuzuki/internal/attachment"
+	"github.com/moikas-code/kuuzuki/internal/compat"
 )
 
 type Prompt struct {

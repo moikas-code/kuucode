@@ -3,7 +3,7 @@
 // Discord notification script for parity system
 import { $ } from "bun"
 
-const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL || process.env.KUUCODE_DISCORD_WEBHOOK
+const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL || process.env.KUUZUKI_DISCORD_WEBHOOK
 
 interface NotificationData {
   type: "daily" | "critical" | "integration" | "security"

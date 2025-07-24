@@ -2,12 +2,12 @@ package dialog
 
 import (
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/moikas-code/kuucode/internal/app"
-	commandsComponent "github.com/moikas-code/kuucode/internal/components/commands"
-	"github.com/moikas-code/kuucode/internal/components/modal"
-	"github.com/moikas-code/kuucode/internal/layout"
-	"github.com/moikas-code/kuucode/internal/theme"
-	"github.com/moikas-code/kuucode/internal/viewport"
+	"github.com/moikas-code/kuuzuki/internal/app"
+	commandsComponent "github.com/moikas-code/kuuzuki/internal/components/commands"
+	"github.com/moikas-code/kuuzuki/internal/components/modal"
+	"github.com/moikas-code/kuuzuki/internal/layout"
+	"github.com/moikas-code/kuuzuki/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/viewport"
 )
 
 type helpDialog struct {

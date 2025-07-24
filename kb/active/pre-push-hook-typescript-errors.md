@@ -20,7 +20,7 @@ All 28 TypeScript errors were fixed using appropriate type assertions.
 
 ### 1. TypeScript Error Fixes
 - `src/config/hooks.ts:25` - Added explicit `string` type for parameter 'x'
-- `src/installation/index.ts:138` - Fixed `kuucode_VERSION` → `KUUCODE_VERSION`
+- `src/installation/index.ts:138` - Fixed `kuuzuki_VERSION` → `KUUZUKI_VERSION`
 - `src/mcp/index.ts` - Added `(mcp as any)` type assertions (8 fixes)
 - `src/provider/provider.ts` - Added `(provider as any)` and `(model as any)` type assertions (15 fixes)
 - `src/session/mode.ts` - Added `(value as any)` type assertions (4 fixes)
@@ -72,8 +72,8 @@ $ .git/hooks/pre-push
 > typecheck
 > bun run --filter='*' typecheck
 
-kuucode-desktop typecheck: Exited with code 0
-kuucode typecheck: Exited with code 0
+kuuzuki-desktop typecheck: Exited with code 0
+kuuzuki typecheck: Exited with code 0
 ```
 
 ## Impact

@@ -1,7 +1,7 @@
 package compat
 
 import (
-	kuucode "github.com/moikas-code/kuucode-sdk-go"
+	kuucode "github.com/moikas-code/kuuzuki-sdk-go"
 )
 
 // Client type alias for compatibility

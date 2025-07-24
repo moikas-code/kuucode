@@ -1,24 +1,24 @@
 ---
 title: Intro
-description: Get started with kuucode.
+description: Get started with kuuzuki.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-[**kuucode**](/) is an AI coding agent built for the terminal.
+[**kuuzuki**](/) is an AI coding agent built for the terminal.
 
-![kuucode TUI with the kuucode theme](../../../assets/lander/screenshot.png)
+![kuuzuki TUI with the kuuzuki theme](../../../assets/lander/screenshot.png)
 
-Let's start by installing kuucode.
+Let's start by installing kuuzuki.
 
 ---
 
 ## Install
 
-The easiest way to install kuucode is through the install script.
+The easiest way to install kuuzuki is through the install script.
 
 ```bash
-curl -fsSL https://kuucode.ai/install | bash
+curl -fsSL https://kuuzuki.ai/install | bash
 ```
 
 You can also install it with the following:
@@ -26,40 +26,40 @@ You can also install it with the following:
 - **Using Node.js**
 
   <Tabs>
-    <TabItem label="npm">```bash npm install -g kuucode-ai ```</TabItem>
-    <TabItem label="Bun">```bash bun install -g kuucode-ai ```</TabItem>
-    <TabItem label="pnpm">```bash pnpm install -g kuucode-ai ```</TabItem>
-    <TabItem label="Yarn">```bash yarn global add kuucode-ai ```</TabItem>
+    <TabItem label="npm">```bash npm install -g kuuzuki-ai ```</TabItem>
+    <TabItem label="Bun">```bash bun install -g kuuzuki-ai ```</TabItem>
+    <TabItem label="pnpm">```bash pnpm install -g kuuzuki-ai ```</TabItem>
+    <TabItem label="Yarn">```bash yarn global add kuuzuki-ai ```</TabItem>
   </Tabs>
 
 - **Using Homebrew on macOS**
 
   ```bash
-  brew install moikas-code/tap/kuucode
+  brew install moikas-code/tap/kuuzuki
   ```
 
 - **Using Paru on Arch Linux**
 
   ```bash
-  paru -S kuucode-bin
+  paru -S kuuzuki-bin
   ```
 
 #### Windows
 
-Right now the automatic installation methods do not work properly on Windows. However you can grab the binary from the [Releases](https://github.com/moikas-code/kuucode/releases).
+Right now the automatic installation methods do not work properly on Windows. However you can grab the binary from the [Releases](https://github.com/moikas-code/kuuzuki/releases).
 
 ---
 
 ## Configure
 
-With kuucode you can use any LLM provider by configuring their API keys.
+With kuuzuki you can use any LLM provider by configuring their API keys.
 
-We recommend signing up for [Claude Pro](https://www.anthropic.com/news/claude-pro) or [Max](https://www.anthropic.com/max), it's the most cost-effective way to use kuucode.
+We recommend signing up for [Claude Pro](https://www.anthropic.com/news/claude-pro) or [Max](https://www.anthropic.com/max), it's the most cost-effective way to use kuuzuki.
 
-Once you've signed up, run `kuucode auth login` and select Anthropic.
+Once you've signed up, run `kuuzuki auth login` and select Anthropic.
 
 ```bash
-$ kuucode auth login
+$ kuuzuki auth login
 
 ┌  Add credential
 │
@@ -88,33 +88,33 @@ you want to work on.
 cd /path/to/project
 ```
 
-And run kuucode.
+And run kuuzuki.
 
 ```bash
-kuucode
+kuuzuki
 ```
 
-Next, initialize kuucode for the project by running the following command.
+Next, initialize kuuzuki for the project by running the following command.
 
 ```bash frame="none"
 /init
 ```
 
-This will get kuucode to analyze your project and create an `AGENTS.md` file in
+This will get kuuzuki to analyze your project and create an `AGENTS.md` file in
 the project root.
 
 :::tip
 You should commit your project's `AGENTS.md` file to Git.
 :::
 
-This helps kuucode understand the project structure and the coding patterns
+This helps kuuzuki understand the project structure and the coding patterns
 used.
 
 ---
 
 ## Usage
 
-You are now ready to use kuucode to work on your project. Feel free to ask it
+You are now ready to use kuuzuki to work on your project. Feel free to ask it
 anything!
 
 If you are new to using an AI coding agent, here are some examples that might
@@ -124,7 +124,7 @@ help.
 
 ### Ask questions
 
-You can ask kuucode to explain the codebase to you.
+You can ask kuuzuki to explain the codebase to you.
 
 ```txt frame="none"
 How is authentication handled in @packages/functions/src/api/index.ts
@@ -140,11 +140,11 @@ Use the `@` key to fuzzy search for files in the project.
 
 ### Add features
 
-You can ask kuucode to add new features to your project. Though we first recommend asking it to create a plan.
+You can ask kuuzuki to add new features to your project. Though we first recommend asking it to create a plan.
 
 1. **Create a plan**
 
-   kuucode has a _Plan mode_ that disables its ability to make changes and
+   kuuzuki has a _Plan mode_ that disables its ability to make changes and
    instead suggest _how_ it'll implement the feature.
 
    Switch to it using the **Tab** key. You'll see an indicator for this in the lower right corner.
@@ -161,11 +161,11 @@ You can ask kuucode to add new features to your project. Though we first recomme
    From this screen, the user can undelete a note or permanently delete it.
    ```
 
-   You want to give kuucode enough details to understand what you want. It helps
+   You want to give kuuzuki enough details to understand what you want. It helps
    to talk to it like you are talking to a junior developer on your team.
 
    :::tip
-   Give kuucode plenty of context and examples to help it understand what you
+   Give kuuzuki plenty of context and examples to help it understand what you
    want.
    :::
 
@@ -197,7 +197,7 @@ You can ask kuucode to add new features to your project. Though we first recomme
 
 ### Make changes
 
-For more straightforward changes, you can ask kuucode to directly build it
+For more straightforward changes, you can ask kuuzuki to directly build it
 without having to review the plan first.
 
 ```txt frame="none"
@@ -206,14 +206,14 @@ handled in the /notes route in @packages/functions/src/notes.ts and implement
 the same logic in @packages/functions/src/settings.ts
 ```
 
-You want to make sure you provide a good amount of detail so kuucode makes the right
+You want to make sure you provide a good amount of detail so kuuzuki makes the right
 changes.
 
 ---
 
 ## Share
 
-The conversations that you have with kuucode can be [shared with your
+The conversations that you have with kuuzuki can be [shared with your
 team](/docs/share).
 
 ```bash frame="none"
@@ -226,12 +226,12 @@ This'll create a link to the current conversation and copy it to your clipboard.
 Conversations are not shared by default.
 :::
 
-Here's an [example conversation](https://kuucode.ai/s/4XP1fce5) with kuucode.
+Here's an [example conversation](https://kuuzuki.ai/s/4XP1fce5) with kuuzuki.
 
 ---
 
 ## Customize
 
-And that's it! You are now a pro at using kuucode.
+And that's it! You are now a pro at using kuuzuki.
 
-To make it your own, we recommend [picking a theme](/docs/themes), [customizing the keybinds](/docs/keybinds), or playing around with the [kuucode config](/docs/config).
+To make it your own, we recommend [picking a theme](/docs/themes), [customizing the keybinds](/docs/keybinds), or playing around with the [kuuzuki config](/docs/config).

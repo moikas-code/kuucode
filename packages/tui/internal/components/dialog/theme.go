@@ -2,12 +2,12 @@ package dialog
 
 import (
 	tea "github.com/charmbracelet/bubbletea/v2"
-	list "github.com/moikas-code/kuucode/internal/components/list"
-	"github.com/moikas-code/kuucode/internal/components/modal"
-	"github.com/moikas-code/kuucode/internal/layout"
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
-	"github.com/moikas-code/kuucode/internal/util"
+	list "github.com/moikas-code/kuuzuki/internal/components/list"
+	"github.com/moikas-code/kuuzuki/internal/components/modal"
+	"github.com/moikas-code/kuuzuki/internal/layout"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/util"
 )
 
 // ThemeSelectedMsg is sent when the theme is changed

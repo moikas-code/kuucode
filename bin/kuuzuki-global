@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Global Kuucode launcher script
+# This script allows running Kuucode from anywhere
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+# Run Kuucode with Bun
+exec bun run "$PROJECT_ROOT/packages/kuuzuki/src/index.ts" "$@"

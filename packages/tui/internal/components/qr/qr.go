@@ -3,8 +3,8 @@ package qr
 import (
 	"strings"
 
-	"github.com/moikas-code/kuucode/internal/styles"
-	"github.com/moikas-code/kuucode/internal/theme"
+	"github.com/moikas-code/kuuzuki/internal/styles"
+	"github.com/moikas-code/kuuzuki/internal/theme"
 	"rsc.io/qr"
 )
 

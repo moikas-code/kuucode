@@ -10,7 +10,7 @@
       },
     },
     "packages/desktop": {
-      "name": "kuucode-desktop",
+      "name": "kuuzuki-desktop",
       "version": "0.1.0",
       "dependencies": {
         "@tauri-apps/api": "^2.0.0",
@@ -1203,7 +1203,7 @@
 
     "kuucode": ["kuucode@workspace:packages/kuucode"],
 
-    "kuucode-desktop": ["kuucode-desktop@workspace:packages/desktop"],
+    "kuuzuki-desktop": ["kuuzuki-desktop@workspace:packages/desktop"],
 
     "lang-map": ["lang-map@0.4.0", "", { "dependencies": { "language-map": "^1.1.0" } }, "sha512-oiSqZIEUnWdFeDNsp4HId4tAxdFbx5iMBOwA3666Fn2L8Khj8NiD9xRvMsGmKXopPVkaDFtSv3CJOmXFUB0Hcg=="],
 

@@ -18,7 +18,7 @@ import (
 	"github.com/charmbracelet/x/ansi"
 	rw "github.com/mattn/go-runewidth"
 	"github.com/rivo/uniseg"
-	"github.com/moikas-code/kuucode/internal/attachment"
+	"github.com/moikas-code/kuuzuki/internal/attachment"
 )
 
 const (

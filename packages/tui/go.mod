@@ -1,4 +1,4 @@
-module github.com/moikas-code/kuucode
+module github.com/moikas-code/kuuzuki
 
 go 1.24.0
 
@@ -12,7 +12,7 @@ require (
 	github.com/charmbracelet/x/ansi v0.9.3
 	github.com/google/uuid v1.6.0
 	github.com/lithammer/fuzzysearch v1.1.8
-	github.com/moikas-code/kuucode-sdk-go v0.1.0-alpha.8
+	github.com/moikas-code/kuuzuki-sdk-go v0.1.0-alpha.8
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.16.0
@@ -23,7 +23,7 @@ require (
 
 replace (
 	github.com/charmbracelet/x/input => ./input
-	github.com/moikas-code/kuucode-sdk-go => ./sdk
+	github.com/moikas-code/kuuzuki-sdk-go => ./sdk
 )
 
 require golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
